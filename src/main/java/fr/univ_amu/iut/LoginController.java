@@ -67,7 +67,7 @@ public class LoginController {
             Node node = (Node) event.getSource() ;
             String nameNextPage = (String) node.getUserData();
 
-            //sceneController.switchTo(event, nameNextPage);
+            // sceneController.switchTo(event, nameNextPage);
         }
     }
 

@@ -34,7 +34,7 @@ public class Main extends Application {
         stage.setResizable(false);
 
 
-        stage.setTitle("Page de connexion");
+        stage.setTitle("Network Stories");
         stage.setScene(scene);
         stage.show();
     }

@@ -15,8 +15,6 @@ public class SceneController {
     private Scene scene;
     private Stage stage;
     private Parent root;
-    private static String nextPage;
-
 
     /**
      * Supports the switch page (with name)
@@ -24,7 +22,6 @@ public class SceneController {
      * @throws IOException
      */
     public void switchTo(ActionEvent event, String nameNextPage) throws IOException {
-
         root = FXMLLoader.load(getClass().getResource(nameNextPage));   // Load it
 
         // Windows size
@@ -33,7 +30,6 @@ public class SceneController {
         stage.minHeightProperty().set(stage.getMinHeight());
         stage.minWidthProperty().set(stage.getMinWidth());
 
-        stage.setTitle("Dico Pédago");
         stage.setScene(scene);
         stage.show();
     }
@@ -46,9 +42,8 @@ public class SceneController {
     @FXML
     public void switchToWithoutName(ActionEvent event) throws IOException {
         Node node = (Node) event.getSource() ;
-        String nameNextPage = (String) node.getUserData();
 
-        root = FXMLLoader.load(getClass().getResource(nameNextPage));   // Load it
+        root = FXMLLoader.load(getClass().getResource((String) node.getUserData()));   // Load it
 
         // Windows size
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -56,7 +51,6 @@ public class SceneController {
         stage.minHeightProperty().set(stage.getMinHeight());
         stage.minWidthProperty().set(stage.getMinWidth());
 
-        stage.setTitle("Dico Pédago");
         stage.setScene(scene);
         stage.show();
     }
