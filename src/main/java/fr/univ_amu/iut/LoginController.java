@@ -4,6 +4,7 @@ import fr.univ_amu.iut.client.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -66,8 +67,11 @@ public class LoginController {
             //Get the name of the file
             Node node = (Node) event.getSource() ;
             String nameNextPage = (String) node.getUserData();
-
-            // sceneController.switchTo(event, nameNextPage);
+            System.out.println(nameNextPage);
+            sceneController.switchTo(event, nameNextPage);
+        }  else{
+            Alert connexionError = new Alert(Alert.AlertType.ERROR, "L'identifiant ou le mot de passe saisi est incorrect !");
+            connexionError.show();
         }
     }
 

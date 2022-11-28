@@ -21,6 +21,7 @@ public class SceneController {
      * @param event
      * @throws IOException
      */
+    @FXML
     public void switchTo(ActionEvent event, String nameNextPage) throws IOException {
         root = FXMLLoader.load(getClass().getResource(nameNextPage));   // Load it
 
