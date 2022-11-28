@@ -1,0 +1,21 @@
+.background {
+  -fx-background-color: linear-gradient(to top left, #396cff, #00b7ff);;
+}
+
+.Btn {
+  -fx-background-radius: 8;
+  -fx-background-color: #e7e7e7;
+  -fx-text-fill: #398fff;
+}
+
+.Btn:hover{
+  -fx-background-radius: 8;
+  -fx-border-color: white;
+  -fx-border-radius: 8;
+  -fx-background-color: transparent;
+  -fx-text-fill: #e7e7e7;
+}
+
+.Question{
+  -fx-text-fill: #e7e7e7;
+}
