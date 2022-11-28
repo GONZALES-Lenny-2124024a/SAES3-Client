@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 
 import java.io.*;
 
-public class LoginController {
+public class LoginController{
     @FXML
     private TextField mail;
     @FXML

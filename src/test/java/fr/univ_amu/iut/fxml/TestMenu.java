@@ -13,11 +13,9 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
@@ -53,68 +51,38 @@ public class TestMenu {
 
     @Test
     public void shouldStageIsShowing(FxRobot robot) {
-        robot.clickOn("#mail");
-        robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#password");
-        robot.write("lenny");
-        robot.clickOn("#submit");
-
+        TestLoginPage.connectionLoginPage(robot);
         assertEquals(stage.isShowing(), true);
     }
 
     @Test
     public void shouldGetTitle(FxRobot robot) {
-        robot.clickOn("#mail");
-        robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#password");
-        robot.write("lenny");
-        robot.clickOn("#submit");
-
+        TestLoginPage.connectionLoginPage(robot);
         assertEquals(stage.getTitle(), "Network Stories");
     }
 
     @Test
     public void shouldContainsButtonSolo(FxRobot robot) throws IOException, InterruptedException {
-        robot.clickOn("#mail");
-        robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#password");
-        robot.write("lenny");
-        robot.clickOn("#submit");
-
+        TestLoginPage.connectionLoginPage(robot);
         verifyThat("#solo", hasText("SOLO"));
 
     }
 
     @Test
     public void shouldContainsButtonMultijoueur(FxRobot robot) {
-        robot.clickOn("#mail");
-        robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#password");
-        robot.write("lenny");
-        robot.clickOn("#submit");
-
+        TestLoginPage.connectionLoginPage(robot);
         verifyThat("#multiplayer", hasText("MULTIJOUEUR"));
     }
 
     @Test
     public void shouldContainsButtonEntrainement(FxRobot robot) {
-        robot.clickOn("#mail");
-        robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#password");
-        robot.write("lenny");
-        robot.clickOn("#submit");
-
+        TestLoginPage.connectionLoginPage(robot);
         verifyThat("#training", hasText("ENTRAINEMENT"));
     }
 
     @Test
     public void shouldContainsButtonDeconnexion(FxRobot robot) {
-        robot.clickOn("#mail");
-        robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#password");
-        robot.write("lenny");
-        robot.clickOn("#submit");
-
+        TestLoginPage.connectionLoginPage(robot);
         verifyThat("#deconnexion", hasText("DÉCONNEXION"));
     }
 }

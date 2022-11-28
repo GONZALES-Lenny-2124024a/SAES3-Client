@@ -1,7 +1,12 @@
 package fr.univ_amu.iut.client;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
 import java.io.*;
 import java.net.Socket;
+
+import static java.lang.Thread.sleep;
 
 public class Client {
     private String hostname;
@@ -22,6 +27,34 @@ public class Client {
     public Socket getSocketClient() {
         return socketClient;
     }
+
+    /**
+     * Send a String to the server
+     * @param message
+     * @throws IOException
+     */
+   public void sendMessageToServer(String message) throws IOException {
+        out.write(message);
+        out.newLine();
+        out.flush();
+   }
+
+    /**
+     * Send the message received from the server and if the server
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+   public String receiveMessageFromServer() throws IOException, InterruptedException {
+       if((message = in.readLine()) != null) {
+            return message;
+       }
+       Alert serverError = new Alert(Alert.AlertType.ERROR, "Le serveur est déconnecté !");
+       serverError.show();
+       sleep(3000);
+       Platform.exit();
+       return null;
+   }
 
     /**
      * This method close the socket

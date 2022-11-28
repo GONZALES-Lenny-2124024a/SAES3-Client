@@ -9,7 +9,7 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Button fx:id="solo" id="solo" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToWithoutName" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="SOLO" userData="fxml/solo.fxml">
+    <Button fx:id="solo" id="solo" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToWithoutName" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="SOLO" userData="fxml/question.fxml">
         <font>
             <Font size="20.0" />
         </font></Button>
