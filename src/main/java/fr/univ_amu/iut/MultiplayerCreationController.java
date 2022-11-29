@@ -33,7 +33,6 @@ public class MultiplayerCreationController extends QuestionController{
      */
     @FXML
     public void initialize() throws IOException, InterruptedException {
-        client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
         if(client.receiveMessageFromServer().equals("CODE_FLAG")) {
             codePartie.setText(client.receiveMessageFromServer());
         }

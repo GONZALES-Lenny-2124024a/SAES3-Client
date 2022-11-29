@@ -103,6 +103,7 @@ public class QuestionController {
      * @param event
      */
     public void endGame(ActionEvent event) throws IOException {
+        client.changePort(client.getPort());
         SceneController sceneController = new SceneController();
         sceneController.setCurrentController(this);
         sceneController.switchTo(event, "fxml/summary.fxml");
