@@ -40,7 +40,7 @@ public class Client {
    }
 
     /**
-     * Send the message received from the server and if the server
+     * Send the message received from the server and if the server disconnected, return an alert
      * @return
      * @throws IOException
      * @throws InterruptedException

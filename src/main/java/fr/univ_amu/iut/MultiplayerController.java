@@ -32,10 +32,12 @@ public class MultiplayerController {
         client.receiveMessageFromServer();
         client.sendMessageToServer(codeInput.getText());
 
-        client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
+        if(client.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {
+            client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
 
-        SceneController sceneController = new SceneController();
-        sceneController.switchTo(event, "fxml/question.fxml");   // Switch to the question's page
+            SceneController sceneController = new SceneController();
+            sceneController.switchTo(event, "fxml/question.fxml");   // Switch to the question's page
+        }
     }
 
     /**
