@@ -13,7 +13,7 @@
         <font>
             <Font size="20.0" />
         </font></Button>
-    <Button fx:id="multiplayer" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToWithoutName" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="MULTIJOUEUR" userData="fxml/multijoueur.fxml">
+    <Button fx:id="multiplayer" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToWithoutName" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="MULTIJOUEUR" userData="fxml/multiplayer.fxml">
         <font>
             <Font size="20.0" />
         </font></Button>
