@@ -21,6 +21,9 @@ public class MultiplayerCreationController extends QuestionController{
      */
     public void sessionBegin(ActionEvent event) throws IOException, InterruptedException {
         client.sendMessageToServer("BEGIN");
+        if(client.receiveMessageFromServer().equals("CAN_JOIN_FLAG")) {
+            client.changePort(Integer.valueOf(client.receiveMessageFromServer()));
+        }
         SceneController sceneController = new SceneController();
         sceneController.switchTo(event, "fxml/question.fxml");
     }
@@ -33,7 +36,6 @@ public class MultiplayerCreationController extends QuestionController{
         client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
         if(client.receiveMessageFromServer().equals("CODE_FLAG")) {
             codePartie.setText(client.receiveMessageFromServer());
-            client.changePort(Integer.valueOf(client.receiveMessageFromServer()));
         }
     }
 }

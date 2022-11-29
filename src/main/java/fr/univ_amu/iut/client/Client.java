@@ -57,8 +57,23 @@ public class Client {
        return null;
    }
 
+    /**
+     * Change the port
+     * @param newPort
+     * @throws IOException
+     */
    public void changePort(int newPort) throws IOException {
        socketClient = new Socket(hostname, newPort);
+       out = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
+       in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+   }
+
+    /**
+     * Return the port of the main server
+     * @return
+     */
+   public int getPort() {
+       return port;
    }
 
     /**

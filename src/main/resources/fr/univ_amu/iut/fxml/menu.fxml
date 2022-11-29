@@ -5,15 +5,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" spacing="20.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.SceneController">
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" spacing="20.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.MenuController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Button fx:id="solo" id="solo" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToWithoutName" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="SOLO" userData="fxml/question.fxml">
+    <Button fx:id="solo" id="solo" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#soloMode" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="SOLO">
         <font>
             <Font size="20.0" />
         </font></Button>
-    <Button fx:id="multiplayer" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToWithoutName" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="MULTIJOUEUR" userData="fxml/multiplayer.fxml">
+    <Button fx:id="multiplayer" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#multiplayerMode" prefHeight="75.0" prefWidth="345.0" styleClass="Btn" text="MULTIJOUEUR">
         <font>
             <Font size="20.0" />
         </font></Button>

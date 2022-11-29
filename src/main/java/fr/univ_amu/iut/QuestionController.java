@@ -108,4 +108,13 @@ public class QuestionController {
         sceneController.switchTo(event, "fxml/summary.fxml");
     }
 
+    /**
+     * Initialize the first question
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @FXML
+    public void initialize() throws IOException, InterruptedException {
+        initializeVariables(client.receiveMessageFromServer());
+    }
 }
