@@ -57,6 +57,10 @@ public class Client {
        return null;
    }
 
+   public void changePort(int newPort) throws IOException {
+       socketClient = new Socket(hostname, newPort);
+   }
+
     /**
      * This method close the socket
      * @throws IOException
