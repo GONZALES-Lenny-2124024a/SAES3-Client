@@ -52,6 +52,7 @@ public class Client {
        Alert serverError = new Alert(Alert.AlertType.ERROR, "Le serveur est déconnecté !");
        serverError.show();
        sleep(3000);
+       close();
        Platform.exit();
        return null;
    }

@@ -38,6 +38,6 @@
             </font>
         </CheckBox>
         <Button fx:id="submit" onAction="#submitQuestion" alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="VALIDER" />
-        <Button fx:id="quit" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitQuestion" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="QUITTER" userData="menu.fxml"/>
+        <Button fx:id="quit" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitQuestion" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="QUITTER" userData="fxml/menu.fxml"/>
     </children>
 </VBox>

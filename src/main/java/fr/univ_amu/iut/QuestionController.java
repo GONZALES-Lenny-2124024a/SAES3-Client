@@ -23,6 +23,10 @@ public class QuestionController {
         answersStatus = new HashMap<>();
     }
 
+    public HashMap<String, Boolean> getAnswersStatus() {
+        return answersStatus;
+    }
+
     /**
      * Initialize the question and the answers
      * @throws IOException
@@ -100,6 +104,8 @@ public class QuestionController {
      */
     public void endGame(ActionEvent event) throws IOException {
         SceneController sceneController = new SceneController();
-        sceneController.switchTo(event, "fxml/menu.fxml");
+        sceneController.setCurrentController(this);
+        sceneController.switchTo(event, "fxml/summary.fxml");
     }
+
 }

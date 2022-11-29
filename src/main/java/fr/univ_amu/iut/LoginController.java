@@ -50,12 +50,7 @@ public class LoginController{
         out.flush();
 
         if((message = in.readLine()) != null) {
-            if(message.equals("[+] LOGIN !")) {
-                System.out.println("login : " + message);
-                return true;
-            }
-            System.out.println("not login : " + message);
-            return false;
+            return (message.equals("[+] LOGIN !")) ? true : false;
         }
         client.close();
         return false;

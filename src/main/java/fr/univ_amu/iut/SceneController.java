@@ -15,6 +15,15 @@ public class SceneController {
     private Scene scene;
     private Stage stage;
     private Parent root;
+    private static QuestionController currentController;
+
+    public void setCurrentController(QuestionController currentController) {
+        this.currentController = currentController;
+    }
+
+    public QuestionController getCurrentController() {
+        return currentController;
+    }
 
     /**
      * Supports the switch page (with name)
@@ -55,4 +64,6 @@ public class SceneController {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }
