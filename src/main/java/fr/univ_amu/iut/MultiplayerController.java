@@ -1,10 +1,13 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.Client;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -32,11 +35,32 @@ public class MultiplayerController {
         client.receiveMessageFromServer();
         client.sendMessageToServer(codeInput.getText());
 
-        if(client.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {
+        if(client.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
             client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
 
-            SceneController sceneController = new SceneController();
-            sceneController.switchTo(event, "fxml/question.fxml");   // Switch to the question's page
+            // No crash of the application
+            if(client.receiveMessageFromServer().equals("PRESENCE_FLAG")) {   // To see if the server receive the connection request
+                Timeline timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(1.0), e -> {
+
+                            try {
+                                if(client.isReceiveMessageFromServer()) {   // Verify if the server sent a message
+                                    if (client.receiveMessageFromServer().equals("BEGIN_FLAG")) {    // When the game begin
+                                        SceneController sceneController = new SceneController();
+                                        sceneController.switchTo(event, "fxml/question.fxml");   // Switch to the question's page
+                                    }
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (InterruptedException ex) {
+                                throw new RuntimeException(ex);
+                            }
+
+                        })
+                );
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+            }
         }
     }
 

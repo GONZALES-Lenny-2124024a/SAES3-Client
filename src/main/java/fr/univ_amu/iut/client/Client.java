@@ -58,6 +58,15 @@ public class Client {
    }
 
     /**
+     * Return true if the server sent a message to the client
+     * @return
+     * @throws IOException
+     */
+   public boolean isReceiveMessageFromServer() throws IOException {
+       return in.ready();
+   }
+
+    /**
      * Change the port
      * @param newPort
      * @throws IOException

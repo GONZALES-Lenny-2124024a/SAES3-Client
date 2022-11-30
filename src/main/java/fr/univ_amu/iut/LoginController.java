@@ -62,7 +62,6 @@ public class LoginController{
             //Get the name of the file
             Node node = (Node) event.getSource() ;
             String nameNextPage = (String) node.getUserData();
-            System.out.println(nameNextPage);
             sceneController.switchTo(event, nameNextPage);
         }  else{
             Alert connexionError = new Alert(Alert.AlertType.ERROR, "L'identifiant ou le mot de passe saisi est incorrect !");
