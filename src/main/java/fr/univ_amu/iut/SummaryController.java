@@ -20,7 +20,7 @@ public class SummaryController {
 
     public SummaryController() {
         SceneController sceneController = new SceneController();
-        summary = sceneController.getCurrentController().getAnswersStatus();
+        summary = sceneController.getQuestionController().getAnswersStatus();
     }
 
     /**

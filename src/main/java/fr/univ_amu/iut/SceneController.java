@@ -15,14 +15,30 @@ public class SceneController {
     private Scene scene;
     private Stage stage;
     private Parent root;
-    private static QuestionController currentController;
+    private static QuestionController questionController;
 
-    public void setCurrentController(QuestionController currentController) {
-        this.currentController = currentController;
+    /**
+     * Set the Question controller
+     * @param questionController
+     */
+    public void setQuestionController(QuestionController questionController) {
+        this.questionController = questionController;
     }
 
-    public QuestionController getCurrentController() {
-        return currentController;
+
+    /**
+     * Get the current controller
+     * @return
+     */
+    public QuestionController getQuestionController() {
+        return questionController;
+    }
+
+    /**
+     * Get the currentStage
+     */
+    public Stage getStage() {
+        return stage;
     }
 
     /**

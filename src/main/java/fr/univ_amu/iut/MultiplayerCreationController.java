@@ -11,9 +11,12 @@ public class MultiplayerCreationController extends QuestionController{
     @FXML
     private Label codePartie;
     private Client client;
+    private SceneController sceneController;
+
 
     public MultiplayerCreationController() {
         client = Main.getClient();
+        sceneController = new SceneController();
     }
 
     /**

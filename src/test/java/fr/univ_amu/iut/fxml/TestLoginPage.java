@@ -74,6 +74,12 @@ public class TestLoginPage {
         verifyThat("#password", hasText(""));
     }
 
+    @Test
+    public void shouldNotLogin(FxRobot robot) {
+        robot.clickOn("#submit");
+        robot.clickOn("OK");
+    }
+
     public static void connectionLoginPage(FxRobot robot) {
         robot.clickOn("#mail");
         robot.write("lenny.gonzales@etu.univ-amu.fr");

@@ -43,6 +43,10 @@ public class Main extends Application {
         launch();
     }
 
+    /**
+     * Get the client
+     * @return
+     */
     public static Client getClient() {
         return client;
     }

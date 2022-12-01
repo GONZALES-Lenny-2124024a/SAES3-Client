@@ -16,20 +16,13 @@ public class LoginController{
     private TextField mail;
     @FXML
     private PasswordField password;
-    @FXML
-    private Button submit;
     private Client client;
-
-    private BufferedWriter out;
-    private BufferedReader in;
     private String message;
 
     private SceneController sceneController;
-    public LoginController() throws IOException {
+    public LoginController() {
         client = Main.getClient();  // Get the connection with the server
         sceneController = new SceneController();
-        out = new BufferedWriter(new OutputStreamWriter(client.getSocketClient().getOutputStream()));
-        in = new BufferedReader(new InputStreamReader(client.getSocketClient().getInputStream()));
     }
 
 
@@ -38,26 +31,21 @@ public class LoginController{
      * @return if the username and the password are corrects
      * @throws IOException
      */
-    public boolean verifyLogin(String mail, String password) throws IOException {
-        out.write("LOGIN_FLAG");
-        out.newLine();
-        out.flush();
-
-        out.write(mail);
-        out.newLine();
-        out.write(password);
-        out.newLine();
-        out.flush();
-
-        if((message = in.readLine()) != null) {
-            return (message.equals("[+] LOGIN !")) ? true : false;
-        }
-        client.close();
-        return false;
+    public boolean verifyLogin(String mail, String password) throws IOException, InterruptedException {
+        client.sendMessageToServer("LOGIN_FLAG");
+        client.sendMessageToServer(mail);
+        client.sendMessageToServer(password);
+        message = client.receiveMessageFromServer();
+        return message.equals("[+] LOGIN !");
     }
 
-    @FXML
-    public void serviceLogin(ActionEvent event) throws IOException {
+    /**
+     * Supports the login of the user
+     * @param event
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void serviceLogin(ActionEvent event) throws IOException, InterruptedException {
         if(verifyLogin(mail.getText(),password.getText())) {
             //Get the name of the file
             Node node = (Node) event.getSource() ;

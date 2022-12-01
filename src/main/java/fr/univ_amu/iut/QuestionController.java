@@ -23,6 +23,10 @@ public class QuestionController {
         answersStatus = new HashMap<>();
     }
 
+    /**
+     * Get the questions and if the user answered well
+     * @return
+     */
     public HashMap<String, Boolean> getAnswersStatus() {
         return answersStatus;
     }
@@ -92,6 +96,8 @@ public class QuestionController {
             client.sendMessageToServer("2");
         } else if (answer3.isSelected()) {
             client.sendMessageToServer("3");
+        } else {
+            client.sendMessageToServer("0");
         }
 
         unselectCheckBox();
@@ -103,9 +109,9 @@ public class QuestionController {
      * @param event
      */
     public void endGame(ActionEvent event) throws IOException {
-        if(client.getSocketClient().getPort() != client.getPort())  { client.changePort(client.getPort()); }
+        if(client.getSocketClient().getPort() != client.getPort())  { client.changePort(client.getPort()); } // If this is a multiplayer session, the user must log in to the main server
         SceneController sceneController = new SceneController();
-        sceneController.setCurrentController(this);
+        sceneController.setQuestionController(this);
         sceneController.switchTo(event, "fxml/summary.fxml");
     }
 

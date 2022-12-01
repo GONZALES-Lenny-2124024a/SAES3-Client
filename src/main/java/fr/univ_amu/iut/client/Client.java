@@ -1,7 +1,9 @@
 package fr.univ_amu.iut.client;
 
+import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
@@ -24,6 +26,10 @@ public class Client {
         in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
     }
 
+    /**
+     * Get the socket of the user/client
+     * @return
+     */
     public Socket getSocketClient() {
         return socketClient;
     }
@@ -40,20 +46,16 @@ public class Client {
    }
 
     /**
-     * Send the message received from the server and if the server disconnected, return an alert
+     * Send the message received from the server
      * @return
      * @throws IOException
      * @throws InterruptedException
      */
-   public String receiveMessageFromServer() throws IOException, InterruptedException {
+   public String receiveMessageFromServer() throws IOException {
        if((message = in.readLine()) != null) {
             return message;
        }
-       Alert serverError = new Alert(Alert.AlertType.ERROR, "Le serveur est déconnecté !");
-       serverError.show();
-       sleep(3000);
        close();
-       Platform.exit();
        return null;
    }
 
@@ -93,6 +95,9 @@ public class Client {
         in.close();
         out.close();
         socketClient.close();
+        SceneController sceneController = new SceneController();
+        Stage stage = sceneController.getStage();
+        stage.close();
     }
 }
 
