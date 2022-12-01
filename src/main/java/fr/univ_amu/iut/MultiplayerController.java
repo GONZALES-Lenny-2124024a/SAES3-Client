@@ -5,7 +5,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
 
@@ -15,9 +14,12 @@ public class MultiplayerController {
     @FXML
     private TextField codeInput;
     private Client client;
+    private SceneController sceneController;
+    private Timeline timeline;
 
     public MultiplayerController() {
         client = Main.getClient();
+        sceneController = new SceneController();
     }
 
     /**
@@ -30,38 +32,64 @@ public class MultiplayerController {
      * @throws InterruptedException
      */
     public void joinSession(ActionEvent event) throws IOException, InterruptedException {
-        // Send the multiplayer join flag
-        client.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
-        client.receiveMessageFromServer();
-        client.sendMessageToServer(codeInput.getText());
-
+        sendJoinFlag(); // Send multiplayer session's code
         if(client.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
             client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
 
-            // No crash of the application
+            // Use to not run indefinitely the page (no crash page) until the host click on the 'Lancer' button
             if(client.receiveMessageFromServer().equals("PRESENCE_FLAG")) {   // To see if the server receive the connection request
-                Timeline timeline = new Timeline(
-                        new KeyFrame(Duration.seconds(1.0), e -> {
-
-                            try {
-                                if(client.isReceiveMessageFromServer()) {   // Verify if the server sent a message
-                                    if (client.receiveMessageFromServer().equals("BEGIN_FLAG")) {    // When the game begin
-                                        SceneController sceneController = new SceneController();
-                                        sceneController.switchTo(event, "fxml/question.fxml");   // Switch to the question's page
-                                    }
-                                }
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (InterruptedException ex) {
-                                throw new RuntimeException(ex);
-                            }
-
-                        })
-                );
-                timeline.setCycleCount(Timeline.INDEFINITE);
-                timeline.play();
+                verifyServerEachSecond(event);  // Verify if the server sent a message each second to know if the session begin
             }
         }
+    }
+
+    /**
+     * Verify if the server sent a message each second to know if the session begin
+     * Allows the application to not wait indefinitely until the multiplayer session's host click on the 'Lancer' button
+     * @param event
+     */
+    public void verifyServerEachSecond(ActionEvent event) {
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1.0), e -> {
+
+                    try {
+                        if(client.isReceiveMessageFromServer()) {   // Verify if the server sent a message
+                            beginSession(event);
+                        }
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    /**
+     * Begin the multiplayer's session
+     * @param event
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void beginSession(ActionEvent event) throws IOException, InterruptedException {
+        if (client.receiveMessageFromServer().equals("BEGIN_FLAG")) {    // When the game begin
+            timeline.stop();
+            sceneController.switchTo(event, "fxml/question.fxml");   // Switch to the question's page
+        }
+    }
+
+    /**
+     * Send multiplayer session's code
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void sendJoinFlag() throws IOException, InterruptedException {
+        client.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
+        client.receiveMessageFromServer();
+        client.sendMessageToServer(codeInput.getText());
     }
 
     /**
@@ -70,9 +98,8 @@ public class MultiplayerController {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void creationSession(ActionEvent event) throws IOException, InterruptedException {
+    public void creationSession(ActionEvent event) throws IOException {
         client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
-        SceneController sceneController = new SceneController();
         sceneController.switchTo(event, "fxml/multiplayerCreation.fxml");
     }
 
@@ -82,7 +109,6 @@ public class MultiplayerController {
      * @throws IOException
      */
     public void switchToMenu(ActionEvent event) throws IOException {
-        SceneController sceneController = new SceneController();
         sceneController.switchTo(event, "fxml/menu.fxml");
     }
 }
