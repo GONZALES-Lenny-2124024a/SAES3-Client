@@ -14,8 +14,8 @@
             </font>
         </Label>
         <TextField fx:id="codeInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="350.0" />
-        <Button  alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="REJOINDRE" onAction="#joinSession"/>
-        <Button  alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="CRÉER" onAction="#creationSession" userData="fxml/multiplayerCreation.fxml"/>
-        <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="QUITTER" onAction="#switchToMenu" userData="fxml/menu.fxml"/>
+        <Button fx:id="join" alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="REJOINDRE" onAction="#joinSession"/>
+        <Button fx:id="create" alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="CRÉER" onAction="#creationSession" userData="fxml/multiplayerCreation.fxml"/>
+        <Button fx:id="leave" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="QUITTER" onAction="#switchToMenu" userData="fxml/menu.fxml"/>
     </children>
 </VBox>
