@@ -3,13 +3,13 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.client.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
 public class MultiplayerCreationController extends QuestionController{
     @FXML
-    private Label codePartie;
+    private TextField codePartie;
     private Client client;
     private SceneController sceneController;
 

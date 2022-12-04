@@ -22,17 +22,17 @@
                 <Font name="System Bold" size="25.0" />
             </font>
         </Label>
-        <CheckBox fx:id="answer1" mnemonicParsing="false" prefHeight="65.0" prefWidth="116.0" style="-fx-text-fill: #e7e7e7" text="Issue 1">
+        <CheckBox fx:id="answer1" mnemonicParsing="false" prefHeight="65.0" style="-fx-text-fill: #e7e7e7" text="Issue 1">
             <font>
                 <Font size="25.0" />
             </font>
         </CheckBox>
-        <CheckBox fx:id="answer2" mnemonicParsing="false" prefHeight="65.0" prefWidth="119.0" style="-fx-text-fill: #e7e7e7" text="Issue 2">
+        <CheckBox fx:id="answer2" mnemonicParsing="false" prefHeight="65.0" style="-fx-text-fill: #e7e7e7" text="Issue 2">
             <font>
                 <Font size="25.0" />
             </font>
         </CheckBox>
-        <CheckBox fx:id="answer3" mnemonicParsing="false" prefHeight="65.0" prefWidth="119.0" style="-fx-text-fill: #e7e7e7" text="Issue 3">
+        <CheckBox fx:id="answer3" mnemonicParsing="false" prefHeight="65.0" style="-fx-text-fill: #e7e7e7" text="Issue 3">
             <font>
                 <Font size="25.0" />
             </font>

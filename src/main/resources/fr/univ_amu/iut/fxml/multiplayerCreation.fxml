@@ -11,11 +11,11 @@
                 <Font name="System Bold" size="25.0" />
             </font>
         </Label>
-        <Label fx:id="codePartie" prefHeight="80.0" prefWidth="122.0" styleClass="Question" wrapText="true">
+        <TextField fx:id="codePartie" editable="false" maxWidth="150.0" style="-fx-background-color: transparent" styleClass="Question">
             <font>
                 <Font name="System Bold" size="25.0" />
             </font>
-        </Label>
+        </TextField>
         <Button alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="LANCER" onAction="#sessionBegin"/>
         <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="RETOUR" userData="fxml/multijoueur.fxml" />
     </children>
