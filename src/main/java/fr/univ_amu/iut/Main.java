@@ -36,6 +36,9 @@ public class Main extends Application {
 
         stage.setTitle("Network Stories");
         stage.setScene(scene);
+        //-------------
+        SceneController.setStage(stage);
+        //-------------
         stage.show();
     }
 

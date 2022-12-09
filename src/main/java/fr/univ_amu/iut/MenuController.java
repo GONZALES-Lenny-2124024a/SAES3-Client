@@ -37,6 +37,6 @@ public class MenuController{
      */
     public void switchTo(ActionEvent event, String nameNextPage) throws IOException {
         SceneController sceneController = new SceneController();
-        sceneController.switchTo(event, nameNextPage);
+        sceneController.switchTo(nameNextPage);
     }
 }

@@ -1,8 +1,6 @@
 package fr.univ_amu.iut.client;
 
 import fr.univ_amu.iut.SceneController;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.*;

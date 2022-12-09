@@ -1,13 +1,10 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.SceneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,7 +40,7 @@ public class SummaryController {
      */
     public void switchTo(ActionEvent event) throws IOException {
         SceneController sceneController = new SceneController();
-        sceneController.switchTo(event, "fxml/menu.fxml");
+        sceneController.switchTo("fxml/menu.fxml");
     }
 
     /**

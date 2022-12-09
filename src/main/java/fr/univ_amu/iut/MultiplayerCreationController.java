@@ -28,7 +28,7 @@ public class MultiplayerCreationController extends QuestionController{
             client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Connect to the multiplayer session
         }
         SceneController sceneController = new SceneController();
-        sceneController.switchTo(event, "fxml/question.fxml");
+        sceneController.switchTo("fxml/question.fxml");
     }
 
     /**

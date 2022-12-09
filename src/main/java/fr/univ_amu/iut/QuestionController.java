@@ -112,7 +112,7 @@ public class QuestionController {
         if(client.getSocketClient().getPort() != client.getPort())  { client.changePort(client.getPort()); } // If this is a multiplayer session, the user must log in to the main server
         SceneController sceneController = new SceneController();
         sceneController.setQuestionController(this);
-        sceneController.switchTo(event, "fxml/summary.fxml");
+        sceneController.switchTo("fxml/summary.fxml");
     }
 
     /**

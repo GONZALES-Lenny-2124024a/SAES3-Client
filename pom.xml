@@ -45,6 +45,10 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>fr.univ_amu.iut</groupId>
+            <artifactId>controllers</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
