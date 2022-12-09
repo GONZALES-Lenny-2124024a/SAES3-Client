@@ -7,6 +7,9 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Controller of the question's page
+ */
 public class QuestionController {
     @FXML
     private Label question;
@@ -36,7 +39,7 @@ public class QuestionController {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void initializeVariables(String questionText) throws IOException, InterruptedException {
+    public void initializeVariables(String questionText) throws IOException {
         question.setText(questionText);        // We are obliged to do this for the endgame check
         answer1.setText(client.receiveMessageFromServer());
         answer2.setText(client.receiveMessageFromServer());
@@ -49,7 +52,7 @@ public class QuestionController {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void verifyEndGame(ActionEvent event) throws IOException, InterruptedException {
+    public void verifyEndGame(ActionEvent event) throws IOException {
         String message = client.receiveMessageFromServer();
         if(message.equals("END_GAME_FLAG")) {
             endGame(event);
@@ -64,7 +67,7 @@ public class QuestionController {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void answerStatus(ActionEvent event) throws IOException, InterruptedException {
+    public void answerStatus(ActionEvent event) throws IOException {
         if(client.receiveMessageFromServer().equals("CORRECT_ANSWER_FLAG")) {
             answersStatus.put(question.getText(), true);
         } else {
@@ -89,7 +92,7 @@ public class QuestionController {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void submitQuestion(ActionEvent event) throws IOException, InterruptedException {
+    public void submitQuestion(ActionEvent event) throws IOException {
         if(answer1.isSelected()) {
             client.sendMessageToServer("1");
         } else if(answer2.isSelected()) {
@@ -121,7 +124,7 @@ public class QuestionController {
      * @throws InterruptedException
      */
     @FXML
-    public void initialize() throws IOException, InterruptedException {
+    public void initialize() throws IOException {
         initializeVariables(client.receiveMessageFromServer());
     }
 }

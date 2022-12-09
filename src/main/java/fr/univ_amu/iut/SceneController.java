@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Allows to switch to another page
+ */
 public class SceneController {
 
     private Scene scene;
@@ -45,6 +48,7 @@ public class SceneController {
     public static void setStage(Stage s) {
         stage = s;
     }
+
     /**
      * Supports the switch page (with name)
      * @throws IOException

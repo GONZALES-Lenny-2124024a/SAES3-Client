@@ -5,6 +5,9 @@ import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
+/**
+ * Controller of the menu's page
+ */
 public class MenuController{
     private Client client;
 

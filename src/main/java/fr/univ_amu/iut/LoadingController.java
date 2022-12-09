@@ -8,6 +8,9 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+/**
+ * Controller of the loading's page
+ */
 public class LoadingController {
 
     private Client client;

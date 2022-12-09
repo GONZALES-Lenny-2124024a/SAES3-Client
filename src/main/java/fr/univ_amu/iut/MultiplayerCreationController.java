@@ -7,6 +7,9 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+/**
+ * Controller of the multiplayer session's creation page
+ */
 public class MultiplayerCreationController extends QuestionController{
     @FXML
     private TextField codePartie;
@@ -22,7 +25,7 @@ public class MultiplayerCreationController extends QuestionController{
     /**
      * Send a message to the server to begin the multiplayer's session
      */
-    public void sessionBegin(ActionEvent event) throws IOException, InterruptedException {
+    public void sessionBegin(ActionEvent event) throws IOException {
         client.sendMessageToServer("BEGIN");    // Send to the server that the host want to start the game by clicking on the 'Lancer' button
         if(client.receiveMessageFromServer().equals("CAN_JOIN_FLAG")) { // The host can join the multiplayer's session
             client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Connect to the multiplayer session
@@ -35,7 +38,7 @@ public class MultiplayerCreationController extends QuestionController{
      * Send the solo flag + Initialize the page (Prepare question and answers)
      */
     @FXML
-    public void initialize() throws IOException, InterruptedException {
+    public void initialize() throws IOException {
         if(client.receiveMessageFromServer().equals("CODE_FLAG")) {
             codePartie.setText(client.receiveMessageFromServer());
         }

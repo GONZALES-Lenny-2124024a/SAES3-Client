@@ -8,6 +8,9 @@ import java.net.Socket;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Supports interactions Client-Server
+ */
 public class Client {
     private String hostname;
     private int port;

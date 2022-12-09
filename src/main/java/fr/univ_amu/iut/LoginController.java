@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 
 import java.io.*;
 
+/**
+ * Controller of the login's page
+ */
 public class LoginController {
     @FXML
     private TextField mail;
@@ -30,7 +33,7 @@ public class LoginController {
      * @return if the username and the password are corrects
      * @throws IOException
      */
-    public boolean verifyLogin(String mail, String password) throws IOException, InterruptedException {
+    public boolean verifyLogin(String mail, String password) throws IOException {
         client.sendMessageToServer("LOGIN_FLAG");
         client.sendMessageToServer(mail);
         client.sendMessageToServer(password);
@@ -44,7 +47,7 @@ public class LoginController {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void serviceLogin(ActionEvent event) throws IOException, InterruptedException {
+    public void serviceLogin(ActionEvent event) throws IOException {
         if(verifyLogin(mail.getText(),password.getText())) {
             //Get the name of the file
             Node node = (Node) event.getSource() ;

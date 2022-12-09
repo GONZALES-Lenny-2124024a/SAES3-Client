@@ -16,6 +16,10 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
+
+/**
+ * Test the login's page
+ */
 @ExtendWith(ApplicationExtension.class)
 public class TestLoginPage {
     Stage stage;

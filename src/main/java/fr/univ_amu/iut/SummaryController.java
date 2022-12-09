@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Controller of the summary's page
+ */
 public class SummaryController {
     @FXML
     private VBox vbox;

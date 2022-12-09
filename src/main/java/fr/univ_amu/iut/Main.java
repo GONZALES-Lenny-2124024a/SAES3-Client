@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Launch the application
+ */
 public class Main extends Application {
 
     private final double HEIGHT = Screen.getPrimary().getBounds().getHeight() / 1.2;
@@ -36,9 +39,7 @@ public class Main extends Application {
 
         stage.setTitle("Network Stories");
         stage.setScene(scene);
-        //-------------
         SceneController.setStage(stage);
-        //-------------
         stage.show();
     }
 

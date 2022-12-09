@@ -7,6 +7,9 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+/**
+ * Controller of the multiplayer's page
+ */
 public class MultiplayerController {
     @FXML
     private TextField codeInput;
