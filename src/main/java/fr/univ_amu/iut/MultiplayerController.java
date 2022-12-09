@@ -26,11 +26,10 @@ public class MultiplayerController {
      * Change the port to communicate with the multiplayer session's server
      * Switch to the loading page
      *
-     * @param event
      * @throws IOException
      * @throws InterruptedException
      */
-    public void joinSession(ActionEvent event) throws IOException, InterruptedException {
+    public void joinSession() throws IOException, InterruptedException {
         sendJoinFlag(); // Send multiplayer session's code
         if(client.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
             client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
@@ -55,21 +54,19 @@ public class MultiplayerController {
 
     /**
      * Send the multiplayer creation flag and switch page
-     * @param event
      * @throws IOException
      * @throws InterruptedException
      */
-    public void creationSession(ActionEvent event) throws IOException {
+    public void creationSession() throws IOException {
         client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
         sceneController.switchTo("fxml/multiplayerCreation.fxml");
     }
 
     /**
      * Switch to the menu's page
-     * @param event
      * @throws IOException
      */
-    public void switchToMenu(ActionEvent event) throws IOException {
+    public void switchToMenu() throws IOException {
         sceneController.switchTo("fxml/menu.fxml");
     }
 }

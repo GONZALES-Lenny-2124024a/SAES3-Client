@@ -26,7 +26,6 @@ public class SceneController {
         this.questionController = questionController;
     }
 
-
     /**
      * Get the current controller
      * @return

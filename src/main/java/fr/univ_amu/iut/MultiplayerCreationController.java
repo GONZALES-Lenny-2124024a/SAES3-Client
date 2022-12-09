@@ -25,7 +25,7 @@ public class MultiplayerCreationController extends QuestionController{
     /**
      * Send a message to the server to begin the multiplayer's session
      */
-    public void sessionBegin(ActionEvent event) throws IOException {
+    public void sessionBegin() throws IOException {
         client.sendMessageToServer("BEGIN");    // Send to the server that the host want to start the game by clicking on the 'Lancer' button
         if(client.receiveMessageFromServer().equals("CAN_JOIN_FLAG")) { // The host can join the multiplayer's session
             client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Connect to the multiplayer session

@@ -38,10 +38,9 @@ public class SummaryController {
 
     /**
      * Switch to the menu page
-     * @param event
      * @throws IOException
      */
-    public void switchTo(ActionEvent event) throws IOException {
+    public void switchTo() throws IOException {
         SceneController sceneController = new SceneController();
         sceneController.switchTo("fxml/menu.fxml");
     }

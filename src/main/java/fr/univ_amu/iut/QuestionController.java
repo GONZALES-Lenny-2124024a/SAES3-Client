@@ -48,14 +48,13 @@ public class QuestionController {
 
     /**
      * Check if there are no more question
-     * @param event
      * @throws IOException
      * @throws InterruptedException
      */
-    public void verifyEndGame(ActionEvent event) throws IOException {
+    public void verifyEndGame() throws IOException {
         String message = client.receiveMessageFromServer();
         if(message.equals("END_GAME_FLAG")) {
-            endGame(event);
+            endGame();
         } else {
             initializeVariables(message);
         }
@@ -63,18 +62,17 @@ public class QuestionController {
 
     /**
      * Check if the answer is correct or wrong and add it to the hash map
-     * @param event
      * @throws IOException
      * @throws InterruptedException
      */
-    public void answerStatus(ActionEvent event) throws IOException {
+    public void answerStatus() throws IOException {
         if(client.receiveMessageFromServer().equals("CORRECT_ANSWER_FLAG")) {
             answersStatus.put(question.getText(), true);
         } else {
             answersStatus.put(question.getText(), false);
         }
 
-        verifyEndGame(event);
+        verifyEndGame();
     }
 
     /**
@@ -88,11 +86,10 @@ public class QuestionController {
 
     /**
      * Submit the question to the server
-     * @param event
      * @throws IOException
      * @throws InterruptedException
      */
-    public void submitQuestion(ActionEvent event) throws IOException {
+    public void submitQuestion() throws IOException {
         if(answer1.isSelected()) {
             client.sendMessageToServer("1");
         } else if(answer2.isSelected()) {
@@ -104,14 +101,13 @@ public class QuestionController {
         }
 
         unselectCheckBox();
-        answerStatus(event);
+        answerStatus();
     }
 
     /**
      * It stops the game
-     * @param event
      */
-    public void endGame(ActionEvent event) throws IOException {
+    public void endGame() throws IOException {
         if(client.getSocketClient().getPort() != client.getPort())  { client.changePort(client.getPort()); } // If this is a multiplayer session, the user must log in to the main server
         SceneController sceneController = new SceneController();
         sceneController.setQuestionController(this);

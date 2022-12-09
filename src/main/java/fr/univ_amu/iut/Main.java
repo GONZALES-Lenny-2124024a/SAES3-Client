@@ -39,7 +39,7 @@ public class Main extends Application {
 
         stage.setTitle("Network Stories");
         stage.setScene(scene);
-        SceneController.setStage(stage);
+        SceneController.setStage(stage);    // Stores the current stage
         stage.show();
     }
 

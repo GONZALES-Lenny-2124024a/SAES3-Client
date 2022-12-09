@@ -18,27 +18,25 @@ public class MenuController{
     /**
      * Send the solo flag + Initialize the page (Prepare question and answers)
      */
-    public void soloMode(ActionEvent event) throws IOException {
+    public void soloMode() throws IOException {
         client.sendMessageToServer("SOLO_FLAG");
-        switchTo(event, "fxml/question.fxml");
+        switchTo("fxml/question.fxml");
     }
 
     /**
      * Initialize the page (Prepare question and answers)
-     * @param event
      * @throws IOException
      */
-    public void multiplayerMode(ActionEvent event) throws IOException {
-        switchTo(event, "fxml/multiplayer.fxml");
+    public void multiplayerMode() throws IOException {
+        switchTo("fxml/multiplayer.fxml");
     }
 
     /**
      * Switch to a next page
-     * @param event
      * @param nameNextPage
      * @throws IOException
      */
-    public void switchTo(ActionEvent event, String nameNextPage) throws IOException {
+    public void switchTo(String nameNextPage) throws IOException {
         SceneController sceneController = new SceneController();
         sceneController.switchTo(nameNextPage);
     }
