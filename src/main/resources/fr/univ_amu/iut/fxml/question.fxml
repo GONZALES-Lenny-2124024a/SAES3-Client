@@ -12,32 +12,23 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <children>
-        <Label fx:id="questionLabel" prefHeight="63.0" prefWidth="242.0" styleClass="Question" text="QUESTION">
+        <Label fx:id="questionTitle" prefHeight="63.0" styleClass="Question" text="QUESTION">
             <font>
-                <Font name="System Bold" size="50.0" />
+                <Font name="System Bold" size="30.0" />
             </font>
         </Label>
-        <Label fx:id="question" prefHeight="226.0" prefWidth="1157.0" styleClass="Question" text="    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." textAlignment="CENTER" wrapText="true">
+        <Label fx:id="description" prefWidth="1000" wrapText="true" styleClass="Question" text="DESCRIPTION">
             <font>
-                <Font name="System Bold" size="25.0" />
+                <Font name="System Bold" size="30.0" />
             </font>
         </Label>
-        <CheckBox fx:id="answer1" mnemonicParsing="false" prefHeight="65.0" style="-fx-text-fill: #e7e7e7" text="Issue 1">
+        <Label fx:id="question" prefWidth="1000" wrapText="true" styleClass="Question" text="QUESTION">
             <font>
-                <Font size="25.0" />
+                <Font name="System Bold" size="30.0" />
             </font>
-        </CheckBox>
-        <CheckBox fx:id="answer2" mnemonicParsing="false" prefHeight="65.0" style="-fx-text-fill: #e7e7e7" text="Issue 2">
-            <font>
-                <Font size="25.0" />
-            </font>
-        </CheckBox>
-        <CheckBox fx:id="answer3" mnemonicParsing="false" prefHeight="65.0" style="-fx-text-fill: #e7e7e7" text="Issue 3">
-            <font>
-                <Font size="25.0" />
-            </font>
-        </CheckBox>
-        <Button fx:id="submit" onAction="#submitQuestion" alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="VALIDER" />
-        <Button fx:id="quit" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitQuestion" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="QUITTER" userData="fxml/menu.fxml"/>
+        </Label>
+
+        <Button fx:id="submit" onAction="#submitAnswer" alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="VALIDER" />
+        <Button fx:id="quit" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="QUITTER" userData="fxml/menu.fxml"/>
     </children>
 </VBox>
