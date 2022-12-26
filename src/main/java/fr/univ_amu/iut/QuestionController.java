@@ -75,8 +75,6 @@ public class QuestionController {
         answer1 = ((CheckBox) vboxParent.lookup("#answer1"));
         answer2 = ((CheckBox) vboxParent.lookup("#answer2"));
         answer3 = ((CheckBox) vboxParent.lookup("#answer3"));
-        System.out.println("QCM after creation : " + vboxParent.getChildren().size());
-
     }
 
     /**
@@ -98,8 +96,7 @@ public class QuestionController {
         textField.setPrefWidth(1000);
         textField.setId("answer");
         vboxParent.getChildren().add(3, textField);
-        writtenResponseTextField = textField;   //-----------------------
-        System.out.println("WrittenResponse after creation : " + vboxParent.getChildren().size());
+        writtenResponseTextField = textField;
     }
 
     /**
@@ -124,7 +121,6 @@ public class QuestionController {
             }
             vboxParent.getChildren().remove(3,6);   // Remove all the checkboxes
         }
-        System.out.println("after deleting : " + vboxParent.getChildren().size());
 
         answerStatus(); // Check if the answer is correct or wrong and add it to the hash map
     }
@@ -154,7 +150,6 @@ public class QuestionController {
         if(message.equals("END_GAME_FLAG")) {
             endGame();
         } else {
-            System.out.println("Size : " + vboxParent.getChildren().size());
             initializeVariables(message);
         }
     }
