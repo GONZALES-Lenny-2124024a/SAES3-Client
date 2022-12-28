@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class MultiplayerCreationController extends QuestionController{
     @FXML
-    private TextField codePartie;
+    private TextField codeSession;
     private Client client;
     private SceneController sceneController;
 
@@ -40,7 +40,7 @@ public class MultiplayerCreationController extends QuestionController{
     @FXML
     public void initialize() throws IOException {
         if(client.receiveMessageFromServer().equals("CODE_FLAG")) {
-            codePartie.setText(client.receiveMessageFromServer());
+            codeSession.setText(client.receiveMessageFromServer());
         }
     }
 }

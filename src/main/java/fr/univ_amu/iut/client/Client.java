@@ -18,6 +18,8 @@ public class Client {
     private BufferedWriter out;
     private BufferedReader in;
     private String message;
+    private Object object;
+    private ObjectInputStream inObject;
 
     public Client(String hostname, int port) throws IOException {
         this.hostname = hostname;
@@ -47,8 +49,8 @@ public class Client {
    }
 
     /**
-     * Send the message received from the server
-     * @return
+     * Return the message received from the server
+     * @return the message or null if the server disconnected
      * @throws IOException
      * @throws InterruptedException
      */
@@ -59,6 +61,23 @@ public class Client {
        close();
        return null;
    }
+
+
+    /**
+     * Return the object received from the server
+     * @return the object or null if the server disconnected
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+   public Object receiveObjectFromServer() throws IOException, ClassNotFoundException {
+       inObject = new ObjectInputStream(socketClient.getInputStream()); // We can't instantiate in the constructor because the application don't run
+       if ((object = inObject.readObject()) != null) {
+           return object;
+       }
+       close();
+       return null;
+   }
+
 
     /**
      * Return true if the server sent a message to the client
@@ -95,6 +114,7 @@ public class Client {
     public void close() throws IOException {
         in.close();
         out.close();
+        inObject.close();
         socketClient.close();
         SceneController sceneController = new SceneController();
         Stage stage = sceneController.getStage();

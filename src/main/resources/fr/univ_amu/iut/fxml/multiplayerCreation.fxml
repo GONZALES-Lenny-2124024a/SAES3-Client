@@ -11,7 +11,7 @@
                 <Font name="System Bold" size="25.0" />
             </font>
         </Label>
-        <TextField fx:id="codePartie" editable="false" maxWidth="150.0" style="-fx-background-color: transparent" styleClass="Question">
+        <TextField fx:id="codeSession" editable="false" maxWidth="150.0" style="-fx-background-color: transparent" styleClass="Question">
             <font>
                 <Font name="System Bold" size="25.0" />
             </font>

@@ -59,7 +59,7 @@ public class MultiplayerController {
      */
     public void creationSession() throws IOException {
         client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
-        sceneController.switchTo("fxml/multiplayerCreation.fxml");
+        sceneController.switchTo("fxml/modules.fxml");
     }
 
     /**
