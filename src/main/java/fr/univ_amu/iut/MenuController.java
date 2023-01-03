@@ -31,6 +31,12 @@ public class MenuController{
         switchTo("fxml/multiplayer.fxml");
     }
 
+    public void trainingMode() throws IOException, ClassNotFoundException {
+        client.sendMessageToServer("TRAINING_FLAG");
+        ModulesController modulesController = new ModulesController("fxml/question.fxml");
+        modulesController.initialize();
+    }
+
     /**
      * Switch to a next page
      * @param nameNextPage

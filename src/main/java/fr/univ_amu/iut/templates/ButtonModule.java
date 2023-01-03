@@ -5,11 +5,14 @@ import fr.univ_amu.iut.SceneController;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class ButtonModule extends Button {
+    private String pageToSwitchTo;
 
-    public ButtonModule(String text) {
+    public ButtonModule(String text, String pageToSwitchTo) {
+        this.pageToSwitchTo = pageToSwitchTo;
         initializeButton(text);
     }
 
@@ -44,7 +47,7 @@ public class ButtonModule extends Button {
      */
     public void switchPage() throws IOException {
         SceneController sceneController = new SceneController();
-        sceneController.switchTo("fxml/multiplayerCreation.fxml");  // Switch to the multiplayerCreation page
+        sceneController.switchTo(pageToSwitchTo);  // Switch to the multiplayerCreation page
     }
 
     /**

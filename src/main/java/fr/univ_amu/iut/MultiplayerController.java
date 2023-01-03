@@ -57,9 +57,10 @@ public class MultiplayerController {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void creationSession() throws IOException {
+    public void creationSession() throws IOException, ClassNotFoundException {
         client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
-        sceneController.switchTo("fxml/modules.fxml");
+        ModulesController modulesController = new ModulesController("fxml/multiplayerCreation.fxml");
+        modulesController.initialize();
     }
 
     /**
