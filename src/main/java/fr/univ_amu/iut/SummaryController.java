@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.client.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
@@ -40,6 +41,8 @@ public class SummaryController {
      */
     public void switchTo() throws IOException {
         SceneController sceneController = new SceneController();
+        Main.getClient().changePort(10013);
+
         sceneController.switchTo("fxml/menu.fxml");
     }
 

@@ -36,7 +36,7 @@ public class ModulesController {
      * @throws ClassNotFoundException if the object isn't found (the class exists on the server but not in the client)
      */
     public void getModulesFromServer() throws IOException, ClassNotFoundException {
-        List<?> receivedObject = (List<?>) client.receiveObjectFromServer();
+        List<?>  receivedObject = (List<?>) client.receiveObjectFromServer();
         if ((receivedObject != null) && (receivedObject.get(0) instanceof String)) {    //Check the cast
             modules = (List<String>) receivedObject;
         }
