@@ -1,7 +1,6 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.Client;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -13,8 +12,8 @@ import java.io.IOException;
 public class MultiplayerController {
     @FXML
     private TextField codeInput;
-    private Client client;
-    private SceneController sceneController;
+    private final Client client;
+    private final SceneController sceneController;
 
     public MultiplayerController() {
         client = Main.getClient();
@@ -26,13 +25,12 @@ public class MultiplayerController {
      * Change the port to communicate with the multiplayer session's server
      * Switch to the loading page
      *
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void joinSession() throws IOException, InterruptedException {
+    public void joinSession() throws IOException {
         sendJoinFlag(); // Send multiplayer session's code
         if(client.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
-            client.changePort(Integer.valueOf(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
+            client.changePort(Integer.parseInt(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
 
             // Use to not run indefinitely the page (no crash page) until the host click on the 'Lancer' button
             if(client.receiveMessageFromServer().equals("PRESENCE_FLAG")) {   // To see if the server receive the connection request
@@ -43,8 +41,7 @@ public class MultiplayerController {
 
     /**
      * Send multiplayer session's code
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void sendJoinFlag() throws IOException {
         client.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
@@ -54,8 +51,8 @@ public class MultiplayerController {
 
     /**
      * Send the multiplayer creation flag and switch page
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws ClassNotFoundException if the object class not found
      */
     public void creationSession() throws IOException, ClassNotFoundException {
         client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
@@ -65,7 +62,7 @@ public class MultiplayerController {
 
     /**
      * Switch to the menu's page
-     * @throws IOException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void switchToMenu() throws IOException {
         sceneController.switchTo("fxml/menu.fxml");

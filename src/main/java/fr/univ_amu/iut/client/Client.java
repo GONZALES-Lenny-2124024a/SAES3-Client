@@ -6,13 +6,11 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.Socket;
 
-import static java.lang.Thread.sleep;
-
 /**
  * Supports interactions Client-Server
  */
 public class Client {
-    private String hostname;
+    private final String hostname;
     private int port;
     private Socket socketClient;
     private BufferedWriter out;
@@ -31,7 +29,7 @@ public class Client {
 
     /**
      * Get the socket of the user/client
-     * @return
+     * @return client socket
      */
     public Socket getSocketClient() {
         return socketClient;
@@ -39,8 +37,8 @@ public class Client {
 
     /**
      * Send a String to the server
-     * @param message
-     * @throws IOException
+     * @param message to sent to the server
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
    public void sendMessageToServer(String message) throws IOException {
         out.write(message);
@@ -51,8 +49,8 @@ public class Client {
     /**
      * Return the message received from the server
      * @return the message or null if the server disconnected
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws InterruptedException if the client disconnected
      */
    public String receiveMessageFromServer() throws IOException {
        if((message = in.readLine()) != null) {
@@ -66,8 +64,8 @@ public class Client {
     /**
      * Return the object received from the server
      * @return the object or null if the server disconnected
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws ClassNotFoundException if the object class not found
      */
    public Object receiveObjectFromServer() throws IOException, ClassNotFoundException {
        inObject = new ObjectInputStream(socketClient.getInputStream()); // We can't instantiate in the constructor because the application don't run
@@ -81,8 +79,8 @@ public class Client {
 
     /**
      * Return true if the server sent a message to the client
-     * @return
-     * @throws IOException
+     * @return if the server sent a message
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
    public boolean isReceiveMessageFromServer() throws IOException {
        return in.ready();
@@ -90,18 +88,19 @@ public class Client {
 
     /**
      * Change the port
-     * @param newPort
-     * @throws IOException
+     * @param newPort the new port
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
    public void changePort(int newPort) throws IOException {
-       socketClient = new Socket(hostname, newPort);
+       port = newPort;
+       socketClient = new Socket(hostname, port);
        out = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
        in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
    }
 
     /**
      * Return the port of the main server
-     * @return
+     * @return the port of the server
      */
    public int getPort() {
        return port;
@@ -109,13 +108,15 @@ public class Client {
 
     /**
      * This method close the socket
-     * @throws IOException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void close() throws IOException {
         in.close();
         out.close();
         inObject.close();
         socketClient.close();
+
+        // Close the window
         SceneController sceneController = new SceneController();
         Stage stage = sceneController.getStage();
         stage.close();

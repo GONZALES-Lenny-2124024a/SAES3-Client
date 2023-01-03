@@ -18,10 +18,10 @@ public class LoginController {
     private TextField mail;
     @FXML
     private PasswordField password;
-    private Client client;
+    private final Client client;
     private String message;
 
-    private SceneController sceneController;
+    private final SceneController sceneController;
     public LoginController() {
         client = Main.getClient();  // Get the connection with the server
         sceneController = new SceneController();
@@ -31,7 +31,7 @@ public class LoginController {
     /**
      * Supports the login service
      * @return if the username and the password are corrects
-     * @throws IOException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public boolean verifyLogin(String mail, String password) throws IOException {
         client.sendMessageToServer("LOGIN_FLAG");
@@ -43,9 +43,8 @@ public class LoginController {
 
     /**
      * Supports the login of the user
-     * @param event
-     * @throws IOException
-     * @throws InterruptedException
+     * @param event of the button actioned
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void serviceLogin(ActionEvent event) throws IOException {
         if(verifyLogin(mail.getText(),password.getText())) {
@@ -54,7 +53,7 @@ public class LoginController {
             String nameNextPage = (String) node.getUserData();
             sceneController.switchTo(nameNextPage);
         }  else{
-            Alert connexionError = new Alert(Alert.AlertType.ERROR, "L'identifiant ou le mot de passe saisi est incorrect !");
+            Alert connexionError = new Alert(Alert.AlertType.ERROR, "The username and/or password are incorrect");
             connexionError.show();
         }
     }

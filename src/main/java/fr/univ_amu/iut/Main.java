@@ -21,6 +21,14 @@ public class Main extends Application {
     public Main() throws IOException {
         client = new Client("127.0.0.1",10013);
     }
+
+    /**
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @param stage the primary stage for this application, onto which
+     * @throws IOException if the communication with the client is closed or didn't go well
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
@@ -49,7 +57,7 @@ public class Main extends Application {
 
     /**
      * Get the client
-     * @return
+     * @return the client
      */
     public static Client getClient() {
         return client;

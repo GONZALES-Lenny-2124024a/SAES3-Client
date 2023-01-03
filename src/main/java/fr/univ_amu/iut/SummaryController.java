@@ -1,6 +1,5 @@
 package fr.univ_amu.iut;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class SummaryController {
     @FXML
     private VBox vbox;
-    private HashMap<String, Boolean> summary;
+    private final HashMap<String, Boolean> summary;
 
     public SummaryController() {
         SceneController sceneController = new SceneController();
@@ -25,20 +24,19 @@ public class SummaryController {
 
     /**
      * Initialize a checkbox
-     * @param question
-     * @return
+     * @param answersStatus the questions and if the user answered well
+     * @return the checkbox initialized
      */
-    public CheckBox initializeCheckBox(Map.Entry<String, Boolean> question) {
-        CheckBox checkBox = new CheckBox(question.getKey());
-        if(question.getValue()) { checkBox.setSelected(true); }
-        else { checkBox.setSelected(false); }
+    public CheckBox initializeCheckBox(Map.Entry<String, Boolean> answersStatus) {
+        CheckBox checkBox = new CheckBox(answersStatus.getKey());
+        checkBox.setSelected(answersStatus.getValue());
         checkBox.setDisable(true);
         return checkBox;
     }
 
     /**
      * Switch to the menu page
-     * @throws IOException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void switchTo() throws IOException {
         SceneController sceneController = new SceneController();
@@ -46,7 +44,7 @@ public class SummaryController {
     }
 
     /**
-     * Initialize the checkboxs
+     * Initialize the checkboxes
      */
     @FXML
     public void initialize() {

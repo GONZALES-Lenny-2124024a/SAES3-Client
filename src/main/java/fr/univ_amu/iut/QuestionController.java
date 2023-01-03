@@ -28,8 +28,8 @@ public class QuestionController {
     @FXML
     private TextField writtenResponseTextField;
     private final Client client;
-    private HashMap<String, Boolean> answersStatus;
-    private Font font;
+    private final HashMap<String, Boolean> answersStatus;
+    private final Font font;
 
     public QuestionController() {
         client = Main.getClient();
@@ -39,7 +39,7 @@ public class QuestionController {
 
     /**
      * Get the questions and if the user answered well
-     * @return
+     * @return the answers status hashmap (each question and if the user answered well)
      */
     public HashMap<String, Boolean> getAnswersStatus() {
         return answersStatus;
@@ -47,8 +47,7 @@ public class QuestionController {
 
     /**
      * Initialize the question and the answers
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void initializeVariables(String answerType) throws IOException {
         question.setText(client.receiveMessageFromServer());        // We are obliged to do this for the endgame check
@@ -79,7 +78,7 @@ public class QuestionController {
 
     /**
      * Set the text of the checkboxes
-     * @throws IOException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void initializeTextCheckBoxes() throws IOException {
         answer1.setText(client.receiveMessageFromServer());
@@ -101,8 +100,7 @@ public class QuestionController {
 
     /**
      * Submit the question to the server
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void submitAnswer() throws IOException {
         if(vboxParent.getChildren().size() <= 6) {  // If the response is a written response
@@ -127,8 +125,7 @@ public class QuestionController {
 
     /**
      * Check if the answer is correct or wrong and add it to the hash map
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void answerStatus() throws IOException {
         if(client.receiveMessageFromServer().equals("CORRECT_ANSWER_FLAG")) {
@@ -142,8 +139,7 @@ public class QuestionController {
 
     /**
      * Check if there are no more question
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void verifyEndGame() throws IOException {
         String message = client.receiveMessageFromServer();
@@ -156,6 +152,7 @@ public class QuestionController {
 
     /**
      * It stops the game
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void endGame() throws IOException {
         if(client.getSocketClient().getPort() != client.getPort())  { client.changePort(client.getPort()); } // If this is a multiplayer session, the user must log in to the main server
@@ -166,8 +163,7 @@ public class QuestionController {
 
     /**
      * Initialize the first question
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
     public void initialize() throws IOException {

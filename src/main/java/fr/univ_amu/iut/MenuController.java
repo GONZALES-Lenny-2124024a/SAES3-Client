@@ -1,15 +1,13 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.Client;
-import javafx.event.ActionEvent;
-
 import java.io.IOException;
 
 /**
  * Controller of the menu's page
  */
 public class MenuController{
-    private Client client;
+    private final Client client;
 
     public MenuController() {
         client = Main.getClient();
@@ -25,7 +23,7 @@ public class MenuController{
 
     /**
      * Initialize the page (Prepare question and answers)
-     * @throws IOException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void multiplayerMode() throws IOException {
         switchTo("fxml/multiplayer.fxml");
@@ -39,8 +37,8 @@ public class MenuController{
 
     /**
      * Switch to a next page
-     * @param nameNextPage
-     * @throws IOException
+     * @param nameNextPage the page to switch to
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void switchTo(String nameNextPage) throws IOException {
         SceneController sceneController = new SceneController();

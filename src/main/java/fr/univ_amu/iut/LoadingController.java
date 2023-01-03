@@ -13,8 +13,8 @@ import java.io.IOException;
  */
 public class LoadingController {
 
-    private Client client;
-    private SceneController sceneController;
+    private final Client client;
+    private final SceneController sceneController;
     private Timeline timeline;
 
     public LoadingController() {
@@ -34,9 +34,7 @@ public class LoadingController {
                         if(client.isReceiveMessageFromServer()) {   // Verify if the server sent a message
                             beginSession();
                         }
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    } catch (InterruptedException ex) {
+                    } catch (IOException | InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
 
@@ -48,8 +46,8 @@ public class LoadingController {
 
     /**
      * Begin the multiplayer's session
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws InterruptedException if the client disconnected
      */
     public void beginSession() throws IOException, InterruptedException {
         if (client.receiveMessageFromServer().equals("BEGIN_FLAG")) {    // When the game begin

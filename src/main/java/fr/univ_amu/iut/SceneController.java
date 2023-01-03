@@ -7,20 +7,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Allows to switch to another page
  */
 public class SceneController {
 
-    private Scene scene;
     private static Stage stage;
     private Parent root;
     private static QuestionController questionController;
 
     /**
      * Set the Question controller
-     * @param questionController
+     * @param questionController the question controller
      */
     public void setQuestionController(QuestionController questionController) {
         this.questionController = questionController;
@@ -28,7 +28,7 @@ public class SceneController {
 
     /**
      * Get the current controller
-     * @return
+     * @return the current question controller
      */
     public QuestionController getQuestionController() {
         return questionController;
@@ -36,6 +36,7 @@ public class SceneController {
 
     /**
      * Get the stage
+     * @return the stage of the window
      */
     public static Stage getStage() {
         return stage;
@@ -43,6 +44,7 @@ public class SceneController {
 
     /**
      * Set the stage
+     * @param s the new stage
      */
     public static void setStage(Stage s) {
         stage = s;
@@ -50,18 +52,21 @@ public class SceneController {
 
     /**
      * Supports the switch page (with name)
-     * @throws IOException
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
     public void switchTo(String nameNextPage) throws IOException {
-        root = FXMLLoader.load(getClass().getResource(nameNextPage));   // Load it
+        URL url = getClass().getResource(nameNextPage);
+        if(url != null) {
+            root = FXMLLoader.load(url);   // Load it
 
-        // Windows size
-        scene = new Scene(root,stage.getMinWidth(),stage.getMinHeight());
-        stage.minHeightProperty().set(stage.getMinHeight());
-        stage.minWidthProperty().set(stage.getMinWidth());
+            // Windows size
+            Scene scene = new Scene(root, stage.getMinWidth(), stage.getMinHeight());
+            stage.minHeightProperty().set(stage.getMinHeight());
+            stage.minWidthProperty().set(stage.getMinWidth());
 
-        stage.setScene(scene);
-        stage.show();
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 }
