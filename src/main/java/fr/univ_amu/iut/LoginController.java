@@ -15,11 +15,12 @@ import java.io.*;
  */
 public class LoginController {
     @FXML
-    private TextField mail;
+    private TextField mailTextField;
     @FXML
-    private PasswordField password;
+    private PasswordField passwordTextField;
     private final Client client;
     private String message;
+    private static String mail;
 
     private final SceneController sceneController;
     public LoginController() {
@@ -47,7 +48,8 @@ public class LoginController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void serviceLogin(ActionEvent event) throws IOException {
-        if(verifyLogin(mail.getText(),password.getText())) {
+        if(verifyLogin(mailTextField.getText(),passwordTextField.getText())) {
+            mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
             //Get the name of the file
             Node node = (Node) event.getSource() ;
             String nameNextPage = (String) node.getUserData();
@@ -58,5 +60,5 @@ public class LoginController {
         }
     }
 
-
+    public static String getMail() { return mail;}
 }

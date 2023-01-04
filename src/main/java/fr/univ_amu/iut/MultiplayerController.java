@@ -34,6 +34,7 @@ public class MultiplayerController {
 
             // Use to not run indefinitely the page (no crash page) until the host click on the 'Lancer' button
             if(client.receiveMessageFromServer().equals("PRESENCE_FLAG")) {   // To see if the server receive the connection request
+                client.sendMessageToServer(LoginController.getMail());
                 sceneController.switchTo("fxml/loading.fxml");
             }
         }

@@ -1,8 +1,12 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.Client;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -12,6 +16,8 @@ import java.io.IOException;
 public class MultiplayerCreationController extends QuestionController{
     @FXML
     private TextField codeSession;
+    @FXML
+    private ListView<String> listView;
     private final Client client;
     private final SceneController sceneController;
 
@@ -33,6 +39,23 @@ public class MultiplayerCreationController extends QuestionController{
         sceneController.switchTo("fxml/question.fxml");
     }
 
+    public void getUsersPresent() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1.0), e -> {
+                    try {
+                        if(client.isReceiveMessageFromServer()) {   // Verify if the server sent a message
+                            listView.getItems().add(client.receiveMessageFromServer());
+                        }
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
     /**
      * Send the solo flag + Initialize the page (Prepare question and answers)
      * @throws IOException if the communication with the client is closed or didn't go well
@@ -42,5 +65,6 @@ public class MultiplayerCreationController extends QuestionController{
         if(client.receiveMessageFromServer().equals("CODE_FLAG")) {
             codeSession.setText(client.receiveMessageFromServer());
         }
+        getUsersPresent();
     }
 }
