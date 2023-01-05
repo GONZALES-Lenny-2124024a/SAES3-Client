@@ -13,6 +13,7 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,20 +21,20 @@ import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
 /**
- * Test the question's page
+ * Test the menu's page
  */
 @ExtendWith(ApplicationExtension.class)
-public class TestQuestion {
+public class TestMenuPage {
     Stage stage;
 
     @Start
     public void start(Stage stage) throws Exception {
         Platform.runLater(() -> {
-            TestQuestion.this.stage = new Stage();
+            TestMenuPage.this.stage = new Stage();
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
-                        new Main().start(TestQuestion.this.stage);
+                        new Main().start(TestMenuPage.this.stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -53,30 +54,38 @@ public class TestQuestion {
 
     @Test
     public void shouldStageIsShowing(FxRobot robot) {
-        goToQuestionPage(robot);
+        TestLoginPage.connectionLoginPage(robot);
         assertEquals(stage.isShowing(), true);
     }
 
     @Test
     public void shouldGetTitle(FxRobot robot) {
-        goToQuestionPage(robot);
+        TestLoginPage.connectionLoginPage(robot);
         assertEquals(stage.getTitle(), "Network Stories");
     }
 
     @Test
-    public void shouldContainsButtonValider(FxRobot robot) {
-        goToQuestionPage(robot);
-        verifyThat("#submit", hasText("VALIDER"));
+    public void shouldContainsButtonSolo(FxRobot robot) throws IOException, InterruptedException {
+        TestLoginPage.connectionLoginPage(robot);
+        verifyThat("#solo", hasText("SOLO"));
+
+    }
+
+    @Test
+    public void shouldContainsButtonMultijoueur(FxRobot robot) {
+        TestLoginPage.connectionLoginPage(robot);
+        verifyThat("#multiplayer", hasText("MULTIJOUEUR"));
+    }
+
+    @Test
+    public void shouldContainsButtonEntrainement(FxRobot robot) {
+        TestLoginPage.connectionLoginPage(robot);
+        verifyThat("#training", hasText("ENTRAINEMENT"));
     }
 
     @Test
     public void shouldContainsButtonDeconnexion(FxRobot robot) {
-        goToQuestionPage(robot);
-        verifyThat("#quit", hasText("QUITTER"));
-    }
-
-    public void goToQuestionPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
-        robot.clickOn("#solo");
+        verifyThat("#deconnexion", hasText("DÉCONNEXION"));
     }
 }

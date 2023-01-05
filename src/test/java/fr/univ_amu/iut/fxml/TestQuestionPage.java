@@ -12,26 +12,28 @@ import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+
 import java.util.concurrent.TimeoutException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
 /**
- * Test the multiplayer's page
+ * Test the question's page
  */
 @ExtendWith(ApplicationExtension.class)
-public class TestMultijoueur {
+public class TestQuestionPage {
     Stage stage;
 
     @Start
     public void start(Stage stage) throws Exception {
         Platform.runLater(() -> {
-            TestMultijoueur.this.stage = new Stage();
+            TestQuestionPage.this.stage = new Stage();
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
-                        new Main().start(TestMultijoueur.this.stage);
+                        new Main().start(TestQuestionPage.this.stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -51,36 +53,30 @@ public class TestMultijoueur {
 
     @Test
     public void shouldStageIsShowing(FxRobot robot) {
-        goToMultiplayerPage(robot);
+        goToQuestionPage(robot);
         assertEquals(stage.isShowing(), true);
     }
 
     @Test
     public void shouldGetTitle(FxRobot robot) {
-        goToMultiplayerPage(robot);
+        goToQuestionPage(robot);
         assertEquals(stage.getTitle(), "Network Stories");
     }
 
     @Test
-    public void shouldContainsButtonRejoindre(FxRobot robot) {
-        goToMultiplayerPage(robot);
-        verifyThat("#join", hasText("REJOINDRE"));
+    public void shouldContainsButtonValider(FxRobot robot) {
+        goToQuestionPage(robot);
+        verifyThat("#submit", hasText("VALIDER"));
     }
 
     @Test
-    public void shouldContainsButtonCreer(FxRobot robot) {
-        goToMultiplayerPage(robot);
-        verifyThat("#create", hasText("CRÉER"));
+    public void shouldContainsButtonDeconnexion(FxRobot robot) {
+        goToQuestionPage(robot);
+        verifyThat("#quit", hasText("QUITTER"));
     }
 
-    @Test
-    public void shouldContainsButtonQuitter(FxRobot robot) {
-        goToMultiplayerPage(robot);
-        verifyThat("#leave", hasText("QUITTER"));
-    }
-
-    public void goToMultiplayerPage(FxRobot robot) {
+    public void goToQuestionPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
-        robot.clickOn("#multiplayer");
+        robot.clickOn("#solo");
     }
 }

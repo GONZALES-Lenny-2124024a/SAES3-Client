@@ -66,12 +66,12 @@ public class TestLoginPage {
 
     @Test
     public void shouldContainsMailField() {
-        verifyThat("#mail", hasText(""));
+        verifyThat("#mailTextField", hasText(""));
     }
 
     @Test
     public void shouldContainsPasswordField() {
-        verifyThat("#password", hasText(""));
+        verifyThat("#passwordTextField", hasText(""));
     }
 
     @Test
@@ -81,9 +81,9 @@ public class TestLoginPage {
     }
 
     public static void connectionLoginPage(FxRobot robot) {
-        robot.clickOn("#mail");
+        robot.clickOn("#mailTextField");
         robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#password");
+        robot.clickOn("#passwordTextField");
         robot.write("lenny");
         robot.clickOn("#submit");
 

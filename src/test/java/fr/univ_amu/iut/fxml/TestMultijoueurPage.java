@@ -12,29 +12,26 @@ import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
-
-import java.io.IOException;
 import java.util.concurrent.TimeoutException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
 /**
- * Test the menu's page
+ * Test the multiplayer's page
  */
 @ExtendWith(ApplicationExtension.class)
-public class TestMenu {
+public class TestMultijoueurPage {
     Stage stage;
 
     @Start
     public void start(Stage stage) throws Exception {
         Platform.runLater(() -> {
-            TestMenu.this.stage = new Stage();
+            TestMultijoueurPage.this.stage = new Stage();
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
-                        new Main().start(TestMenu.this.stage);
+                        new Main().start(TestMultijoueurPage.this.stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -54,38 +51,36 @@ public class TestMenu {
 
     @Test
     public void shouldStageIsShowing(FxRobot robot) {
-        TestLoginPage.connectionLoginPage(robot);
+        goToMultiplayerPage(robot);
         assertEquals(stage.isShowing(), true);
     }
 
     @Test
     public void shouldGetTitle(FxRobot robot) {
-        TestLoginPage.connectionLoginPage(robot);
+        goToMultiplayerPage(robot);
         assertEquals(stage.getTitle(), "Network Stories");
     }
 
     @Test
-    public void shouldContainsButtonSolo(FxRobot robot) throws IOException, InterruptedException {
-        TestLoginPage.connectionLoginPage(robot);
-        verifyThat("#solo", hasText("SOLO"));
-
+    public void shouldContainsButtonRejoindre(FxRobot robot) {
+        goToMultiplayerPage(robot);
+        verifyThat("#join", hasText("REJOINDRE"));
     }
 
     @Test
-    public void shouldContainsButtonMultijoueur(FxRobot robot) {
-        TestLoginPage.connectionLoginPage(robot);
-        verifyThat("#multiplayer", hasText("MULTIJOUEUR"));
+    public void shouldContainsButtonCreer(FxRobot robot) {
+        goToMultiplayerPage(robot);
+        verifyThat("#create", hasText("CRÉER"));
     }
 
     @Test
-    public void shouldContainsButtonEntrainement(FxRobot robot) {
-        TestLoginPage.connectionLoginPage(robot);
-        verifyThat("#training", hasText("ENTRAINEMENT"));
+    public void shouldContainsButtonQuitter(FxRobot robot) {
+        goToMultiplayerPage(robot);
+        verifyThat("#leave", hasText("QUITTER"));
     }
 
-    @Test
-    public void shouldContainsButtonDeconnexion(FxRobot robot) {
+    public void goToMultiplayerPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
-        verifyThat("#deconnexion", hasText("DÉCONNEXION"));
+        robot.clickOn("#multiplayer");
     }
 }
