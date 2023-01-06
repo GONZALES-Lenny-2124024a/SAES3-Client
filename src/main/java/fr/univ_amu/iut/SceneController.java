@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -55,18 +56,19 @@ public class SceneController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
-    public void switchTo(String nameNextPage) throws IOException {
+    public void switchTo(String nameNextPage) throws UrlOfTheNextPageIsNull, IOException {
         URL url = getClass().getResource(nameNextPage);
-        if(url != null) {
-            root = FXMLLoader.load(url);   // Load it
-
-            // Windows size
-            Scene scene = new Scene(root, stage.getMinWidth(), stage.getMinHeight());
-            stage.minHeightProperty().set(stage.getMinHeight());
-            stage.minWidthProperty().set(stage.getMinWidth());
-
-            stage.setScene(scene);
-            stage.show();
+        if(url == null) {
+            throw new UrlOfTheNextPageIsNull();
         }
+        root = FXMLLoader.load(url);   // Load it
+
+        // Windows size
+        Scene scene = new Scene(root, stage.getMinWidth(), stage.getMinHeight());
+        stage.minHeightProperty().set(stage.getMinHeight());
+        stage.minWidthProperty().set(stage.getMinWidth());
+
+        stage.setScene(scene);
+        stage.show();
     }
 }

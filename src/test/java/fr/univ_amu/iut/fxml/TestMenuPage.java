@@ -14,10 +14,10 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
@@ -66,23 +66,44 @@ public class TestMenuPage {
     }
 
     @Test
-    public void shouldContainsButtonSolo(FxRobot robot) throws IOException, InterruptedException {
+    public void shouldSoloButtonContainsSoloText() {
         verifyThat("#solo", hasText("SOLO"));
-
     }
 
     @Test
-    public void shouldContainsButtonMultijoueur(FxRobot robot) {
+    public void shouldContainsPasswordButton() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#solo") != null);
+    }
+
+
+    @Test
+    public void shouldMultiplayerButtonContainsMultijoueurText() {
         verifyThat("#multiplayer", hasText("MULTIJOUEUR"));
     }
 
     @Test
-    public void shouldContainsButtonEntrainement(FxRobot robot) {
+    public void shouldContainsMultiplayerButton() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#multiplayer") != null);
+    }
+
+
+    @Test
+    public void shouldTrainingButtonContainsEntrainementText() {
         verifyThat("#training", hasText("ENTRAINEMENT"));
     }
 
     @Test
-    public void shouldContainsButtonDeconnexion(FxRobot robot) {
+    public void shouldContainsTrainingButton() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#training") != null);
+    }
+
+    @Test
+    public void shouldDeconnexionButonContainsDeconnexionText() {
         verifyThat("#deconnexion", hasText("DÉCONNEXION"));
+    }
+
+    @Test
+    public void shouldContainsDeconnexionButton() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#deconnexion") != null);
     }
 }

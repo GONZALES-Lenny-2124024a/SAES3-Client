@@ -1,6 +1,8 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
+
 import java.io.IOException;
 
 /**
@@ -16,7 +18,7 @@ public class MenuController{
     /**
      * Send the solo flag + Initialize the page (Prepare question and answers)
      */
-    public void soloMode() throws IOException {
+    public void soloMode() throws IOException, UrlOfTheNextPageIsNull {
         serverCommunication.sendMessageToServer("SOLO_FLAG");
         switchTo("fxml/question.fxml");
     }
@@ -25,7 +27,7 @@ public class MenuController{
      * Initialize the page (Prepare question and answers)
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void multiplayerMode() throws IOException {
+    public void multiplayerMode() throws IOException, UrlOfTheNextPageIsNull {
         switchTo("fxml/multiplayer.fxml");
     }
 
@@ -40,7 +42,7 @@ public class MenuController{
      * @param nameNextPage the page to switch to
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void switchTo(String nameNextPage) throws IOException {
+    public void switchTo(String nameNextPage) throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
         sceneController.switchTo(nameNextPage);
     }

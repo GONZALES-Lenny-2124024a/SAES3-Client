@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
@@ -38,7 +39,7 @@ public class SummaryController {
      * Switch to the menu page
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void switchTo() throws IOException {
+    public void switchTo() throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
         Main.getClient().changePort(10013);
 

@@ -18,8 +18,8 @@
                         <Font name="System Bold" size="25.0" />
                     </font>
                 </TextField>
-                <Button alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="LANCER" onAction="#sessionBegin"/>
-                <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="RETOUR" userData="fxml/multijoueur.fxml" />
+                <Button fx:id="start" alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="LANCER" onAction="#sessionBegin"/>
+                <Button fx:id="back" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="RETOUR" userData="fxml/multijoueur.fxml" />
             </children>
         </VBox>
         <VBox alignment="CENTER">

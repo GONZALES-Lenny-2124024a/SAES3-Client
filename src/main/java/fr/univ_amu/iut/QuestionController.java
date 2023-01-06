@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -102,7 +103,7 @@ public class QuestionController {
      * Submit the question to the server
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void submitAnswer() throws IOException {
+    public void submitAnswer() throws IOException, UrlOfTheNextPageIsNull {
         if(vboxParent.getChildren().size() <= 6) {  // If the response is a written response
             serverCommunication.sendMessageToServer(writtenResponseTextField.getText());
             vboxParent.getChildren().remove(writtenResponseTextField); // Remove the TextField
@@ -127,7 +128,7 @@ public class QuestionController {
      * Check if the answer is correct or wrong and add it to the hash map
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void answerStatus() throws IOException {
+    public void answerStatus() throws IOException, UrlOfTheNextPageIsNull {
         if(serverCommunication.receiveMessageFromServer().equals("CORRECT_ANSWER_FLAG")) {
             answersStatus.put(question.getText(), true);
         } else {
@@ -141,7 +142,7 @@ public class QuestionController {
      * Check if there are no more question
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void verifyEndGame() throws IOException {
+    public void verifyEndGame() throws IOException, UrlOfTheNextPageIsNull {
         String message = serverCommunication.receiveMessageFromServer();
         if(message.equals("END_GAME_FLAG")) {
             endGame();
@@ -154,7 +155,7 @@ public class QuestionController {
      * It stops the game
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void endGame() throws IOException {
+    public void endGame() throws IOException, UrlOfTheNextPageIsNull {
         if(serverCommunication.getSocketClient().getPort() != serverCommunication.getPort())  { serverCommunication.changePort(serverCommunication.getPort()); } // If this is a multiplayer session, the user must log in to the main server
         SceneController sceneController = new SceneController();
         sceneController.setQuestionController(this);

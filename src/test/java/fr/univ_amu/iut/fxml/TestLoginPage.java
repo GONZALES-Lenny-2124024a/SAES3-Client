@@ -1,6 +1,7 @@
 package fr.univ_amu.iut.fxml;
 
 import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -13,7 +14,7 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import java.util.concurrent.TimeoutException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
@@ -60,18 +61,33 @@ public class TestLoginPage {
     }
 
     @Test
-    public void shouldContainsButtonSubmit() {
+    public void shouldSubmitButtonContainsSeConnecterText() {
         verifyThat("#submit", hasText("Se connecter"));
     }
 
     @Test
-    public void shouldContainsMailField() {
+    public void shouldContainsButtonSubmit() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
+    }
+
+    @Test
+    public void shouldMailTextFieldContainsEmptyText() {
         verifyThat("#mailTextField", hasText(""));
     }
 
     @Test
-    public void shouldContainsPasswordField() {
+    public void shouldContainsMailTextField() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#mailTextField") != null);
+    }
+
+    @Test
+    public void shouldPasswordTextFieldContainsEmptyText() {
         verifyThat("#passwordTextField", hasText(""));
+    }
+
+    @Test
+    public void shouldContainsPasswordlTextField() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#passwordTextField") != null);
     }
 
     @Test

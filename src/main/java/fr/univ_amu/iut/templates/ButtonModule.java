@@ -2,6 +2,7 @@ package fr.univ_amu.iut.templates;
 
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class ButtonModule extends Button {
         setOnAction(event -> {
             try {
                 moduleChoice(event);    // When the player click on the button
-            } catch (IOException e) {
+            } catch (IOException | UrlOfTheNextPageIsNull e) {
                 throw new RuntimeException(e);
             }
         });
@@ -46,7 +47,7 @@ public class ButtonModule extends Button {
      * Switch to the multiplayerCreation page
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void switchPage() throws IOException {
+    public void switchPage() throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
         sceneController.switchTo(pageToSwitchTo);  // Switch to the multiplayerCreation page
     }
@@ -56,7 +57,7 @@ public class ButtonModule extends Button {
      * @param event of the button actioned
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void moduleChoice(ActionEvent event) throws IOException {
+    public void moduleChoice(ActionEvent event) throws IOException, UrlOfTheNextPageIsNull {
         sendModuleChoseToServer(event);
         switchPage();
     }

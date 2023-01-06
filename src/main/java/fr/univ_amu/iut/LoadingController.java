@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -34,7 +35,7 @@ public class LoadingController {
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
                             beginSession();
                         }
-                    } catch (IOException | InterruptedException ex) {
+                    } catch (IOException | InterruptedException | UrlOfTheNextPageIsNull ex) {
                         throw new RuntimeException(ex);
                     }
 
@@ -49,7 +50,7 @@ public class LoadingController {
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws InterruptedException if the client disconnected
      */
-    public void beginSession() throws IOException, InterruptedException {
+    public void beginSession() throws IOException, InterruptedException, UrlOfTheNextPageIsNull {
         if (serverCommunication.receiveMessageFromServer().equals("BEGIN_FLAG")) {    // When the game begin
             timeline.stop();
             sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page

@@ -22,20 +22,20 @@ import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
 /**
- * Test the question's page
+ * Test the modules page
  */
 @ExtendWith(ApplicationExtension.class)
-public class TestQuestionPage {
+public class TestMultiplayerCreationPage {
     Stage stage;
 
     @Start
     public void start(Stage stage) throws Exception {
         Platform.runLater(() -> {
-            TestQuestionPage.this.stage = new Stage();
+            TestMultiplayerCreationPage.this.stage = new Stage();
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
-                        new Main().start(TestQuestionPage.this.stage);
+                        new Main().start(TestMultiplayerCreationPage.this.stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -54,44 +54,34 @@ public class TestQuestionPage {
     }
 
     @Test
-    public void shouldStageIsShowing(FxRobot robot) {
-        goToQuestionPage(robot);
-        assertEquals(stage.isShowing(), true);
+    public void shouldStartButtonContainsLancerText(FxRobot robot) {
+        goToTheMultiplayerCreationPage(robot);
+        verifyThat("#start", hasText("LANCER"));
     }
 
     @Test
-    public void shouldGetTitle(FxRobot robot) {
-        goToQuestionPage(robot);
-        assertEquals(stage.getTitle(), "Network Stories");
+    public void shouldContainsButtonStart(FxRobot robot) {
+        goToTheMultiplayerCreationPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#start") != null);
     }
 
     @Test
-    public void shouldSubmitButtonContainsValiderText(FxRobot robot) {
-        goToQuestionPage(robot);
-        verifyThat("#submit", hasText("VALIDER"));
+    public void shouldBackButtonContainsRetourText(FxRobot robot) {
+        goToTheMultiplayerCreationPage(robot);
+        verifyThat("#back", hasText("RETOUR"));
     }
 
     @Test
-    public void shouldContainsButtonSubmit(FxRobot robot) {
-        goToQuestionPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
+    public void shouldContainsButtonBack(FxRobot robot) {
+        goToTheMultiplayerCreationPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#back") != null);
     }
 
-
-    @Test
-    public void shouldQuitButtonContainsQuitterText(FxRobot robot) {
-        goToQuestionPage(robot);
-        verifyThat("#quit", hasText("QUITTER"));
-    }
-
-    @Test
-    public void shouldContainsButtonQuit(FxRobot robot) {
-        goToQuestionPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#quit") != null);
-    }
-
-    public void goToQuestionPage(FxRobot robot) {
+    public void goToTheMultiplayerCreationPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
-        robot.clickOn("#solo");
+        robot.clickOn("#multiplayer");
+        robot.clickOn("#create");
+        robot.clickOn("ALL");
     }
+
 }

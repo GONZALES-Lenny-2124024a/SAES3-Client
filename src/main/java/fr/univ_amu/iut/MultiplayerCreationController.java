@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -31,7 +32,7 @@ public class MultiplayerCreationController extends QuestionController{
      * Send a message to the server to begin the multiplayer's session
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void sessionBegin() throws IOException {
+    public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull {
         serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that the host want to start the game by clicking on the 'Lancer' button
         if(serverCommunication.receiveMessageFromServer().equals("CAN_JOIN_FLAG")) { // The host can join the multiplayer's session
             serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Connect to the multiplayer session

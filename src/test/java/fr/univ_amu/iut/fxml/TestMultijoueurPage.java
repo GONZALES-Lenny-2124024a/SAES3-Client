@@ -15,6 +15,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import java.util.concurrent.TimeoutException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
@@ -63,17 +64,33 @@ public class TestMultijoueurPage {
     }
 
     @Test
-    public void shouldContainsButtonRejoindre() {
+    public void shouldJoinButtonContainsRejoindreText() {
         verifyThat("#join", hasText("REJOINDRE"));
     }
 
     @Test
-    public void shouldContainsButtonCreer() {
+    public void shouldContainsButtonJoin() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#join") != null);
+    }
+
+    @Test
+    public void shouldCreateButtonContainsCreerText() {
         verifyThat("#create", hasText("CRÉER"));
     }
 
     @Test
-    public void shouldContainsButtonQuitter() {
+    public void shouldContainsButtonCreate() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#create") != null);
+    }
+
+    @Test
+    public void shouldLeaveButtonContainsQuitterText() {
         verifyThat("#leave", hasText("QUITTER"));
     }
+
+    @Test
+    public void shouldContainsButtonLeave() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
+    }
+
 }

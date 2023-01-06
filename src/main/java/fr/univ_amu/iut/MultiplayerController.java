@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -27,7 +28,7 @@ public class MultiplayerController {
      *
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void joinSession() throws IOException {
+    public void joinSession() throws IOException, UrlOfTheNextPageIsNull {
         sendJoinFlag(); // Send multiplayer session's code
         if(serverCommunication.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
             serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
@@ -65,7 +66,7 @@ public class MultiplayerController {
      * Switch to the menu's page
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void switchToMenu() throws IOException {
+    public void switchToMenu() throws IOException, UrlOfTheNextPageIsNull {
         sceneController.switchTo("fxml/menu.fxml");
     }
 }
