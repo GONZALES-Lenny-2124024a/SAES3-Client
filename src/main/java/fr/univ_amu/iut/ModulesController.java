@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
+import fr.univ_amu.iut.client.ServerCommunication;
 import fr.univ_amu.iut.templates.ButtonModule;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,14 +17,14 @@ public class ModulesController {
     private final VBox vboxParent;
 
     private List<String> modules;
-    private final Client client;
+    private final ServerCommunication serverCommunication;
     private final SceneController sceneController;
     private Button button;
     private final String pageToSwitchTo;
 
     public ModulesController(String pageToSwitchTo) {
         modules = new ArrayList<>();
-        client = Main.getClient();
+        serverCommunication = Main.getClient();
         sceneController = new SceneController();
         this.pageToSwitchTo = pageToSwitchTo;
         vboxParent = new VBox();
@@ -36,7 +36,7 @@ public class ModulesController {
      * @throws ClassNotFoundException if the object isn't found (the class exists on the server but not in the client)
      */
     public void getModulesFromServer() throws IOException, ClassNotFoundException {
-        List<?>  receivedObject = (List<?>) client.receiveObjectFromServer();
+        List<?>  receivedObject = (List<?>) serverCommunication.receiveObjectFromServer();
         if ((receivedObject != null) && (receivedObject.get(0) instanceof String)) {    //Check the cast
             modules = (List<String>) receivedObject;
         }

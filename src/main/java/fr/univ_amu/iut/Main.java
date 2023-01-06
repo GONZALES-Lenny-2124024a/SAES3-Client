@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
+import fr.univ_amu.iut.client.ServerCommunication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -17,9 +17,9 @@ public class Main extends Application {
 
     private final double HEIGHT = Screen.getPrimary().getBounds().getHeight() / 1.2;
     private final double WIDTH = Screen.getPrimary().getBounds().getWidth() / 1.2;
-    private static Client client;
+    private static ServerCommunication serverCommunication;
     public Main() throws IOException {
-        client = new Client("127.0.0.1",10013);
+        serverCommunication = new ServerCommunication("127.0.0.1",10013);
     }
 
     /**
@@ -59,7 +59,7 @@ public class Main extends Application {
      * Get the client
      * @return the client
      */
-    public static Client getClient() {
-        return client;
+    public static ServerCommunication getClient() {
+        return serverCommunication;
     }
 }

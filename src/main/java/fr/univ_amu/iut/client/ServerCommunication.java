@@ -9,7 +9,7 @@ import java.net.Socket;
 /**
  * Supports interactions Client-Server
  */
-public class Client {
+public class ServerCommunication {
     private final String hostname;
     private int port;
     private Socket socketClient;
@@ -19,7 +19,7 @@ public class Client {
     private Object object;
     private ObjectInputStream inObject;
 
-    public Client(String hostname, int port) throws IOException {
+    public ServerCommunication(String hostname, int port) throws IOException {
         this.hostname = hostname;
         this.port = port;
         socketClient = new Socket(hostname, port);

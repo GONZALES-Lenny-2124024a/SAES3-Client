@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
+import fr.univ_amu.iut.client.ServerCommunication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -18,13 +18,13 @@ public class LoginController {
     private TextField mailTextField;
     @FXML
     private PasswordField passwordTextField;
-    private final Client client;
+    private final ServerCommunication serverCommunication;
     private String message;
     private static String mail;
 
     private final SceneController sceneController;
     public LoginController() {
-        client = Main.getClient();  // Get the connection with the server
+        serverCommunication = Main.getClient();  // Get the connection with the server
         sceneController = new SceneController();
     }
 
@@ -35,10 +35,10 @@ public class LoginController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public boolean verifyLogin(String mail, String password) throws IOException {
-        client.sendMessageToServer("LOGIN_FLAG");
-        client.sendMessageToServer(mail);
-        client.sendMessageToServer(password);
-        message = client.receiveMessageFromServer();
+        serverCommunication.sendMessageToServer("LOGIN_FLAG");
+        serverCommunication.sendMessageToServer(mail);
+        serverCommunication.sendMessageToServer(password);
+        message = serverCommunication.receiveMessageFromServer();
         return message.equals("[+] LOGIN !");
     }
 

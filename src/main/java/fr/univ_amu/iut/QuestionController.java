@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
+import fr.univ_amu.iut.client.ServerCommunication;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -27,12 +27,12 @@ public class QuestionController {
     private CheckBox answer3;
     @FXML
     private TextField writtenResponseTextField;
-    private final Client client;
+    private final ServerCommunication serverCommunication;
     private final HashMap<String, Boolean> answersStatus;
     private final Font font;
 
     public QuestionController() {
-        client = Main.getClient();
+        serverCommunication = Main.getClient();
         answersStatus = new HashMap<>();
         font = new Font("System Bold", 25);
     }
@@ -50,8 +50,8 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void initializeVariables(String answerType) throws IOException {
-        question.setText(client.receiveMessageFromServer());        // We are obliged to do this for the endgame check
-        description.setText(client.receiveMessageFromServer());
+        question.setText(serverCommunication.receiveMessageFromServer());        // We are obliged to do this for the endgame check
+        description.setText(serverCommunication.receiveMessageFromServer());
         if(answerType.equals("QCM_FLAG")) {
             createCheckBoxes();
             initializeTextCheckBoxes();
@@ -81,9 +81,9 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void initializeTextCheckBoxes() throws IOException {
-        answer1.setText(client.receiveMessageFromServer());
-        answer2.setText(client.receiveMessageFromServer());
-        answer3.setText(client.receiveMessageFromServer());
+        answer1.setText(serverCommunication.receiveMessageFromServer());
+        answer2.setText(serverCommunication.receiveMessageFromServer());
+        answer3.setText(serverCommunication.receiveMessageFromServer());
     }
 
     /**
@@ -104,18 +104,18 @@ public class QuestionController {
      */
     public void submitAnswer() throws IOException {
         if(vboxParent.getChildren().size() <= 6) {  // If the response is a written response
-            client.sendMessageToServer(writtenResponseTextField.getText());
+            serverCommunication.sendMessageToServer(writtenResponseTextField.getText());
             vboxParent.getChildren().remove(writtenResponseTextField); // Remove the TextField
 
         } else {    // If it's a QCM
             if (answer1.isSelected()) {
-                client.sendMessageToServer("1");
+                serverCommunication.sendMessageToServer("1");
             } else if (answer2.isSelected()) {
-                client.sendMessageToServer("2");
+                serverCommunication.sendMessageToServer("2");
             } else if (answer3.isSelected()) {
-                client.sendMessageToServer("3");
+                serverCommunication.sendMessageToServer("3");
             } else {
-                client.sendMessageToServer("0");
+                serverCommunication.sendMessageToServer("0");
             }
             vboxParent.getChildren().remove(3,6);   // Remove all the checkboxes
         }
@@ -128,7 +128,7 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void answerStatus() throws IOException {
-        if(client.receiveMessageFromServer().equals("CORRECT_ANSWER_FLAG")) {
+        if(serverCommunication.receiveMessageFromServer().equals("CORRECT_ANSWER_FLAG")) {
             answersStatus.put(question.getText(), true);
         } else {
             answersStatus.put(question.getText(), false);
@@ -142,7 +142,7 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void verifyEndGame() throws IOException {
-        String message = client.receiveMessageFromServer();
+        String message = serverCommunication.receiveMessageFromServer();
         if(message.equals("END_GAME_FLAG")) {
             endGame();
         } else {
@@ -155,7 +155,7 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void endGame() throws IOException {
-        if(client.getSocketClient().getPort() != client.getPort())  { client.changePort(client.getPort()); } // If this is a multiplayer session, the user must log in to the main server
+        if(serverCommunication.getSocketClient().getPort() != serverCommunication.getPort())  { serverCommunication.changePort(serverCommunication.getPort()); } // If this is a multiplayer session, the user must log in to the main server
         SceneController sceneController = new SceneController();
         sceneController.setQuestionController(this);
         sceneController.switchTo("fxml/summary.fxml");
@@ -167,6 +167,6 @@ public class QuestionController {
      */
     @FXML
     public void initialize() throws IOException {
-        initializeVariables(client.receiveMessageFromServer());
+        initializeVariables(serverCommunication.receiveMessageFromServer());
     }
 }

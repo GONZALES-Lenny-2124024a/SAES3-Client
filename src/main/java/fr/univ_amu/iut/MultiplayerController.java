@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
+import fr.univ_amu.iut.client.ServerCommunication;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -12,11 +12,11 @@ import java.io.IOException;
 public class MultiplayerController {
     @FXML
     private TextField codeInput;
-    private final Client client;
+    private final ServerCommunication serverCommunication;
     private final SceneController sceneController;
 
     public MultiplayerController() {
-        client = Main.getClient();
+        serverCommunication = Main.getClient();
         sceneController = new SceneController();
     }
 
@@ -29,12 +29,12 @@ public class MultiplayerController {
      */
     public void joinSession() throws IOException {
         sendJoinFlag(); // Send multiplayer session's code
-        if(client.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
-            client.changePort(Integer.parseInt(client.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
+        if(serverCommunication.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
+            serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
 
             // Use to not run indefinitely the page (no crash page) until the host click on the 'Lancer' button
-            if(client.receiveMessageFromServer().equals("PRESENCE_FLAG")) {   // To see if the server receive the connection request
-                client.sendMessageToServer(LoginController.getMail());
+            if(serverCommunication.receiveMessageFromServer().equals("PRESENCE_FLAG")) {   // To see if the server receive the connection request
+                serverCommunication.sendMessageToServer(LoginController.getMail());
                 sceneController.switchTo("fxml/loading.fxml");
             }
         }
@@ -45,9 +45,9 @@ public class MultiplayerController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void sendJoinFlag() throws IOException {
-        client.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
-        client.receiveMessageFromServer();
-        client.sendMessageToServer(codeInput.getText());
+        serverCommunication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
+        serverCommunication.receiveMessageFromServer();
+        serverCommunication.sendMessageToServer(codeInput.getText());
     }
 
     /**
@@ -56,7 +56,7 @@ public class MultiplayerController {
      * @throws ClassNotFoundException if the object class not found
      */
     public void creationSession() throws IOException, ClassNotFoundException {
-        client.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
+        serverCommunication.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
         ModulesController modulesController = new ModulesController("fxml/multiplayerCreation.fxml");
         modulesController.initialize();
     }

@@ -1,6 +1,5 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;

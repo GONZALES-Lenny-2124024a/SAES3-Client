@@ -1,23 +1,23 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
+import fr.univ_amu.iut.client.ServerCommunication;
 import java.io.IOException;
 
 /**
  * Controller of the menu's page
  */
 public class MenuController{
-    private final Client client;
+    private final ServerCommunication serverCommunication;
 
     public MenuController() {
-        client = Main.getClient();
+        serverCommunication = Main.getClient();
     }
 
     /**
      * Send the solo flag + Initialize the page (Prepare question and answers)
      */
     public void soloMode() throws IOException {
-        client.sendMessageToServer("SOLO_FLAG");
+        serverCommunication.sendMessageToServer("SOLO_FLAG");
         switchTo("fxml/question.fxml");
     }
 
@@ -30,7 +30,7 @@ public class MenuController{
     }
 
     public void trainingMode() throws IOException, ClassNotFoundException {
-        client.sendMessageToServer("TRAINING_FLAG");
+        serverCommunication.sendMessageToServer("TRAINING_FLAG");
         ModulesController modulesController = new ModulesController("fxml/question.fxml");
         modulesController.initialize();
     }

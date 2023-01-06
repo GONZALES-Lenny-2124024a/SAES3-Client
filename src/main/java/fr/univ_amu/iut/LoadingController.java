@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.Client;
+import fr.univ_amu.iut.client.ServerCommunication;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -13,12 +13,12 @@ import java.io.IOException;
  */
 public class LoadingController {
 
-    private final Client client;
+    private final ServerCommunication serverCommunication;
     private final SceneController sceneController;
     private Timeline timeline;
 
     public LoadingController() {
-        client = Main.getClient();
+        serverCommunication = Main.getClient();
         sceneController = new SceneController();
     }
 
@@ -31,7 +31,7 @@ public class LoadingController {
                 new KeyFrame(Duration.seconds(1.0), e -> {
 
                     try {
-                        if(client.isReceiveMessageFromServer()) {   // Verify if the server sent a message
+                        if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
                             beginSession();
                         }
                     } catch (IOException | InterruptedException ex) {
@@ -50,7 +50,7 @@ public class LoadingController {
      * @throws InterruptedException if the client disconnected
      */
     public void beginSession() throws IOException, InterruptedException {
-        if (client.receiveMessageFromServer().equals("BEGIN_FLAG")) {    // When the game begin
+        if (serverCommunication.receiveMessageFromServer().equals("BEGIN_FLAG")) {    // When the game begin
             timeline.stop();
             sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
         }
