@@ -15,8 +15,8 @@ import java.io.IOException;
  */
 public class Main extends Application {
 
-    private final double HEIGHT = 1920;
-    private final double WIDTH = 1080;
+    private final double HEIGHT = Screen.getPrimary().getBounds().getHeight() / 1.2;
+    private final double WIDTH = Screen.getPrimary().getBounds().getWidth() / 1.2;
     private static ServerCommunication serverCommunication;
     public Main() throws IOException {
         serverCommunication = new ServerCommunication("127.0.0.1",10013);
@@ -34,6 +34,10 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
 
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        stage.setWidth(bounds.getWidth());
+        stage.setHeight(bounds.getHeight());
         // Screen settings
         stage.setMaximized(true);
         stage.minHeightProperty().set(HEIGHT);
