@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -28,17 +29,18 @@ public class MultiplayerController {
      *
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void joinSession() throws IOException, UrlOfTheNextPageIsNull {
+    public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         sendJoinFlag(); // Send multiplayer session's code
-        if(serverCommunication.receiveMessageFromServer().equals("CODE_EXISTS_FLAG")) {  // Verify if the code is in the database
-            serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
-
-            // Use to not run indefinitely the page (no crash page) until the host click on the 'Lancer' button
-            if(serverCommunication.receiveMessageFromServer().equals("PRESENCE_FLAG")) {   // To see if the server receive the connection request
-                serverCommunication.sendMessageToServer(LoginController.getMail());
-                sceneController.switchTo("fxml/loading.fxml");
-            }
+        if(!(serverCommunication.receiveMessageFromServer().equals("CODE_EXISTS_FLAG"))) {
+            throw new NotTheExpectedFlagException("CODE_EXISTS_FLAG");
         }
+        serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
+
+        if(!(serverCommunication.receiveMessageFromServer().equals("PRESENCE_FLAG"))) {
+            throw new NotTheExpectedFlagException("PRESENCE_FLAG");
+        }
+        serverCommunication.sendMessageToServer(LoginController.getMail());
+        sceneController.switchTo("fxml/loading.fxml");
     }
 
     /**

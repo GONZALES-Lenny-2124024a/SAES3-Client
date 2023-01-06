@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,12 +36,16 @@ public class LoginController {
      * @return if the username and the password are corrects
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public boolean verifyLogin(String mail, String password) throws IOException {
+    public boolean verifyLogin(String mail, String password) throws IOException, NotTheExpectedFlagException {
         serverCommunication.sendMessageToServer("LOGIN_FLAG");
         serverCommunication.sendMessageToServer(mail);
         serverCommunication.sendMessageToServer(password);
         message = serverCommunication.receiveMessageFromServer();
-        return message.equals("[+] LOGIN !");
+
+        if(!(message.equals("LOGIN_SUCCESSFULLY_FLAG")) && !(message.equals("LOGIN_NOT_SUCCESSFULLY_FLAG"))) {
+            throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY_FLAG or LOGIN_NOT_SUCCESSFULLY_FLAG");
+        }
+        return message.equals("LOGIN_SUCCESSFULLY_FLAG");
     }
 
     /**
@@ -48,7 +53,7 @@ public class LoginController {
      * @param event of the button actioned
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void serviceLogin(ActionEvent event) throws IOException, UrlOfTheNextPageIsNull {
+    public void serviceLogin(ActionEvent event) throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         if(verifyLogin(mailTextField.getText(),passwordTextField.getText())) {
             mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
             //Get the name of the file

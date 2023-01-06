@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -32,11 +33,12 @@ public class MultiplayerCreationController extends QuestionController{
      * Send a message to the server to begin the multiplayer's session
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull {
+    public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that the host want to start the game by clicking on the 'Lancer' button
-        if(serverCommunication.receiveMessageFromServer().equals("CAN_JOIN_FLAG")) { // The host can join the multiplayer's session
-            serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Connect to the multiplayer session
+        if(!(serverCommunication.receiveMessageFromServer().equals("CAN_JOIN_FLAG"))) { // The host can join the multiplayer's session
+            throw new NotTheExpectedFlagException("CAN_JOIN_FLAG");
         }
+        serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Connect to the multiplayer session
         sceneController.switchTo("fxml/question.fxml");
     }
 
@@ -58,14 +60,22 @@ public class MultiplayerCreationController extends QuestionController{
     }
 
     /**
+     * Get the session code from the server
+     * @throws IOException if the communication with the client is closed or didn't go well
+     */
+    public void getSessionCode() throws IOException, NotTheExpectedFlagException {
+        if(!(serverCommunication.receiveMessageFromServer().equals("CODE_FLAG"))) {
+            throw new NotTheExpectedFlagException("CODE_FLAG");
+        }
+        codeSession.setText(serverCommunication.receiveMessageFromServer());
+    }
+    /**
      * Send the solo flag + Initialize the page (Prepare question and answers)
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
-    public void initialize() throws IOException {
-        if(serverCommunication.receiveMessageFromServer().equals("CODE_FLAG")) {
-            codeSession.setText(serverCommunication.receiveMessageFromServer());
-        }
+    public void initialize() throws IOException, NotTheExpectedFlagException {
+        getSessionCode();
         getUsersPresent();
     }
 }

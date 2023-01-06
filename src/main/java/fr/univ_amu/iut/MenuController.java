@@ -24,13 +24,18 @@ public class MenuController{
     }
 
     /**
-     * Initialize the page (Prepare question and answers)
+     * Switch to the multiplayer page
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void multiplayerMode() throws IOException, UrlOfTheNextPageIsNull {
         switchTo("fxml/multiplayer.fxml");
     }
 
+    /**
+     * Send the training flag + switch to the modules page
+     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws ClassNotFoundException Object not found when we receive an object from the server
+     */
     public void trainingMode() throws IOException, ClassNotFoundException {
         serverCommunication.sendMessageToServer("TRAINING_FLAG");
         ModulesController modulesController = new ModulesController("fxml/question.fxml");

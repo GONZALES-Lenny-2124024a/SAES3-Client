@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -50,14 +51,19 @@ public class QuestionController {
      * Initialize the question and the answers
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void initializeVariables(String answerType) throws IOException {
+    public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException {
         question.setText(serverCommunication.receiveMessageFromServer());        // We are obliged to do this for the endgame check
         description.setText(serverCommunication.receiveMessageFromServer());
-        if(answerType.equals("QCM_FLAG")) {
-            createCheckBoxes();
-            initializeTextCheckBoxes();
-        } else if (answerType.equals("WRITTEN_RESPONSE_QUESTION_FLAG")) {
-            createWrittenResponse();
+        switch(answerType) {
+            case "QCM_FLAG" :
+                createCheckBoxes();
+                initializeTextCheckBoxes();
+                break;
+            case "WRITTEN_RESPONSE_QUESTION_FLAG" :
+                createWrittenResponse();
+                break;
+            default:
+                throw new NotTheExpectedFlagException("QCM_FLAG or WRITTEN_RESPONSE_QUESTION_FLAG");
         }
     }
 
@@ -103,7 +109,7 @@ public class QuestionController {
      * Submit the question to the server
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void submitAnswer() throws IOException, UrlOfTheNextPageIsNull {
+    public void submitAnswer() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         if(vboxParent.getChildren().size() <= 6) {  // If the response is a written response
             serverCommunication.sendMessageToServer(writtenResponseTextField.getText());
             vboxParent.getChildren().remove(writtenResponseTextField); // Remove the TextField
@@ -128,11 +134,11 @@ public class QuestionController {
      * Check if the answer is correct or wrong and add it to the hash map
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void answerStatus() throws IOException, UrlOfTheNextPageIsNull {
-        if(serverCommunication.receiveMessageFromServer().equals("CORRECT_ANSWER_FLAG")) {
-            answersStatus.put(question.getText(), true);
-        } else {
-            answersStatus.put(question.getText(), false);
+    public void answerStatus() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+        switch(serverCommunication.receiveMessageFromServer()) {
+            case "CORRECT_ANSWER_FLAG" -> answersStatus.put(question.getText(), true);
+            case "WRONG_ANSWER_FLAG" -> answersStatus.put(question.getText(), false);
+            default -> throw new NotTheExpectedFlagException("CORRECT_ANSWER_FLAG or WRONG_ANSWER_FLAG");
         }
         verifyEndGame();
     }
@@ -142,7 +148,7 @@ public class QuestionController {
      * Check if there are no more question
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void verifyEndGame() throws IOException, UrlOfTheNextPageIsNull {
+    public void verifyEndGame() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         String message = serverCommunication.receiveMessageFromServer();
         if(message.equals("END_GAME_FLAG")) {
             endGame();
@@ -167,7 +173,7 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, NotTheExpectedFlagException {
         initializeVariables(serverCommunication.receiveMessageFromServer());
     }
 }
