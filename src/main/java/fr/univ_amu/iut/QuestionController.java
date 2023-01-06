@@ -93,7 +93,7 @@ public class QuestionController {
         TextField textField = new TextField();
         textField.setFont(font);
         textField.setPrefWidth(1000);
-        textField.setId("answer");
+        textField.setId("writtenAnswer");
         vboxParent.getChildren().add(3, textField);
         writtenResponseTextField = textField;
     }

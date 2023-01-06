@@ -86,6 +86,5 @@ public class TestLoginPage {
         robot.clickOn("#passwordTextField");
         robot.write("lenny");
         robot.clickOn("#submit");
-
     }
 }

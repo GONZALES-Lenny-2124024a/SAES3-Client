@@ -1,6 +1,7 @@
 package fr.univ_amu.iut.fxml;
 
 import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -32,6 +33,8 @@ public class TestMultijoueurPage {
                 FxToolkit.setupStage((sta) -> {
                     try {
                         new Main().start(TestMultijoueurPage.this.stage);
+                        SceneController sceneController = new SceneController();
+                        sceneController.switchTo("fxml/multiplayer.fxml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -50,37 +53,27 @@ public class TestMultijoueurPage {
     }
 
     @Test
-    public void shouldStageIsShowing(FxRobot robot) {
-        goToMultiplayerPage(robot);
+    public void shouldStageIsShowing() {
         assertEquals(stage.isShowing(), true);
     }
 
     @Test
-    public void shouldGetTitle(FxRobot robot) {
-        goToMultiplayerPage(robot);
+    public void shouldGetTitle() {
         assertEquals(stage.getTitle(), "Network Stories");
     }
 
     @Test
-    public void shouldContainsButtonRejoindre(FxRobot robot) {
-        goToMultiplayerPage(robot);
+    public void shouldContainsButtonRejoindre() {
         verifyThat("#join", hasText("REJOINDRE"));
     }
 
     @Test
-    public void shouldContainsButtonCreer(FxRobot robot) {
-        goToMultiplayerPage(robot);
+    public void shouldContainsButtonCreer() {
         verifyThat("#create", hasText("CRÉER"));
     }
 
     @Test
-    public void shouldContainsButtonQuitter(FxRobot robot) {
-        goToMultiplayerPage(robot);
+    public void shouldContainsButtonQuitter() {
         verifyThat("#leave", hasText("QUITTER"));
-    }
-
-    public void goToMultiplayerPage(FxRobot robot) {
-        TestLoginPage.connectionLoginPage(robot);
-        robot.clickOn("#multiplayer");
     }
 }
