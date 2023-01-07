@@ -41,7 +41,7 @@ public class SummaryController {
      */
     public void switchTo() throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
-        Main.getClient().changePort(10013);
+        if(Main.getClient().getPort() != 10013) { Main.getClient().changePort(10013); } // If it was a multiplayer session, the user must connect to the main server
 
         sceneController.switchTo("fxml/menu.fxml");
     }
