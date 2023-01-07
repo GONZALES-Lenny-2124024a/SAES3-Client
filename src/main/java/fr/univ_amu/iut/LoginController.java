@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.event.ActionEvent;
@@ -26,7 +26,7 @@ public class LoginController {
 
     private final SceneController sceneController;
     public LoginController() {
-        serverCommunication = Main.getClient();  // Get the connection with the server
+        serverCommunication = Main.getServerCommunication();  // Get the connection with the server
         sceneController = new SceneController();
     }
 

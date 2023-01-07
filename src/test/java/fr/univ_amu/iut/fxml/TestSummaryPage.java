@@ -51,7 +51,7 @@ public class TestSummaryPage {
     }
 
     @Test
-    public void shouldGoToTheModulesPage(FxRobot robot) {
+    public void shouldGoToTheSummaryPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
         robot.clickOn("#solo");
         while((SceneController.getStage().getScene().getRoot().lookup("#answer1") != null) || (SceneController.getStage().getScene().getRoot().lookup("#writtenAnswer") != null)) {

@@ -40,7 +40,7 @@ public class ButtonModule extends Button {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
-        Main.getClient().sendMessageToServer(((Button) event.getSource()).getText()); // Send the module chosen
+        Main.getServerCommunication().sendMessageToServer(((Button) event.getSource()).getText()); // Send the module chosen
     }
 
     /**

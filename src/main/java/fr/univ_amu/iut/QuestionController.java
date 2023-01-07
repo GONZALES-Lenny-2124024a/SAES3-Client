@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
@@ -34,7 +34,7 @@ public class QuestionController {
     private final Font font;
 
     public QuestionController() {
-        serverCommunication = Main.getClient();
+        serverCommunication = Main.getServerCommunication();
         answersStatus = new HashMap<>();
         font = new Font("System Bold", 25);
     }

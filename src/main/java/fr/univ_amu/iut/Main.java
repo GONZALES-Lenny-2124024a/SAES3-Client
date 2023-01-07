@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.server.ServerCommunication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -59,7 +59,7 @@ public class Main extends Application {
      * Get the client
      * @return the client
      */
-    public static ServerCommunication getClient() {
+    public static ServerCommunication getServerCommunication() {
         return serverCommunication;
     }
 }

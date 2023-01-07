@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.KeyFrame;
@@ -25,7 +25,7 @@ public class MultiplayerCreationController extends QuestionController{
 
 
     public MultiplayerCreationController() {
-        serverCommunication = Main.getClient();
+        serverCommunication = Main.getServerCommunication();
         sceneController = new SceneController();
     }
 

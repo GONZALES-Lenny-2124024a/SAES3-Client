@@ -1,8 +1,10 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
+import fr.univ_amu.iut.server.ServerCommunication;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -16,11 +18,13 @@ import java.util.Map;
 public class SummaryController {
     @FXML
     private VBox vbox;
+    private ServerCommunication serverCommunication;
     private final HashMap<String, Boolean> summary;
 
     public SummaryController() {
         SceneController sceneController = new SceneController();
         summary = sceneController.getQuestionController().getAnswersStatus();
+        serverCommunication = Main.getServerCommunication();
     }
 
     /**
@@ -41,16 +45,23 @@ public class SummaryController {
      */
     public void switchTo() throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
-        if(Main.getClient().getPort() != 10013) { Main.getClient().changePort(10013); } // If it was a multiplayer session, the user must connect to the main server
+        if(serverCommunication.getPort() != 10013) { serverCommunication.changePort(10013); } // If it was a multiplayer session, the user must connect to the main server
 
         sceneController.switchTo("fxml/menu.fxml");
+    }
+
+    public int getUserPointsFromTheServer() throws IOException {
+        serverCommunication.sendMessageToServer(LoginController.getMail());
+        return Integer.parseInt(serverCommunication.receiveMessageFromServer());
     }
 
     /**
      * Initialize the checkboxes
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
+        vbox.getChildren().add(new Label("Votre nouveau elo : " + getUserPointsFromTheServer()));
+
         Iterator iteratorSummary = summary.entrySet().iterator();
         while(iteratorSummary.hasNext()) {
             vbox.getChildren().add(initializeCheckBox((Map.Entry) iteratorSummary.next()));

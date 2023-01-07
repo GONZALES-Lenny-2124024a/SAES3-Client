@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
@@ -18,7 +18,7 @@ public class MultiplayerController {
     private final SceneController sceneController;
 
     public MultiplayerController() {
-        serverCommunication = Main.getClient();
+        serverCommunication = Main.getServerCommunication();
         sceneController = new SceneController();
     }
 

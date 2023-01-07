@@ -1,4 +1,4 @@
-package fr.univ_amu.iut.client;
+package fr.univ_amu.iut.server;
 
 import fr.univ_amu.iut.SceneController;
 import javafx.stage.Stage;

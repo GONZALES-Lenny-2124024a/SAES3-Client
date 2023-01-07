@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ public class MenuController{
     private final ServerCommunication serverCommunication;
 
     public MenuController() {
-        serverCommunication = Main.getClient();
+        serverCommunication = Main.getServerCommunication();
     }
 
     /**

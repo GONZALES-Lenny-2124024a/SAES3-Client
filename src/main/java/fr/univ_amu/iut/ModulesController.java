@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.client.ServerCommunication;
+import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.templates.ButtonModule;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,7 +24,7 @@ public class ModulesController {
 
     public ModulesController(String pageToSwitchTo) {
         modules = new ArrayList<>();
-        serverCommunication = Main.getClient();
+        serverCommunication = Main.getServerCommunication();
         sceneController = new SceneController();
         this.pageToSwitchTo = pageToSwitchTo;
         vboxParent = new VBox();
