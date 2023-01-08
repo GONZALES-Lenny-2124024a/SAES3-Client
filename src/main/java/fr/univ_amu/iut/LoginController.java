@@ -52,12 +52,11 @@ public class LoginController {
 
     /**
      * Supports the login of the user
-     * @param event of the button actioned
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      * @throws NotTheExpectedFlagException if the flag for the verification of the connexion isn't the expected flag
      */
-    public void serviceLogin(ActionEvent event) throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void serviceLogin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         if(verifyLogin(mailTextField.getText(),passwordTextField.getText())) {
             mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
             sceneController.switchTo("fxml/menu.fxml");
