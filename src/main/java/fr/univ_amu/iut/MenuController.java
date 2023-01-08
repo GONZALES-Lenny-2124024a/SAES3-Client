@@ -38,7 +38,7 @@ public class MenuController{
      */
     public void trainingMode() throws IOException, ClassNotFoundException {
         serverCommunication.sendMessageToServer("TRAINING_FLAG");
-        ModulesController modulesController = new ModulesController("fxml/question.fxml");
+        ModulesPage modulesController = new ModulesPage("fxml/question.fxml");
         modulesController.initialize();
     }
 

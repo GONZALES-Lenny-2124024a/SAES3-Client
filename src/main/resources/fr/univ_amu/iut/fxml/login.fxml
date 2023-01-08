@@ -16,5 +16,6 @@
     <Button fx:id="submit" alignment="CENTER" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="345.0" text="Se connecter" styleClass="Btn" userData="fxml/menu.fxml" onAction="#serviceLogin">
         <font>
             <Font size="20.0" />
-        </font></Button>
+        </font>
+    </Button>
 </VBox>

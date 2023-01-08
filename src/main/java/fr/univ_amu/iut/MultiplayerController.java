@@ -60,7 +60,7 @@ public class MultiplayerController {
      */
     public void creationSession() throws IOException, ClassNotFoundException {
         serverCommunication.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
-        ModulesController modulesController = new ModulesController("fxml/multiplayerCreation.fxml");
+        ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml");
         modulesController.initialize();
     }
 

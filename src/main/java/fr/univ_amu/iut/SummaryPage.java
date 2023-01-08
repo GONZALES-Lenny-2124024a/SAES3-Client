@@ -2,7 +2,8 @@ package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import fr.univ_amu.iut.server.ServerCommunication;
-import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -15,16 +16,18 @@ import java.util.Map;
 /**
  * Controller of the summary's page
  */
-public class SummaryController {
-    @FXML
-    private VBox vbox;
+public class SummaryPage {
+
+    private final VBox vboxParent;
+
     private ServerCommunication serverCommunication;
     private final HashMap<String, Boolean> summary;
 
-    public SummaryController() {
+    public SummaryPage(HashMap<String, Boolean> summary) {
         SceneController sceneController = new SceneController();
-        summary = sceneController.getQuestionController().getAnswersStatus();
+        this.summary = summary;
         serverCommunication = Main.getServerCommunication();
+        vboxParent = new VBox();
     }
 
     /**
@@ -58,13 +61,30 @@ public class SummaryController {
     /**
      * Initialize the checkboxes
      */
-    @FXML
-    public void initialize() throws IOException {
-        vbox.getChildren().add(new Label("Votre nouveau elo : " + getUserPointsFromTheServer()));
+    public void initialize() throws IOException, UrlOfTheNextPageIsNull {
+        // User points
+        vboxParent.getChildren().add(new Label("Votre nouveau nombre de points : " + getUserPointsFromTheServer()));
 
+        // Summary
         Iterator iteratorSummary = summary.entrySet().iterator();
         while(iteratorSummary.hasNext()) {
-            vbox.getChildren().add(initializeCheckBox((Map.Entry) iteratorSummary.next()));
+            vboxParent.getChildren().add(initializeCheckBox((Map.Entry) iteratorSummary.next()));
         }
+
+        // Button to leave
+        Button button = new Button("QUITTER");
+        button.setId("leave");
+        button.setOnAction(event -> {
+            try {
+                switchTo();
+            } catch (IOException | UrlOfTheNextPageIsNull e) {
+                throw new RuntimeException(e);
+            }
+        });
+        vboxParent.getChildren().add(button);
+
+        // Print the window
+        Scene scene = new Scene(vboxParent);
+        (SceneController.getStage()).setScene(scene);
     }
 }

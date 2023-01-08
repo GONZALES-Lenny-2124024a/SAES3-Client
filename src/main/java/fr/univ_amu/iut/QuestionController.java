@@ -30,21 +30,13 @@ public class QuestionController {
     @FXML
     private TextField writtenResponseTextField;
     private final ServerCommunication serverCommunication;
-    private final HashMap<String, Boolean> answersStatus;
+    private final HashMap<String, Boolean> summary;
     private final Font font;
 
     public QuestionController() {
         serverCommunication = Main.getServerCommunication();
-        answersStatus = new HashMap<>();
+        summary = new HashMap<>();
         font = new Font("System Bold", 25);
-    }
-
-    /**
-     * Get the questions and if the user answered well
-     * @return the answers status hashmap (each question and if the user answered well)
-     */
-    public HashMap<String, Boolean> getAnswersStatus() {
-        return answersStatus;
     }
 
     /**
@@ -136,8 +128,8 @@ public class QuestionController {
      */
     public void answerStatus() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         switch(serverCommunication.receiveMessageFromServer()) {
-            case "CORRECT_ANSWER_FLAG" -> answersStatus.put(question.getText(), true);
-            case "WRONG_ANSWER_FLAG" -> answersStatus.put(question.getText(), false);
+            case "CORRECT_ANSWER_FLAG" -> summary.put(question.getText(), true);
+            case "WRONG_ANSWER_FLAG" -> summary.put(question.getText(), false);
             default -> throw new NotTheExpectedFlagException("CORRECT_ANSWER_FLAG or WRONG_ANSWER_FLAG");
         }
         verifyEndGame();
@@ -163,9 +155,8 @@ public class QuestionController {
      */
     public void endGame() throws IOException, UrlOfTheNextPageIsNull {
         if(serverCommunication.getSocketClient().getPort() != serverCommunication.getPort())  { serverCommunication.changePort(serverCommunication.getPort()); } // If this is a multiplayer session, the user must log in to the main server
-        SceneController sceneController = new SceneController();
-        sceneController.setQuestionController(this);
-        sceneController.switchTo("fxml/summary.fxml");
+        SummaryPage summaryPage = new SummaryPage(summary);
+        summaryPage.initialize();
     }
 
     /**

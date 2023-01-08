@@ -17,23 +17,6 @@ public class SceneController {
 
     private static Stage stage;
     private Parent root;
-    private static QuestionController questionController;
-
-    /**
-     * Set the Question controller
-     * @param questionController the question controller
-     */
-    public void setQuestionController(QuestionController questionController) {
-        this.questionController = questionController;
-    }
-
-    /**
-     * Get the current controller
-     * @return the current question controller
-     */
-    public QuestionController getQuestionController() {
-        return questionController;
-    }
 
     /**
      * Get the stage

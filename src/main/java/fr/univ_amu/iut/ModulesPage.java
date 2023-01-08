@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Controller of the modules page where the user choose a module to train
  */
-public class ModulesController {
+public class ModulesPage {
     private final VBox vboxParent;
 
     private List<String> modules;
@@ -22,7 +22,7 @@ public class ModulesController {
     private Button button;
     private final String pageToSwitchTo;
 
-    public ModulesController(String pageToSwitchTo) {
+    public ModulesPage(String pageToSwitchTo) {
         modules = new ArrayList<>();
         serverCommunication = Main.getServerCommunication();
         sceneController = new SceneController();
