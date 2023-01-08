@@ -52,7 +52,7 @@
                 <Insets top="-180.0" />
             </GridPane.margin>
         </HBox>
-        <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="46.0" prefWidth="442.0" stylesheets="@../css/style.css" text="code de partie" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <TextField fx:id="codeInput" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="46.0" prefWidth="442.0" stylesheets="@../css/style.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets top="-330.0" />
             </GridPane.margin>

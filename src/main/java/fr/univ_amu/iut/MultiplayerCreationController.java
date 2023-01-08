@@ -19,7 +19,7 @@ public class MultiplayerCreationController extends QuestionController{
     @FXML
     private TextField codeSession;
     @FXML
-    private ListView<String> listView;
+    private ListView<String> usersPresentListView;
     private final ServerCommunication serverCommunication;
     private final SceneController sceneController;
 
@@ -47,7 +47,7 @@ public class MultiplayerCreationController extends QuestionController{
                 new KeyFrame(Duration.seconds(1.0), e -> {
                     try {
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
-                            listView.getItems().add(serverCommunication.receiveMessageFromServer());
+                            usersPresentListView.getItems().add(serverCommunication.receiveMessageFromServer());
                         }
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
@@ -69,6 +69,7 @@ public class MultiplayerCreationController extends QuestionController{
         }
         codeSession.setText(serverCommunication.receiveMessageFromServer());
     }
+
     /**
      * Send the solo flag + Initialize the page (Prepare question and answers)
      * @throws IOException if the communication with the client is closed or didn't go well
