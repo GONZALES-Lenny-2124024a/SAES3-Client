@@ -56,10 +56,7 @@ public class LoginController {
     public void serviceLogin(ActionEvent event) throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         if(verifyLogin(mailTextField.getText(),passwordTextField.getText())) {
             mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
-            //Get the name of the file
-            Node node = (Node) event.getSource() ;
-            String nameNextPage = (String) node.getUserData();
-            sceneController.switchTo(nameNextPage);
+            sceneController.switchTo("fxml/menu.fxml");
         }  else{
             Alert connexionError = new Alert(Alert.AlertType.ERROR, "The username and/or password are incorrect");
             connexionError.show();

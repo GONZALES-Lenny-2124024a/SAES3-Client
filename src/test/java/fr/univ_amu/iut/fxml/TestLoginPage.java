@@ -68,7 +68,7 @@ public class TestLoginPage {
 
     @Test
     public void shouldSubmitButtonContainsSeConnecterText() {
-        verifyThat("#submit", hasText("Se connecter"));
+        verifyThat("#submit", hasText("SE CONNECTER"));
     }
 
     @Test
@@ -100,6 +100,11 @@ public class TestLoginPage {
     public void shouldNotLogin(FxRobot robot) {
         robot.clickOn("#submit");
         robot.clickOn("OK");
+    }
+
+    @Test
+    public void shouldLogin(FxRobot robot) {
+        connectionLoginPage(robot);
     }
 
     public static void connectionLoginPage(FxRobot robot) {
