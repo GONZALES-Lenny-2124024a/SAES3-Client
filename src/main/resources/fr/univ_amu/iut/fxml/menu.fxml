@@ -38,7 +38,7 @@
                         <Insets bottom="30.0" />
                     </VBox.margin>
                 </Button>
-                <Button fx:id="deconnexion" mnemonicParsing="false"  prefHeight="69.0" prefWidth="382.0" styleClass="Btn" stylesheets="@../css/style.css" text="DECONNEXION"/>
+                <Button fx:id="disconnection" mnemonicParsing="false"  onAction="#disconnection" prefHeight="69.0" prefWidth="382.0" styleClass="Btn" stylesheets="@../css/style.css" text="DECONNEXION"/>
             </children>
         </VBox>
         <ImageView fitHeight="150.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">

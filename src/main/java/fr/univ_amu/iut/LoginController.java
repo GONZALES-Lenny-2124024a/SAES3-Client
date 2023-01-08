@@ -35,6 +35,8 @@ public class LoginController {
      * Supports the login service
      * @return if the username and the password are corrects
      * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull if the url of the next page is null
+     * @throws NotTheExpectedFlagException if the flag for the verification of the connexion isn't the expected flag
      */
     public boolean verifyLogin(String mail, String password) throws IOException, NotTheExpectedFlagException {
         serverCommunication.sendMessageToServer("LOGIN_FLAG");
@@ -52,6 +54,8 @@ public class LoginController {
      * Supports the login of the user
      * @param event of the button actioned
      * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull if the url of the next page is null
+     * @throws NotTheExpectedFlagException if the flag for the verification of the connexion isn't the expected flag
      */
     public void serviceLogin(ActionEvent event) throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
         if(verifyLogin(mailTextField.getText(),passwordTextField.getText())) {
@@ -63,5 +67,17 @@ public class LoginController {
         }
     }
 
+    /**
+     * Get the mail of the user
+     * @return the mail of the user
+     */
     public static String getMail() { return mail;}
+
+    /**
+     * Set the mail of the user
+     * @param newMail the new mail of the user
+     */
+    public static void setMail(String newMail) {
+        mail = newMail;
+    }
 }

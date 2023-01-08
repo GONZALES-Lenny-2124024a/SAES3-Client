@@ -104,11 +104,11 @@ public class TestMenuPage {
 
     @Test
     public void shouldDeconnexionButonContainsDeconnexionText() {
-        verifyThat("#deconnexion", hasText("DECONNEXION"));
+        verifyThat("#disconnection", hasText("DECONNEXION"));
     }
 
     @Test
     public void shouldContainsDeconnexionButton() {
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#deconnexion") != null);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#disconnection") != null);
     }
 }
