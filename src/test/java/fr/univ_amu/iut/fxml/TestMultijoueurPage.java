@@ -64,6 +64,16 @@ public class TestMultijoueurPage {
     }
 
     @Test
+    public void shouldWindowHeightEquals720() {
+        assertEquals(720.0, stage.getScene().getHeight());
+    }
+
+    @Test
+    public void shouldWindowWidthEquals1280() {
+        assertEquals(  1280.0, stage.getScene().getWidth());
+    }
+
+    @Test
     public void shouldJoinButtonContainsRejoindreText() {
         verifyThat("#join", hasText("REJOINDRE"));
     }

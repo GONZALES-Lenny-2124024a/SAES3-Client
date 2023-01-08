@@ -54,6 +54,18 @@ public class TestMultiplayerCreationPage {
     }
 
     @Test
+    public void shouldWindowWidthEquals1280(FxRobot robot) {
+        goToTheMultiplayerCreationPage(robot);
+        assertEquals(  1280.0, stage.getScene().getWidth());
+    }
+
+    @Test
+    public void shouldWindowHeightEquals720(FxRobot robot) {
+        goToTheMultiplayerCreationPage(robot);
+        assertEquals(720.0, stage.getScene().getHeight());
+    }
+
+    @Test
     public void shouldStartButtonContainsLancerText(FxRobot robot) {
         goToTheMultiplayerCreationPage(robot);
         verifyThat("#start", hasText("LANCER"));

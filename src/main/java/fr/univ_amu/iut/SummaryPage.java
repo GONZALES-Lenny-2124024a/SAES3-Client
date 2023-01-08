@@ -100,7 +100,7 @@ public class SummaryPage {
      * Change the scene to print the window
      */
     public void changeScene() {
-        Scene scene = new Scene(vboxParent);
+        Scene scene = new Scene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
         (SceneController.getStage()).setScene(scene);
     }
 

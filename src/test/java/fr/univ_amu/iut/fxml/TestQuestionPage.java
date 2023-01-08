@@ -66,6 +66,18 @@ public class TestQuestionPage {
     }
 
     @Test
+    public void shouldWindowWidthEquals1280(FxRobot robot) {
+        goToQuestionPage(robot);
+        assertEquals(  1280.0, stage.getScene().getWidth());
+    }
+
+    @Test
+    public void shouldWindowHeightEquals720(FxRobot robot) {
+        goToQuestionPage(robot);
+        assertEquals(720.0, stage.getScene().getHeight());
+    }
+
+    @Test
     public void shouldSubmitButtonContainsValiderText(FxRobot robot) {
         goToQuestionPage(robot);
         verifyThat("#submit", hasText("VALIDER"));

@@ -61,6 +61,18 @@ public class TestModulesPage {
         assertEquals(stage.getTitle(), "Network Stories");
     }
 
+    @Test
+    public void shouldWindowHeightEquals720(FxRobot robot) {
+        goToTheModulesPage(robot);
+        assertEquals(720.0, stage.getScene().getHeight());
+    }
+
+    @Test
+    public void shouldWindowWidthEquals1280(FxRobot robot) {
+        goToTheModulesPage(robot);
+        assertEquals(  1280.0, stage.getScene().getWidth());
+    }
+
     public void goToTheModulesPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
         robot.clickOn("#training");

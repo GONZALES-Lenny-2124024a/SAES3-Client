@@ -61,6 +61,12 @@ public class TestLoginPage {
     }
 
     @Test
+    public void shouldWindowHeightEquals720() { assertEquals(720.0, stage.getScene().getHeight()); }
+
+    @Test
+    public void shouldWindowWidthEquals1280() { assertEquals(  1280.0, stage.getScene().getWidth()); }
+
+    @Test
     public void shouldSubmitButtonContainsSeConnecterText() {
         verifyThat("#submit", hasText("Se connecter"));
     }

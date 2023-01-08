@@ -66,6 +66,12 @@ public class TestMenuPage {
     }
 
     @Test
+    public void shouldWindowHeightEquals720() { assertEquals(720.0, stage.getScene().getHeight()); }
+
+    @Test
+    public void shouldWindowWidthEquals1280() { assertEquals(  1280.0, stage.getScene().getWidth()); }
+
+    @Test
     public void shouldSoloButtonContainsSoloText() {
         verifyThat("#solo", hasText("SOLO"));
     }
@@ -74,7 +80,6 @@ public class TestMenuPage {
     public void shouldContainsPasswordButton() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#solo") != null);
     }
-
 
     @Test
     public void shouldMultiplayerButtonContainsMultijoueurText() {

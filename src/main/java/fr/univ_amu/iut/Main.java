@@ -15,8 +15,8 @@ import java.io.IOException;
  */
 public class Main extends Application {
 
-    private final double HEIGHT = Screen.getPrimary().getBounds().getHeight() / 1.2;
-    private final double WIDTH = Screen.getPrimary().getBounds().getWidth() / 1.2;
+    private static final double WINDOW_HEIGHT = 720.0;
+    private static final double WINDOW_WIDTH = 1280.0;
     private static ServerCommunication serverCommunication;
     public Main() throws IOException {
         serverCommunication = new ServerCommunication("127.0.0.1",10013);
@@ -32,18 +32,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
+        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        stage.setWidth(bounds.getWidth());
-        stage.setHeight(bounds.getHeight());
         // Screen settings
-        stage.setMaximized(true);
-        stage.minHeightProperty().set(HEIGHT);
-        stage.minWidthProperty().set(WIDTH);
         stage.setResizable(false);
-
 
         stage.setTitle("Network Stories");
         stage.setScene(scene);
@@ -61,5 +53,13 @@ public class Main extends Application {
      */
     public static ServerCommunication getServerCommunication() {
         return serverCommunication;
+    }
+
+    public static double getWindowHeight() {
+        return WINDOW_HEIGHT;
+    }
+
+    public static double getWindowWidth() {
+        return WINDOW_WIDTH;
     }
 }

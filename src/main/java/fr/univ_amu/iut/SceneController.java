@@ -47,9 +47,7 @@ public class SceneController {
         root = FXMLLoader.load(url);   // Load it
 
         // Windows size
-        Scene scene = new Scene(root, stage.getMinWidth(), stage.getMinHeight());
-        stage.minHeightProperty().set(stage.getMinHeight());
-        stage.minWidthProperty().set(stage.getMinWidth());
+        Scene scene = new Scene(root, Main.getWindowWidth(), Main.getWindowHeight());
 
         stage.setScene(scene);
         stage.show();

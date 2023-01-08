@@ -16,6 +16,7 @@ import org.testfx.framework.junit5.Start;
 
 import java.util.concurrent.TimeoutException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -51,12 +52,28 @@ public class TestSummaryPage {
     }
 
     @Test
+    public void shouldWindowWidthEquals1280(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        assertEquals(  1280.0, stage.getScene().getWidth());
+    }
+
+    @Test
+    public void shouldWindowHeightEquals720(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        assertEquals(720.0, stage.getScene().getHeight());
+    }
+
+    @Test
     public void shouldGoToTheSummaryPage(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
+    }
+
+    public void goToTheSummaryPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
         robot.clickOn("#solo");
         while((SceneController.getStage().getScene().getRoot().lookup("#answer1") != null) || (SceneController.getStage().getScene().getRoot().lookup("#writtenAnswer") != null)) {
             robot.clickOn("#submit");
         }
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
     }
 }
