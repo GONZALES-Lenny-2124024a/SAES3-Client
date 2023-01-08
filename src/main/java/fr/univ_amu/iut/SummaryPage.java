@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,18 +32,6 @@ public class SummaryPage {
     }
 
     /**
-     * Initialize a checkbox
-     * @param answersStatus the questions and if the user answered well
-     * @return the checkbox initialized
-     */
-    public CheckBox initializeCheckBox(Map.Entry<String, Boolean> answersStatus) {
-        CheckBox checkBox = new CheckBox(answersStatus.getKey());
-        checkBox.setSelected(answersStatus.getValue());
-        checkBox.setDisable(true);
-        return checkBox;
-    }
-
-    /**
      * Switch to the menu page
      * @throws IOException if the communication with the client is closed or didn't go well
      */
@@ -59,19 +48,42 @@ public class SummaryPage {
     }
 
     /**
-     * Initialize the checkboxes
+     * Initialize the user points label
+     * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void initialize() throws IOException, UrlOfTheNextPageIsNull {
-        // User points
+    public void initializeLabelUserPoints() throws IOException {
         vboxParent.getChildren().add(new Label("Votre nouveau nombre de points : " + getUserPointsFromTheServer()));
+    }
 
-        // Summary
+    /**
+     * Initialize a checkbox
+     * @param answersStatus the questions and if the user answered well
+     * @return the checkbox initialized
+     */
+    public Label initializeLabel(Map.Entry<String, Boolean> answersStatus) {
+        Label label = new Label(answersStatus.getKey());
+        if(answersStatus.getValue()) {
+            label.setTextFill(Color.GREEN);
+        } else {
+            label.setTextFill(Color.RED);
+        }
+        return label;
+    }
+
+    /**
+     * Initialize the summary
+     */
+    public void initializeSummary() {
         Iterator iteratorSummary = summary.entrySet().iterator();
         while(iteratorSummary.hasNext()) {
-            vboxParent.getChildren().add(initializeCheckBox((Map.Entry) iteratorSummary.next()));
+            vboxParent.getChildren().add(initializeLabel((Map.Entry) iteratorSummary.next()));
         }
+    }
 
-        // Button to leave
+    /**
+     * Initialize the button to leave
+     */
+    public void initializeButtonToLeave() {
         Button button = new Button("QUITTER");
         button.setId("leave");
         button.setOnAction(event -> {
@@ -82,9 +94,24 @@ public class SummaryPage {
             }
         });
         vboxParent.getChildren().add(button);
+    }
 
-        // Print the window
+    /**
+     * Change the scene to print the window
+     */
+    public void changeScene() {
         Scene scene = new Scene(vboxParent);
         (SceneController.getStage()).setScene(scene);
+    }
+
+    /**
+     * Initialize the checkboxes
+     * @throws IOException if the communication with the client is closed or didn't go well
+     */
+    public void initialize() throws IOException {
+        initializeLabelUserPoints();
+        initializeSummary();
+        initializeButtonToLeave();
+        changeScene();
     }
 }
