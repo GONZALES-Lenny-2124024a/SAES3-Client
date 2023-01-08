@@ -104,7 +104,7 @@ public class TestMenuPage {
 
     @Test
     public void shouldDeconnexionButonContainsDeconnexionText() {
-        verifyThat("#deconnexion", hasText("DÉCONNEXION"));
+        verifyThat("#deconnexion", hasText("DECONNEXION"));
     }
 
     @Test
