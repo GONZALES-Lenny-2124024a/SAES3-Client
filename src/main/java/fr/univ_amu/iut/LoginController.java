@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -38,7 +39,7 @@ public class LoginController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      * @throws NotTheExpectedFlagException if the flag for the verification of the connexion isn't the expected flag
      */
-    public boolean verifyLogin(String mail, String password) throws IOException, NotTheExpectedFlagException {
+    public boolean verifyLogin(String mail, String password) throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer("LOGIN_FLAG");
         serverCommunication.sendMessageToServer(mail);
         serverCommunication.sendMessageToServer(password);
@@ -56,7 +57,7 @@ public class LoginController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      * @throws NotTheExpectedFlagException if the flag for the verification of the connexion isn't the expected flag
      */
-    public void serviceLogin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void serviceLogin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         if(verifyLogin(mailTextField.getText(),passwordTextField.getText())) {
             mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
             sceneController.switchTo("fxml/menu.fxml");

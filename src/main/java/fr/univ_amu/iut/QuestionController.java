@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -43,7 +44,7 @@ public class QuestionController {
      * Initialize the question and the answers
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException {
+    public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         question.setText(serverCommunication.receiveMessageFromServer());        // We are obliged to do this for the endgame check
         description.setText(serverCommunication.receiveMessageFromServer());
         switch(answerType) {
@@ -79,7 +80,7 @@ public class QuestionController {
      * Set the text of the checkboxes
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void initializeTextCheckBoxes() throws IOException {
+    public void initializeTextCheckBoxes() throws IOException, ClassNotFoundException, NotAStringException {
         answer1.setText(serverCommunication.receiveMessageFromServer());
         answer2.setText(serverCommunication.receiveMessageFromServer());
         answer3.setText(serverCommunication.receiveMessageFromServer());
@@ -101,7 +102,7 @@ public class QuestionController {
      * Submit the question to the server
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void submitAnswer() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void submitAnswer() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         if(vboxParent.getChildren().size() <= 6) {  // If the response is a written response
             serverCommunication.sendMessageToServer(writtenResponseTextField.getText());
             vboxParent.getChildren().remove(writtenResponseTextField); // Remove the TextField
@@ -126,7 +127,7 @@ public class QuestionController {
      * Check if the answer is correct or wrong and add it to the hash map
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void answerStatus() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void answerStatus() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         switch(serverCommunication.receiveMessageFromServer()) {
             case "CORRECT_ANSWER_FLAG" -> summary.put(question.getText(), true);
             case "WRONG_ANSWER_FLAG" -> summary.put(question.getText(), false);
@@ -140,7 +141,7 @@ public class QuestionController {
      * Check if there are no more question
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void verifyEndGame() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void verifyEndGame() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         String message = serverCommunication.receiveMessageFromServer();
         if(message.equals("END_GAME_FLAG")) {
             endGame();
@@ -153,7 +154,7 @@ public class QuestionController {
      * It stops the game
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void endGame() throws IOException, UrlOfTheNextPageIsNull {
+    public void endGame() throws IOException, ClassNotFoundException, NotAStringException {
         if(serverCommunication.getSocketClient().getPort() != serverCommunication.getPort())  { serverCommunication.changePort(serverCommunication.getPort()); } // If this is a multiplayer session, the user must log in to the main server
         SummaryPage summaryPage = new SummaryPage(summary);
         summaryPage.initialize();
@@ -164,7 +165,7 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
-    public void initialize() throws IOException, NotTheExpectedFlagException {
+    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         initializeVariables(serverCommunication.receiveMessageFromServer());
     }
 }

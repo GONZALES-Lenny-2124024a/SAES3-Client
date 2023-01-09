@@ -6,8 +6,6 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 
 public class ButtonSwitchToMenu extends Button {
-    private SceneController sceneController;
-
     public ButtonSwitchToMenu() {
         initializeButton();
     }
@@ -16,7 +14,8 @@ public class ButtonSwitchToMenu extends Button {
         setOnAction(event ->
                 {
                     try {
-                        sceneController = new SceneController();
+                        Main.getServerCommunication().sendMessageToServer("BACK_TO_MENU_FLAG");
+                        SceneController sceneController = new SceneController();
                         sceneController.switchTo("fxml/menu.fxml");
                     } catch (UrlOfTheNextPageIsNull | IOException e) {
                         throw new RuntimeException(e);

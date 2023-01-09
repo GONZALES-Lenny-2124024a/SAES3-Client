@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -36,7 +37,8 @@ public class LoadingController {
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
                             beginSession();
                         }
-                    } catch (IOException | InterruptedException | UrlOfTheNextPageIsNull | NotTheExpectedFlagException ex) {
+                    } catch (IOException | InterruptedException | UrlOfTheNextPageIsNull | NotTheExpectedFlagException |
+                             ClassNotFoundException | NotAStringException ex) {
                         throw new RuntimeException(ex);
                     }
 
@@ -51,7 +53,7 @@ public class LoadingController {
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws InterruptedException if the client disconnected
      */
-    public void beginSession() throws IOException, InterruptedException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void beginSession() throws IOException, InterruptedException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         if (!(serverCommunication.receiveMessageFromServer()).equals("BEGIN_FLAG")) {    // When the game begin
             throw new NotTheExpectedFlagException("BEGIN_FLAG");
         }

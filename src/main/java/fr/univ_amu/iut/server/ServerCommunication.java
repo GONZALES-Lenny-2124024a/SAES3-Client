@@ -1,6 +1,7 @@
 package fr.univ_amu.iut.server;
 
 import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.exceptions.NotAStringException;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -13,18 +14,18 @@ public class ServerCommunication {
     private final String hostname;
     private int port;
     private Socket socketClient;
-    private BufferedWriter out;
     private BufferedReader in;
-    private String message;
     private Object object;
     private ObjectInputStream inObject;
+    private ObjectOutputStream outObject;
 
     public ServerCommunication(String hostname, int port) throws IOException {
         this.hostname = hostname;
         this.port = port;
         socketClient = new Socket(hostname, port);
-        out = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+        inObject = new ObjectInputStream(socketClient.getInputStream());
+        outObject = new ObjectOutputStream(socketClient.getOutputStream());
     }
 
     /**
@@ -41,9 +42,8 @@ public class ServerCommunication {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
    public void sendMessageToServer(String message) throws IOException {
-        out.write(message);
-        out.newLine();
-        out.flush();
+        outObject.writeObject(message);
+        outObject.flush();
    }
 
     /**
@@ -52,11 +52,15 @@ public class ServerCommunication {
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws InterruptedException if the client disconnected
      */
-   public String receiveMessageFromServer() throws IOException {
-       if((message = in.readLine()) != null) {
-            return message;
+   public String receiveMessageFromServer() throws IOException, ClassNotFoundException, NotAStringException {
+       try {
+           if((object = inObject.readObject()) instanceof String) {
+               return object.toString();
+           }
+           throw new NotAStringException(object);
+       } catch (EOFException | ClassNotFoundException e) {
+           e.printStackTrace();
        }
-       close();
        return null;
    }
 
@@ -67,15 +71,15 @@ public class ServerCommunication {
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws ClassNotFoundException if the object class not found
      */
-   public Object receiveObjectFromServer() throws IOException, ClassNotFoundException {
-       inObject = new ObjectInputStream(socketClient.getInputStream()); // We can't instantiate in the constructor because the application don't run
-       if ((object = inObject.readObject()) != null) {
+   public Object receiveObjectFromServer() throws IOException {
+       try {
+           object = inObject.readObject();
            return object;
+       } catch (EOFException | ClassNotFoundException e) {
+           e.printStackTrace();
        }
-       close();
        return null;
    }
-
 
     /**
      * Return true if the server sent a message to the client
@@ -94,8 +98,9 @@ public class ServerCommunication {
    public void changePort(int newPort) throws IOException {
        port = newPort;
        socketClient = new Socket(hostname, port);
-       out = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
        in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+       outObject = new ObjectOutputStream(socketClient.getOutputStream());
+       inObject = new ObjectInputStream(socketClient.getInputStream());
    }
 
     /**
@@ -112,14 +117,9 @@ public class ServerCommunication {
      */
     public void close() throws IOException {
         in.close();
-        out.close();
         inObject.close();
+        outObject.close();
         socketClient.close();
-
-        // Close the window
-        SceneController sceneController = new SceneController();
-        Stage stage = sceneController.getStage();
-        stage.close();
     }
 }
 

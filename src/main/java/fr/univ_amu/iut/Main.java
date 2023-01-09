@@ -32,14 +32,16 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
         // Screen settings
         stage.setResizable(false);
 
         stage.setTitle("Network Stories");
-        stage.setScene(scene);
-        SceneController.setStage(stage);    // Stores the current stage
+
+        SceneController sceneController = new SceneController();
+        sceneController.setStage(stage);    // Stores the current stage
+        sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
+
         stage.show();
     }
 

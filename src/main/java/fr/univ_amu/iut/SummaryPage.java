@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import fr.univ_amu.iut.server.ServerCommunication;
 import javafx.scene.Scene;
@@ -42,7 +43,7 @@ public class SummaryPage {
         sceneController.switchTo("fxml/menu.fxml");
     }
 
-    public int getUserPointsFromTheServer() throws IOException {
+    public int getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer(LoginController.getMail());
         return Integer.parseInt(serverCommunication.receiveMessageFromServer());
     }
@@ -51,7 +52,7 @@ public class SummaryPage {
      * Initialize the user points label
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void initializeLabelUserPoints() throws IOException {
+    public void initializeLabelUserPoints() throws IOException, ClassNotFoundException, NotAStringException {
         vboxParent.getChildren().add(new Label("Votre nouveau nombre de points : " + getUserPointsFromTheServer()));
     }
 
@@ -108,7 +109,7 @@ public class SummaryPage {
      * Initialize the checkboxes
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, ClassNotFoundException, NotAStringException {
         initializeLabelUserPoints();
         initializeSummary();
         initializeButtonToLeave();

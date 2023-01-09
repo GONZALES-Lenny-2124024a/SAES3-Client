@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -33,7 +34,7 @@ public class MultiplayerCreationController extends QuestionController{
      * Send a message to the server to begin the multiplayer's session
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that the host want to start the game by clicking on the 'Lancer' button
         if(!(serverCommunication.receiveMessageFromServer().equals("CAN_JOIN_FLAG"))) { // The host can join the multiplayer's session
             throw new NotTheExpectedFlagException("CAN_JOIN_FLAG");
@@ -49,7 +50,7 @@ public class MultiplayerCreationController extends QuestionController{
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
                             usersPresentListView.getItems().add(serverCommunication.receiveMessageFromServer());
                         }
-                    } catch (IOException ex) {
+                    } catch (IOException | ClassNotFoundException | NotAStringException ex) {
                         throw new RuntimeException(ex);
                     }
 
@@ -63,7 +64,7 @@ public class MultiplayerCreationController extends QuestionController{
      * Get the session code from the server
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void getSessionCode() throws IOException, NotTheExpectedFlagException {
+    public void getSessionCode() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         if(!(serverCommunication.receiveMessageFromServer().equals("CODE_FLAG"))) {
             throw new NotTheExpectedFlagException("CODE_FLAG");
         }
@@ -75,7 +76,7 @@ public class MultiplayerCreationController extends QuestionController{
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
-    public void initialize() throws IOException, NotTheExpectedFlagException {
+    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         getSessionCode();
         getUsersPresent();
     }

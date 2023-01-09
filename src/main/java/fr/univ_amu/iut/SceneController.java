@@ -35,6 +35,25 @@ public class SceneController {
     }
 
     /**
+     * Initialize the scene
+     * @param parent the parent of the scene
+     * @param width the width of the window
+     * @param height the height of the window
+     * @return the initialized scene
+     */
+    public void initializeScene(Parent parent, double width, double height) {
+        Scene scene = new Scene(parent, width, height);
+        stage.setScene(scene);
+        scene.getWindow().setOnCloseRequest(event -> {
+            try {
+                Main.getServerCommunication().close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    /**
      * Supports the switch page (with name)
      * @throws IOException if the communication with the client is closed or didn't go well
      */
@@ -46,10 +65,7 @@ public class SceneController {
         }
         root = FXMLLoader.load(url);   // Load it
 
-        // Windows size
-        Scene scene = new Scene(root, Main.getWindowWidth(), Main.getWindowHeight());
-
-        stage.setScene(scene);
+        initializeScene(root,Main.getWindowWidth(), Main.getWindowHeight());
         stage.show();
     }
 }

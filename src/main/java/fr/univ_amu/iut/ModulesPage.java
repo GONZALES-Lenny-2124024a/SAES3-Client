@@ -60,8 +60,7 @@ public class ModulesPage {
      */
     public void initialize() throws IOException, ClassNotFoundException {
         getModulesFromServer();
-        Scene scene = new Scene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
         initializeModuleButtons(pageToSwitchTo);
-        (SceneController.getStage()).setScene(scene);
+        sceneController.initializeScene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
     }
 }

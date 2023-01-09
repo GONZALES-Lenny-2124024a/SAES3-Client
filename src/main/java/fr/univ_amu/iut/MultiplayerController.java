@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -29,7 +30,7 @@ public class MultiplayerController {
      *
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException {
+    public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         sendJoinFlag(); // Send multiplayer session's code
         if(!(serverCommunication.receiveMessageFromServer().equals("CODE_EXISTS_FLAG"))) {
             throw new NotTheExpectedFlagException("CODE_EXISTS_FLAG");
@@ -47,7 +48,7 @@ public class MultiplayerController {
      * Send multiplayer session's code
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void sendJoinFlag() throws IOException {
+    public void sendJoinFlag() throws IOException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
         serverCommunication.receiveMessageFromServer();
         serverCommunication.sendMessageToServer(codeInput.getText());
