@@ -1,9 +1,11 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;

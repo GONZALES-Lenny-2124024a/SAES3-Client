@@ -89,19 +89,6 @@ public class TestQuestionPage {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
     }
 
-
-    @Test
-    public void shouldQuitButtonContainsQuitterText(FxRobot robot) {
-        goToQuestionPage(robot);
-        verifyThat("#quit", hasText("QUITTER"));
-    }
-
-    @Test
-    public void shouldContainsButtonQuit(FxRobot robot) {
-        goToQuestionPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#quit") != null);
-    }
-
     public void goToQuestionPage(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
         robot.clickOn("#solo");

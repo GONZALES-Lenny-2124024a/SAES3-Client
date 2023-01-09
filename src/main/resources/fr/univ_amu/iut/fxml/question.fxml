@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import fr.univ_amu.iut.ButtonSwitchToMenu?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.QuestionController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="950.7994995117188" minWidth="10.0" prefWidth="186.07369995117188" />
@@ -55,6 +56,5 @@
                 <Font size="21.0" />
             </font>
         </Button>
-        <Button fx:id="quit" mnemonicParsing="false" styleClass="Btn" text="QUITTER" userData="menu.fxml" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="TOP" />
     </children>
 </GridPane>

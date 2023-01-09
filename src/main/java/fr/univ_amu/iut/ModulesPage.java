@@ -35,7 +35,7 @@ public class ModulesPage {
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws ClassNotFoundException if the object isn't found (the class exists on the server but not in the client)
      */
-    public void getModulesFromServer() throws IOException, ClassNotFoundException {
+    public void getModulesFromServer() throws IOException {
         List<?>  receivedObject = (List<?>) serverCommunication.receiveObjectFromServer();
         if ((receivedObject != null) && (receivedObject.get(0) instanceof String)) {    //Check the cast
             modules = (List<String>) receivedObject;
@@ -53,6 +53,13 @@ public class ModulesPage {
         }
     }
 
+    public void initializeSwitchToMenuButton() {
+        ButtonSwitchToMenu buttonSwitchToMenu = new ButtonSwitchToMenu();
+        buttonSwitchToMenu.setText("QUITTER");
+        buttonSwitchToMenu.setId("quit");
+        vboxParent.getChildren().add(buttonSwitchToMenu);
+    }
+
     /**
      * Initialize the modulesController
      * @throws IOException if the communication with the client is closed or didn't go well
@@ -61,6 +68,7 @@ public class ModulesPage {
     public void initialize() throws IOException, ClassNotFoundException {
         getModulesFromServer();
         initializeModuleButtons(pageToSwitchTo);
+        initializeSwitchToMenuButton();
         sceneController.initializeScene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
     }
 }
