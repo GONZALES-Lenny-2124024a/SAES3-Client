@@ -1,6 +1,7 @@
 module fr.univ_amu.iut {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
     requires transitive javafx.base;
     requires transitive javafx.graphics;
     requires java.desktop;
