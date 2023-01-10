@@ -44,13 +44,6 @@ public class SceneController {
     public void initializeScene(Parent parent, double width, double height) {
         Scene scene = new Scene(parent, width, height);
         stage.setScene(scene);
-        scene.getWindow().setOnCloseRequest(event -> {
-            try {
-                Main.getServerCommunication().close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
     /**

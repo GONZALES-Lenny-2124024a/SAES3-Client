@@ -38,11 +38,16 @@ public class SummaryPage {
      */
     public void switchTo() throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
-        if(serverCommunication.getPort() != 10013) { serverCommunication.changePort(10013); } // If it was a multiplayer session, the user must connect to the main server
-
         sceneController.switchTo("fxml/menu.fxml");
     }
 
+    /**
+     * Get the user points
+     * @return the user points
+     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws ClassNotFoundException
+     * @throws NotAStringException
+     */
     public int getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer(LoginController.getMail());
         return Integer.parseInt(serverCommunication.receiveMessageFromServer());
@@ -101,8 +106,8 @@ public class SummaryPage {
      * Change the scene to print the window
      */
     public void changeScene() {
-        Scene scene = new Scene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
-        (SceneController.getStage()).setScene(scene);
+        SceneController sceneController = new SceneController();
+        sceneController.initializeScene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
     }
 
     /**

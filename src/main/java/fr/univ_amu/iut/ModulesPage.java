@@ -65,7 +65,7 @@ public class ModulesPage {
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws ClassNotFoundException getModulesFromServer() => if the object isn't found (the class exists on the server but not in the client)
      */
-    public void initialize() throws IOException, ClassNotFoundException {
+    public void initialize() throws IOException {
         getModulesFromServer();
         initializeModuleButtons(pageToSwitchTo);
         initializeSwitchToMenuButton();

@@ -24,34 +24,16 @@ public class MultiplayerController {
     }
 
     /**
-     * Send the multiplayer join flag
-     * Change the port to communicate with the multiplayer session's server
+     * Send the multiplayer join flag, the multiplayer session code and the email of the user
      * Switch to the loading page
      *
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
-        sendJoinFlag(); // Send multiplayer session's code
-        if(!(serverCommunication.receiveMessageFromServer().equals("CODE_EXISTS_FLAG"))) {
-            throw new NotTheExpectedFlagException("CODE_EXISTS_FLAG");
-        }
-        serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Change the port to communicate with the multiplayer session's server
-
-        if(!(serverCommunication.receiveMessageFromServer().equals("PRESENCE_FLAG"))) {
-            throw new NotTheExpectedFlagException("PRESENCE_FLAG");
-        }
+    public void joinSession() throws IOException, UrlOfTheNextPageIsNull {
+        serverCommunication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
+        serverCommunication.sendMessageToServer(codeInput.getText());   // Get the multiplayer session code
         serverCommunication.sendMessageToServer(LoginController.getMail());
         sceneController.switchTo("fxml/loading.fxml");
-    }
-
-    /**
-     * Send multiplayer session's code
-     * @throws IOException if the communication with the client is closed or didn't go well
-     */
-    public void sendJoinFlag() throws IOException, ClassNotFoundException, NotAStringException {
-        serverCommunication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
-        serverCommunication.receiveMessageFromServer();
-        serverCommunication.sendMessageToServer(codeInput.getText());
     }
 
     /**
@@ -59,7 +41,7 @@ public class MultiplayerController {
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws ClassNotFoundException if the object class not found
      */
-    public void creationSession() throws IOException, ClassNotFoundException {
+    public void creationSession() throws IOException {
         serverCommunication.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
         ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml");
         modulesController.initialize();

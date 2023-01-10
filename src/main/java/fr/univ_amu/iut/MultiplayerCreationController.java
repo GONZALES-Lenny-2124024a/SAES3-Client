@@ -31,19 +31,22 @@ public class MultiplayerCreationController extends QuestionController{
     }
 
     /**
-     * Send a message to the server to begin the multiplayer's session
+     * Start the session
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
-        serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that the host want to start the game by clicking on the 'Lancer' button
-        if(!(serverCommunication.receiveMessageFromServer().equals("CAN_JOIN_FLAG"))) { // The host can join the multiplayer's session
-            throw new NotTheExpectedFlagException("CAN_JOIN_FLAG");
+        serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that we want to start the game by clicking on the 'Start' button
+        if(!(serverCommunication.receiveMessageFromServer().equals("BEGIN_FLAG"))) { // The game begins
+            throw new NotTheExpectedFlagException("BEGIN_FLAG");
         }
-        serverCommunication.changePort(Integer.parseInt(serverCommunication.receiveMessageFromServer()));  // Connect to the multiplayer session
+        serverCommunication.sendMessageToServer("BEGIN_FLAG");  // Send to the server that the game begin
         sceneController.switchTo("fxml/question.fxml");
     }
 
-    public void getUsersPresent() {
+    /**
+     * Get users who joined the multiplayer session
+     */
+    public void getEmailOfTheUsersWhoJoined() {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1.0), e -> {
                     try {
@@ -78,6 +81,6 @@ public class MultiplayerCreationController extends QuestionController{
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         getSessionCode();
-        getUsersPresent();
+        getEmailOfTheUsersWhoJoined();
     }
 }

@@ -153,7 +153,6 @@ public class QuestionController {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void endGame() throws IOException, ClassNotFoundException, NotAStringException {
-        if(serverCommunication.getSocketClient().getPort() != serverCommunication.getPort())  { serverCommunication.changePort(serverCommunication.getPort()); } // If this is a multiplayer session, the user must log in to the main server
         SummaryPage summaryPage = new SummaryPage(summary);
         summaryPage.initialize();
     }

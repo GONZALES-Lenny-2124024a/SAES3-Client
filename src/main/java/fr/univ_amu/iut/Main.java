@@ -3,11 +3,12 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.server.ServerCommunication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import javafx.scene.media.Media;
+
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -33,8 +34,12 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
 
+        Media sound = new Media(getClass().getResource("testAudio.mp4").toExternalForm());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+
         // Screen settings
-        stage.setResizable(false);
+        stage.setResizable(false);  // The window isn't resizable
 
         stage.setTitle("Network Stories");
 
@@ -57,10 +62,18 @@ public class Main extends Application {
         return serverCommunication;
     }
 
+    /**
+     * Get the window height reference
+     * @return the height of the window
+     */
     public static double getWindowHeight() {
         return WINDOW_HEIGHT;
     }
 
+    /**
+     * Get the window width reference
+     * @return the width of the window
+     */
     public static double getWindowWidth() {
         return WINDOW_WIDTH;
     }

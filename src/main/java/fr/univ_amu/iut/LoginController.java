@@ -43,8 +43,8 @@ public class LoginController {
         serverCommunication.sendMessageToServer("LOGIN_FLAG");
         serverCommunication.sendMessageToServer(mail);
         serverCommunication.sendMessageToServer(password);
-        message = serverCommunication.receiveMessageFromServer();
 
+        message = serverCommunication.receiveMessageFromServer();
         if(!(message.equals("LOGIN_SUCCESSFULLY_FLAG")) && !(message.equals("LOGIN_NOT_SUCCESSFULLY_FLAG"))) {
             throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY_FLAG or LOGIN_NOT_SUCCESSFULLY_FLAG");
         }

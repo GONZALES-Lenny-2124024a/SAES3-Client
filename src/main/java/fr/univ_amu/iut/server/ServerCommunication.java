@@ -36,6 +36,7 @@ public class ServerCommunication {
         return socketClient;
     }
 
+
     /**
      * Send a String to the server
      * @param message to sent to the server
@@ -64,7 +65,6 @@ public class ServerCommunication {
        return null;
    }
 
-
     /**
      * Return the object received from the server
      * @return the object or null if the server disconnected
@@ -88,27 +88,6 @@ public class ServerCommunication {
      */
    public boolean isReceiveMessageFromServer() throws IOException {
        return in.ready();
-   }
-
-    /**
-     * Change the port
-     * @param newPort the new port
-     * @throws IOException if the communication with the client is closed or didn't go well
-     */
-   public void changePort(int newPort) throws IOException {
-       port = newPort;
-       socketClient = new Socket(hostname, port);
-       in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-       outObject = new ObjectOutputStream(socketClient.getOutputStream());
-       inObject = new ObjectInputStream(socketClient.getInputStream());
-   }
-
-    /**
-     * Return the port of the main server
-     * @return the port of the server
-     */
-   public int getPort() {
-       return port;
    }
 
     /**
