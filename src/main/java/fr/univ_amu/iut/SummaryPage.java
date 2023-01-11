@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,10 +24,9 @@ public class SummaryPage {
     private final VBox vboxParent;
 
     private ServerCommunication serverCommunication;
-    private final HashMap<String, Boolean> summary;
+    private HashMap<String, Boolean> summary;
 
     public SummaryPage(HashMap<String, Boolean> summary) {
-        SceneController sceneController = new SceneController();
         this.summary = summary;
         serverCommunication = Main.getServerCommunication();
         vboxParent = new VBox();
@@ -76,14 +76,31 @@ public class SummaryPage {
         return label;
     }
 
-    /**
-     * Initialize the summary
-     */
-    public void initializeSummary() {
+    public void initializeSummaryEntries() {
         Iterator iteratorSummary = summary.entrySet().iterator();
         while(iteratorSummary.hasNext()) {
             vboxParent.getChildren().add(initializeLabel((Map.Entry) iteratorSummary.next()));
         }
+    }
+
+    /**
+     * Get the summary from the server
+     * @throws IOException if the communication with the client is closed or didn't go well
+     */
+    public void getSummaryFromServer() throws IOException {
+        HashMap<?,?> receivedObject = (HashMap<?,?>) serverCommunication.receiveObjectFromServer();
+        if((receivedObject != null) && (receivedObject.keySet().stream().allMatch(key -> key instanceof String))) {
+            summary = (HashMap<String, Boolean>) receivedObject;
+        }
+    }
+
+    /**
+     * Initialize the summary
+     * @throws IOException if the communication with the client is closed or didn't go well
+     */
+    public void initializeSummary() throws IOException {
+        getSummaryFromServer();
+        initializeSummaryEntries();
     }
 
     /**

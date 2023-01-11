@@ -118,22 +118,8 @@ public class QuestionController {
             vboxParent.getChildren().remove(1,4);   // Remove all the checkboxes
         }
 
-        answerStatus(); // Check if the answer is correct or wrong and add it to the hash map
+        verifyEndGame(); // Check if the answer is correct or wrong and add it to the hash map
     }
-
-    /**
-     * Check if the answer is correct or wrong and add it to the hash map
-     * @throws IOException if the communication with the client is closed or didn't go well
-     */
-    public void answerStatus() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
-        switch(serverCommunication.receiveMessageFromServer()) {
-            case "CORRECT_ANSWER_FLAG" -> summary.put(descriptionQuestion.getText(), true);
-            case "WRONG_ANSWER_FLAG" -> summary.put(descriptionQuestion.getText(), false);
-            default -> throw new NotTheExpectedFlagException("CORRECT_ANSWER_FLAG or WRONG_ANSWER_FLAG");
-        }
-        verifyEndGame();
-    }
-
 
     /**
      * Check if there are no more question
