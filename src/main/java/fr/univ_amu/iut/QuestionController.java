@@ -1,12 +1,12 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
-import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -29,6 +29,8 @@ public class QuestionController {
     private CheckBox answer3;
     @FXML
     private TextField writtenResponseTextField;
+    @FXML
+    private ImageView characterImage;
     private final ServerCommunication serverCommunication;
     private final HashMap<String, Boolean> summary;
     private final Font font;
@@ -143,12 +145,20 @@ public class QuestionController {
         summaryPage.initialize();
     }
 
+    public void initializeCharacterImage() throws NotAStringException, IOException, ClassNotFoundException {
+        String module = serverCommunication.receiveMessageFromServer();
+        String imageName = module.replace(" ", "_");
+        String urlCharacterImage = getClass().getResource("img/characters/" + imageName + ".png").toExternalForm();
+        characterImage.setImage(new Image(urlCharacterImage));
+    }
+
     /**
      * Initialize the first question
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+        initializeCharacterImage();
         initializeVariables(serverCommunication.receiveMessageFromServer());
     }
 }

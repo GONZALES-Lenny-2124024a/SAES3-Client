@@ -47,9 +47,8 @@ public class MenuController{
     /**
      * Send the training flag + switch to the modules page
      * @throws IOException if the communication with the client is closed or didn't go well
-     * @throws ClassNotFoundException Object not found when we receive an object from the server
      */
-    public void trainingMode() throws IOException, ClassNotFoundException {
+    public void trainingMode() throws IOException {
         serverCommunication.sendMessageToServer("TRAINING_FLAG");
         ModulesPage modulesController = new ModulesPage("fxml/question.fxml");
         modulesController.initialize();

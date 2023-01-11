@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Controller of the multiplayer session's creation page
  */
-public class MultiplayerCreationController extends QuestionController{
+public class MultiplayerCreationController {
     @FXML
     private TextField codeSession;
     @FXML

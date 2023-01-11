@@ -64,7 +64,7 @@
         </Label>
         <ImageView fitHeight="405.0" fitWidth="469.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
             <image>
-                <Image url="@../img/Characters.png" />
+                <Image url="@../img/characters/Characters.png" />
             </image>
         </ImageView>
         <ImageView fitHeight="299.0" fitWidth="391.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
