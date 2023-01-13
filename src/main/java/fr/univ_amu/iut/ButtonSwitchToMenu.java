@@ -12,6 +12,7 @@ public class ButtonSwitchToMenu extends Button {
     }
 
     public void initializeButton() {
+        getStyleClass().add("Btn");
         setOnAction(event ->
                 {
                     try {

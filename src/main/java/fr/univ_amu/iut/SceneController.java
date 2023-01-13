@@ -43,6 +43,7 @@ public class SceneController {
      */
     public void initializeScene(Parent parent, double width, double height) {
         Scene scene = new Scene(parent, width, height);
+        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         stage.setScene(scene);
     }
 

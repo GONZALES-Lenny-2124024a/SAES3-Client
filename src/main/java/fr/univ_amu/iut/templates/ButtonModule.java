@@ -23,7 +23,8 @@ public class ButtonModule extends Button {
      */
     public void initializeButton(String text) {
         setText(text);  // Set the button text
-
+        getStyleClass().add("Btn");
+        setPrefSize(160.0, 40.0);
         // Set on action
         setOnAction(event -> {
             try {

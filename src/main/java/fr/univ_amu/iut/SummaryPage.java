@@ -3,12 +3,15 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import fr.univ_amu.iut.server.ServerCommunication;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,6 +36,14 @@ public class SummaryPage {
     }
 
     /**
+     * Initialize the parent container
+     */
+    public void initializeVBoxParent() {
+        vboxParent.getStyleClass().add("background");
+        vboxParent.setAlignment(Pos.TOP_CENTER);
+    }
+
+    /**
      * Switch to the menu page
      * @throws IOException if the communication with the client is closed or didn't go well
      */
@@ -48,17 +59,22 @@ public class SummaryPage {
      * @throws ClassNotFoundException
      * @throws NotAStringException
      */
-    public int getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException {
+    public String getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer(LoginController.getMail());
-        return Integer.parseInt(serverCommunication.receiveMessageFromServer());
+        return serverCommunication.receiveMessageFromServer();
     }
 
     /**
      * Initialize the user points label
      * @throws IOException if the communication with the client is closed or didn't go well
      */
-    public void initializeLabelUserPoints() throws IOException, ClassNotFoundException, NotAStringException {
-        vboxParent.getChildren().add(new Label("Votre nouveau nombre de points : " + getUserPointsFromTheServer()));
+    public void initializeLabelsUserPoints() throws IOException, ClassNotFoundException, NotAStringException {
+        Label labelUserPoint = new Label("Votre nouveau nombre de points : ");
+        Label labelPoint = new Label(getUserPointsFromTheServer());
+        vboxParent.getChildren().addAll(labelUserPoint, labelPoint);
+        labelUserPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 25");
+        labelUserPoint.setPadding(new Insets(20, 0, 0, 0));
+        labelPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 35");
     }
 
     /**
@@ -68,6 +84,10 @@ public class SummaryPage {
      */
     public Label initializeLabel(Map.Entry<String, Boolean> answersStatus) {
         Label label = new Label(answersStatus.getKey());
+        label.setTextAlignment(TextAlignment.CENTER);
+        label.setWrapText(true);
+        label.setPadding(new Insets(30, 200, 20, 200));
+        label.setStyle("-fx-font-size: 17");
         if(answersStatus.getValue()) {
             label.setTextFill(Color.GREEN);
         } else {
@@ -109,6 +129,8 @@ public class SummaryPage {
     public void initializeButtonToLeave() {
         Button button = new Button("QUITTER");
         button.setId("leave");
+        button.getStyleClass().add("Btn");
+        button.setPrefSize(195.0, 56.0);
         button.setOnAction(event -> {
             try {
                 switchTo();
@@ -132,7 +154,8 @@ public class SummaryPage {
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void initialize() throws IOException, ClassNotFoundException, NotAStringException {
-        initializeLabelUserPoints();
+        initializeVBoxParent();
+        initializeLabelsUserPoints();
         initializeSummary();
         initializeButtonToLeave();
         changeScene();

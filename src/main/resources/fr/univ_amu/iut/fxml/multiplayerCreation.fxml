@@ -13,7 +13,7 @@
 
 <?import javafx.scene.control.TextField?>
 <?import fr.univ_amu.iut.ButtonSwitchToMenu?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.MultiplayerCreationController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.MultiplayerCreationController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="565.9341125488281" minWidth="10.0" prefWidth="192.5590057373047" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="710.9358673095703" minWidth="10.0" prefWidth="396.4409942626953" />

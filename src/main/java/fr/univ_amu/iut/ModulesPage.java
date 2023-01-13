@@ -2,6 +2,7 @@ package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.templates.ButtonModule;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -14,7 +15,7 @@ import java.util.List;
  * Controller of the modules page where the user choose a module to train
  */
 public class ModulesPage {
-    private final VBox vboxParent;
+    private VBox vboxParent;
 
     private List<String> modules;
     private final ServerCommunication serverCommunication;
@@ -60,12 +61,20 @@ public class ModulesPage {
         vboxParent.getChildren().add(buttonSwitchToMenu);
     }
 
+    public void initializeVBoxParent() {
+        vboxParent = new VBox();
+        vboxParent.getStyleClass().add("background");
+        vboxParent.setAlignment(Pos.CENTER);
+        vboxParent.setSpacing(20.0);
+    }
+
     /**
      * Initialize the modulesController
      * @throws IOException if the communication with the client is closed or didn't go well
      * @throws ClassNotFoundException getModulesFromServer() => if the object isn't found (the class exists on the server but not in the client)
      */
     public void initialize() throws IOException {
+        initializeVBoxParent();
         getModulesFromServer();
         initializeModuleButtons(pageToSwitchTo);
         initializeSwitchToMenuButton();
