@@ -57,6 +57,11 @@
                 <Font size="14.0" />
             </font>
         </Label>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="66.0" prefWidth="340.0" text="Musique par GridStn" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
         <ImageView fitHeight="214.0" fitWidth="198.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <image>
                 <Image url="@../img/Robot_LoginPage.png" />

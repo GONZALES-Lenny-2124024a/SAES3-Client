@@ -5,18 +5,15 @@ import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import fr.univ_amu.iut.server.ServerCommunication;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +22,8 @@ import java.util.Map;
 public class SummaryPage {
 
     private final VBox vboxParent;
-
+    private ScrollPane summaryScrollPane;
+    private VBox summaryVBox;
     private ServerCommunication serverCommunication;
     private HashMap<String, Boolean> summary;
 
@@ -33,12 +31,15 @@ public class SummaryPage {
         this.summary = summary;
         serverCommunication = Main.getServerCommunication();
         vboxParent = new VBox();
+        summaryScrollPane = new ScrollPane();
+        summaryVBox = new VBox();
     }
 
     /**
      * Initialize the parent container
      */
     public void initializeVBoxParent() {
+        vboxParent.setSpacing(15);
         vboxParent.getStyleClass().add("background");
         vboxParent.setAlignment(Pos.TOP_CENTER);
     }
@@ -70,11 +71,12 @@ public class SummaryPage {
      */
     public void initializeLabelsUserPoints() throws IOException, ClassNotFoundException, NotAStringException {
         Label labelUserPoint = new Label("Votre nouveau nombre de points : ");
-        Label labelPoint = new Label(getUserPointsFromTheServer());
-        vboxParent.getChildren().addAll(labelUserPoint, labelPoint);
         labelUserPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 25");
-        labelUserPoint.setPadding(new Insets(20, 0, 0, 0));
+
+        Label labelPoint = new Label(getUserPointsFromTheServer());
         labelPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 35");
+
+        vboxParent.getChildren().addAll(labelUserPoint, labelPoint);
     }
 
     /**
@@ -82,11 +84,12 @@ public class SummaryPage {
      * @param answersStatus the questions and if the user answered well
      * @return the checkbox initialized
      */
-    public Label initializeLabel(Map.Entry<String, Boolean> answersStatus) {
+    public Label initializeSumaryEntry(Map.Entry<String, Boolean> answersStatus) {
         Label label = new Label(answersStatus.getKey());
-        label.setTextAlignment(TextAlignment.CENTER);
+        // Style
+        label.setMinWidth(500);
+        label.setPadding(new Insets(30, 50, 20, 50));
         label.setWrapText(true);
-        label.setPadding(new Insets(30, 200, 20, 200));
         label.setStyle("-fx-font-size: 17");
         if(answersStatus.getValue()) {
             label.setTextFill(Color.GREEN);
@@ -96,10 +99,13 @@ public class SummaryPage {
         return label;
     }
 
+    /**
+     * Initialize the summary entries
+     */
     public void initializeSummaryEntries() {
         Iterator iteratorSummary = summary.entrySet().iterator();
         while(iteratorSummary.hasNext()) {
-            vboxParent.getChildren().add(initializeLabel((Map.Entry) iteratorSummary.next()));
+            summaryVBox.getChildren().add(initializeSumaryEntry((Map.Entry) iteratorSummary.next()));
         }
     }
 
@@ -150,12 +156,27 @@ public class SummaryPage {
     }
 
     /**
+     * Initialize the summary scroll pane
+     */
+    public void initializeScrollPane() {
+        summaryScrollPane.setContent(summaryVBox);  // Get the content of the VBox and put it into the wcrollPane
+        summaryScrollPane.setPrefViewportHeight(500);
+        summaryScrollPane.setMaxWidth(750);
+        summaryScrollPane.setFitToWidth(true);
+        summaryScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        summaryScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        vboxParent.getChildren().add(summaryScrollPane); // Add the scroll pane to the vBox parent
+    }
+
+    /**
      * Initialize the checkboxes
      * @throws IOException if the communication with the client is closed or didn't go well
      */
     public void initialize() throws IOException, ClassNotFoundException, NotAStringException {
         initializeVBoxParent();
         initializeLabelsUserPoints();
+        initializeScrollPane();
         initializeSummary();
         initializeButtonToLeave();
         changeScene();
