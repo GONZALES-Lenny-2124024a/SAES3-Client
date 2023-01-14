@@ -64,13 +64,15 @@ public class SummaryPage {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void initializeLabelsUserPoints() throws IOException, ClassNotFoundException, NotAStringException {
-        Label labelUserPoint = new Label("Votre nouveau nombre de points : ");
-        labelUserPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 25");
+        Label labelUserPoints = new Label("Votre nouveau nombre de points : ");
+        labelUserPoints.setId("labelUserPoints");
+        labelUserPoints.setStyle("-fx-text-fill: WHITE; -fx-font-size: 25");
 
         Label labelPoint = new Label(getUserPointsFromTheServer());     // Get the user points
+        labelPoint.setId("userPoints");
         labelPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 35");
 
-        vboxParent.getChildren().addAll(labelUserPoint, labelPoint);
+        vboxParent.getChildren().addAll(labelUserPoints, labelPoint);
     }
 
     /**
@@ -97,6 +99,7 @@ public class SummaryPage {
      * Initialize the summary scroll pane
      */
     public void initializeScrollPane() {
+        summaryScrollPane.setId("summaryScrollPane");
         summaryScrollPane.setContent(summaryVBox);  // Get the content of the VBox and put it into the wcrollPane
         summaryScrollPane.setPrefViewportHeight(500);
         summaryScrollPane.setMaxWidth(750);

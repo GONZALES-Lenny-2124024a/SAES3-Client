@@ -35,9 +35,10 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
 
-        // The background music : Music by GridStn
-        Media sound = new Media(Objects.requireNonNull(getClass().getResource("testAudio.mp4")).toExternalForm());
+        // The background music
+        Media sound = new Media(Objects.requireNonNull(getClass().getResource("videos/music.mp3")).toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
 
         // Screen settings

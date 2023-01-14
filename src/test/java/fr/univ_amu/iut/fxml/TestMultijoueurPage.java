@@ -103,4 +103,13 @@ public class TestMultijoueurPage {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
     }
 
+    @Test
+    public void shouldTextButtonContainsEmptyText() {
+        verifyThat("#codeInput", hasText(""));
+    }
+
+    @Test
+    public void shouldContainsCodeInputTextField() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#codeInput") != null);
+    }
 }

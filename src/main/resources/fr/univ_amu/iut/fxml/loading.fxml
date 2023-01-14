@@ -1,17 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <?import fr.univ_amu.iut.ButtonSwitchToMenu?>
-<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" spacing="20.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.LoadingController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.LoadingController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.35519409179688" minWidth="10.0" prefWidth="33.36334991455078" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1141.543701171875" minWidth="10.0" prefWidth="1141.543701171875" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="417.8258056640625" minWidth="10.0" prefWidth="33.456298828125" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="321.8257751464844" minHeight="8.339394092559814" prefHeight="123.109130859375" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="658.6606059074402" minHeight="10.0" prefHeight="460.890869140625" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="318.3109130859375" minHeight="10.0" prefHeight="139.2581787109375" vgrow="SOMETIMES" />
+    </rowConstraints>
     <children>
-        <Label prefHeight="80.0" prefWidth="267.0" styleClass="Question" text="EN ATTENTE DE L'HÔTE">
+        <ButtonSwitchToMenu mnemonicParsing="false" prefHeight="47.0" prefWidth="210.0" styleClass="Btn" stylesheets="@../css/style.css" text="ANNULER" textAlignment="CENTER" userData="multijoueur.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
             <font>
-                <Font name="System Bold" size="25.0" />
+                <Font size="25.0" />
+            </font>
+        </ButtonSwitchToMenu>
+        <ImageView fitHeight="277.0" fitWidth="366.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <image>
+                <Image url="@../img/characters/Ethernet.png" />
+            </image>
+        </ImageView>
+        <Label text="EN ATTENTE DE L'HÔTE..." textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <font>
+                <Font size="30.0" />
             </font>
         </Label>
-        <ButtonSwitchToMenu alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="ANNULER"/>
+        <ImageView fitHeight="196.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <image>
+                <Image url="@../img/characters/quentin.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="225.0" fitWidth="291.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets left="180.0" />
+            </GridPane.margin>
+            <image>
+                <Image url="@../img/characters/Introduction_aux_réseaux.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="207.0" fitWidth="184.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <image>
+                <Image url="@../img/characters/Couche_physique.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="230.0" fitWidth="253.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets right="180.0" />
+            </GridPane.margin>
+            <image>
+                <Image url="@../img/characters/Tous_les_modules.png" />
+            </image>
+        </ImageView>
     </children>
-</VBox>
+</GridPane>

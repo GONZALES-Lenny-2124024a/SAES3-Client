@@ -1,6 +1,7 @@
 package fr.univ_amu.iut.fxml;
 
 import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -16,6 +17,9 @@ import org.testfx.framework.junit5.Start;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.util.NodeQueryUtils.hasText;
 
 /**
  * Test the modules page
@@ -71,6 +75,18 @@ public class TestModulesPage {
     public void shouldWindowWidthEquals1280(FxRobot robot) {
         goToTheModulesPage(robot);
         assertEquals(  1280.0, stage.getScene().getWidth());
+    }
+
+    @Test
+    public void shouldContainsQuitButton(FxRobot robot) {
+        goToTheModulesPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#quit") != null);
+    }
+
+    @Test
+    public void shouldPasswordTextFieldContainsEmptyText(FxRobot robot) {
+        goToTheModulesPage(robot);
+        verifyThat("#quit", hasText("QUITTER"));
     }
 
     public void goToTheModulesPage(FxRobot robot) {

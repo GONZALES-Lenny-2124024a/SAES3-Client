@@ -18,6 +18,8 @@ import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.util.NodeQueryUtils.hasText;
 
 /**
  * Test the summary page
@@ -64,9 +66,39 @@ public class TestSummaryPage {
     }
 
     @Test
-    public void shouldGoToTheSummaryPage(FxRobot robot) {
+    public void shouldContainsLeaveButton(FxRobot robot) {
         goToTheSummaryPage(robot);
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
+    }
+
+    @Test
+    public void shouldLeaveButtonContainsQuitterText(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        verifyThat("#leave", hasText("QUITTER"));
+    }
+
+    @Test
+    public void shouldContainsSummaryScrollPane(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#summaryScrollPane") != null);
+    }
+
+    @Test
+    public void shouldContainsUserPointsLabel(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#labelUserPoints") != null);
+    }
+
+    @Test
+    public void shouldUserPointsLabelContainsText(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        verifyThat("#labelUserPoints", hasText("Votre nouveau nombre de points : "));
+    }
+
+    @Test
+    public void shouldContainsUserPoints(FxRobot robot) {
+        goToTheSummaryPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#userPoints") != null);
     }
 
     public void goToTheSummaryPage(FxRobot robot) {
