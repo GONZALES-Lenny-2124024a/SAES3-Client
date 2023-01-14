@@ -40,7 +40,7 @@ public class QuestionController {
     public QuestionController() {
         serverCommunication = Main.getServerCommunication();
         summary = new HashMap<>();
-        font = new Font("System Bold", 25);
+        font = new Font("System Bold", 20);
     }
 
     /**
@@ -69,6 +69,7 @@ public class QuestionController {
     public void createCheckBoxes() {
         for (int numCheckBox = 1; numCheckBox < 4; ++numCheckBox) {
             CheckBox checkBoxAnswer = new CheckBox();
+            checkBoxAnswer.setWrapText(true);
             checkBoxAnswer.setId("answer" + numCheckBox);
             checkBoxAnswer.setFont(font);
             checkBoxAnswer.setStyle("-fx-text-fill: #e7e7e7");
