@@ -53,7 +53,7 @@ public class MultiplayerCreationController {
      */
     public void getEmailOfTheUsersWhoJoined() {
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1.0), e -> {
+                new KeyFrame(Duration.seconds(0.05), e -> {
                     try {
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
                             usersPresentListView.getItems().add(serverCommunication.receiveMessageFromServer());
