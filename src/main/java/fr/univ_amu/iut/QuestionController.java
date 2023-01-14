@@ -12,9 +12,11 @@ import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Controller of the question's page
+ * @author LennyGonzales
  */
 public class QuestionController {
     @FXML
@@ -43,20 +45,21 @@ public class QuestionController {
 
     /**
      * Initialize the question and the answers
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @param answerType the type of the answer (written response or multiple choice)
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         descriptionQuestion.setText(serverCommunication.receiveMessageFromServer() + '\n' + serverCommunication.receiveMessageFromServer());
-        switch(answerType) {
-            case "QCM_FLAG" :
+        switch (answerType) {
+            case "QCM_FLAG" -> {
                 createCheckBoxes();
                 initializeTextCheckBoxes();
-                break;
-            case "WRITTEN_RESPONSE_QUESTION_FLAG" :
-                createWrittenResponse();
-                break;
-            default:
-                throw new NotTheExpectedFlagException("QCM_FLAG or WRITTEN_RESPONSE_QUESTION_FLAG");
+            }
+            case "WRITTEN_RESPONSE_QUESTION_FLAG" -> createWrittenResponse();
+            default -> throw new NotTheExpectedFlagException("QCM_FLAG or WRITTEN_RESPONSE_QUESTION_FLAG");
         }
     }
 
@@ -78,7 +81,9 @@ public class QuestionController {
 
     /**
      * Set the text of the checkboxes
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void initializeTextCheckBoxes() throws IOException, ClassNotFoundException, NotAStringException {
         answer1.setText(serverCommunication.receiveMessageFromServer());
@@ -100,7 +105,10 @@ public class QuestionController {
 
     /**
      * Submit the question to the server
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void submitAnswer() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         if(vboxParent.getChildren().size() <= 3) {  // If the response is a written response
@@ -124,11 +132,14 @@ public class QuestionController {
     }
 
     /**
-     * Check if there are no more question
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * Check if there are no more question (end game)
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void verifyEndGame() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
-        String message = serverCommunication.receiveMessageFromServer();
+        String message = serverCommunication.receiveMessageFromServer();    // END_GAME_FLAG or the answer type of the next question
         if(message.equals("END_GAME_FLAG")) {
             endGame();
         } else {
@@ -137,24 +148,35 @@ public class QuestionController {
     }
 
     /**
-     * It stops the game
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * Supports the end game
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void endGame() throws IOException, ClassNotFoundException, NotAStringException {
         SummaryPage summaryPage = new SummaryPage(summary);
         summaryPage.initialize();
     }
 
+    /**
+     * Initialize the character image who represents the module
+     * @throws NotAStringException Throw when the message received from the server isn't a string
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     */
     public void initializeCharacterImage() throws NotAStringException, IOException, ClassNotFoundException {
-        String module = serverCommunication.receiveMessageFromServer();
-        String imageName = module.replace(" ", "_");
-        String urlCharacterImage = getClass().getResource("img/characters/" + imageName + ".png").toExternalForm();
+        String module = serverCommunication.receiveMessageFromServer(); // Receive the name of the module
+        String imageName = module.replace(" ", "_");    //replace space by '_'
+        String urlCharacterImage = Objects.requireNonNull(getClass().getResource("img/characters/" + imageName + ".png")).toExternalForm();
         characterImage.setImage(new Image(urlCharacterImage));
     }
 
     /**
      * Initialize the first question
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {

@@ -7,6 +7,7 @@ import java.io.IOException;
 
 /**
  * Controller of the menu's page
+ * @author LennyGonzales
  */
 public class MenuController{
     private final ServerCommunication serverCommunication;
@@ -17,7 +18,7 @@ public class MenuController{
 
     /**
      * Send the solo flag + Initialize the page (Prepare question and answers)
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void soloMode() throws IOException, UrlOfTheNextPageIsNull {
@@ -27,7 +28,7 @@ public class MenuController{
 
     /**
      * Switch to the multiplayer page
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void multiplayerMode() throws IOException, UrlOfTheNextPageIsNull {
@@ -36,7 +37,7 @@ public class MenuController{
 
     /**
      * Switch to the login page
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void disconnection() throws IOException, UrlOfTheNextPageIsNull {
@@ -46,7 +47,7 @@ public class MenuController{
 
     /**
      * Send the training flag + switch to the modules page
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void trainingMode() throws IOException {
         serverCommunication.sendMessageToServer("TRAINING_FLAG");
@@ -57,7 +58,7 @@ public class MenuController{
     /**
      * Switch to a next page
      * @param nameNextPage the page to switch to
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void switchTo(String nameNextPage) throws IOException, UrlOfTheNextPageIsNull {

@@ -69,7 +69,7 @@ public class TestUserJourneys {
     public void UserJourneyStudentTrainWithTrainingModeAndTestHimWithSoloMode(FxRobot robot) {
         TestLoginPage.connectionLoginPage(robot);
         robot.clickOn("#training");
-        robot.clickOn("ALL");
+        robot.clickOn("Tous les modules");
         doStory(robot);
         robot.clickOn("#solo");
         doStory(robot);
@@ -85,7 +85,7 @@ public class TestUserJourneys {
         TestLoginPage.connectionLoginPage(robot);
         robot.clickOn("#multiplayer");
         robot.clickOn("#create");
-        robot.clickOn("ALL");
+        robot.clickOn("Tous les modules");
         robot.clickOn("#start");
         doStory(robot);
         robot.clickOn("#solo");

@@ -18,6 +18,7 @@ import java.util.Map;
 
 /**
  * Controller of the summary's page
+ * @author LennyGonzales , MathieuSauva
  */
 public class SummaryPage {
 
@@ -45,20 +46,11 @@ public class SummaryPage {
     }
 
     /**
-     * Switch to the menu page
-     * @throws IOException if the communication with the client is closed or didn't go well
-     */
-    public void switchTo() throws IOException, UrlOfTheNextPageIsNull {
-        SceneController sceneController = new SceneController();
-        sceneController.switchTo("fxml/menu.fxml");
-    }
-
-    /**
      * Get the user points
      * @return the user points
-     * @throws IOException if the communication with the client is closed or didn't go well
-     * @throws ClassNotFoundException
-     * @throws NotAStringException
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public String getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer(LoginController.getMail());
@@ -67,24 +59,26 @@ public class SummaryPage {
 
     /**
      * Initialize the user points label
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void initializeLabelsUserPoints() throws IOException, ClassNotFoundException, NotAStringException {
         Label labelUserPoint = new Label("Votre nouveau nombre de points : ");
         labelUserPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 25");
 
-        Label labelPoint = new Label(getUserPointsFromTheServer());
+        Label labelPoint = new Label(getUserPointsFromTheServer());     // Get the user points
         labelPoint.setStyle("-fx-text-fill: WHITE; -fx-font-size: 35");
 
         vboxParent.getChildren().addAll(labelUserPoint, labelPoint);
     }
 
     /**
-     * Initialize a checkbox
+     * Initialize a summary entry
      * @param answersStatus the questions and if the user answered well
      * @return the checkbox initialized
      */
-    public Label initializeSumaryEntry(Map.Entry<String, Boolean> answersStatus) {
+    public Label initializeSummaryEntry(Map.Entry<String, Boolean> answersStatus) {
         Label label = new Label(answersStatus.getKey());
         // Style
         label.setMinWidth(500);
@@ -97,62 +91,6 @@ public class SummaryPage {
             label.setTextFill(Color.RED);
         }
         return label;
-    }
-
-    /**
-     * Initialize the summary entries
-     */
-    public void initializeSummaryEntries() {
-        Iterator iteratorSummary = summary.entrySet().iterator();
-        while(iteratorSummary.hasNext()) {
-            summaryVBox.getChildren().add(initializeSumaryEntry((Map.Entry) iteratorSummary.next()));
-        }
-    }
-
-    /**
-     * Get the summary from the server
-     * @throws IOException if the communication with the client is closed or didn't go well
-     */
-    public void getSummaryFromServer() throws IOException {
-        HashMap<?,?> receivedObject = (HashMap<?,?>) serverCommunication.receiveObjectFromServer();
-        if((receivedObject != null) && (receivedObject.keySet().stream().allMatch(key -> key instanceof String))) {
-            summary = (HashMap<String, Boolean>) receivedObject;
-        }
-    }
-
-    /**
-     * Initialize the summary
-     * @throws IOException if the communication with the client is closed or didn't go well
-     */
-    public void initializeSummary() throws IOException {
-        getSummaryFromServer();
-        initializeSummaryEntries();
-    }
-
-    /**
-     * Initialize the button to leave
-     */
-    public void initializeButtonToLeave() {
-        Button button = new Button("QUITTER");
-        button.setId("leave");
-        button.getStyleClass().add("Btn");
-        button.setPrefSize(195.0, 56.0);
-        button.setOnAction(event -> {
-            try {
-                switchTo();
-            } catch (IOException | UrlOfTheNextPageIsNull e) {
-                throw new RuntimeException(e);
-            }
-        });
-        vboxParent.getChildren().add(button);
-    }
-
-    /**
-     * Change the scene to print the window
-     */
-    public void changeScene() {
-        SceneController sceneController = new SceneController();
-        sceneController.initializeScene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
     }
 
     /**
@@ -170,8 +108,76 @@ public class SummaryPage {
     }
 
     /**
-     * Initialize the checkboxes
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * Initialize the summary entries
+     */
+    public void initializeSummaryEntries() {
+        Iterator iteratorSummary = summary.entrySet().iterator();
+        while(iteratorSummary.hasNext()) {
+            summaryVBox.getChildren().add(initializeSummaryEntry((Map.Entry) iteratorSummary.next()));
+        }
+    }
+
+    /**
+     * Get the summary from the server
+     * @throws IOException if the communication with the server is closed or didn't go well
+     */
+    public void getSummaryFromServer() throws IOException {
+        HashMap<?,?> receivedObject = (HashMap<?,?>) serverCommunication.receiveObjectFromServer();
+        if((receivedObject != null) && (receivedObject.keySet().stream().allMatch(key -> key instanceof String))) {
+            summary = (HashMap<String, Boolean>) receivedObject;
+        }
+    }
+
+    /**
+     * Initialize the summary
+     * @throws IOException if the communication with the server is closed or didn't go well
+     */
+    public void initializeSummary() throws IOException {
+        getSummaryFromServer();
+        initializeSummaryEntries();
+    }
+
+    /**
+     * Initialize the button to leave
+     */
+    public void initializeButtonToLeave() {
+        Button button = new Button("QUITTER");
+        button.setId("leave");
+        button.getStyleClass().add("Btn");
+        button.setPrefSize(195.0, 56.0);
+        button.setOnAction(event -> {
+            try {
+                switchToMenu();
+            } catch (IOException | UrlOfTheNextPageIsNull e) {
+                throw new RuntimeException(e);
+            }
+        });
+        vboxParent.getChildren().add(button);
+    }
+
+    /**
+     * Switch to the menu page
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull Throw if the url of the next page is null (fxml/menu.fxml)
+     */
+    public void switchToMenu() throws IOException, UrlOfTheNextPageIsNull {
+        SceneController sceneController = new SceneController();
+        sceneController.switchTo("fxml/menu.fxml");
+    }
+
+    /**
+     * Change the scene to print the window
+     */
+    public void changeScene() {
+        SceneController sceneController = new SceneController();
+        sceneController.initializeScene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
+    }
+
+    /**
+     * Initialize the page
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void initialize() throws IOException, ClassNotFoundException, NotAStringException {
         initializeVBoxParent();

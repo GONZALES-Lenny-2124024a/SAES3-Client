@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import fr.univ_amu.iut.ButtonSwitchToMenu?>
 <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" spacing="20.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.LoadingController">
     <children>
         <Label prefHeight="80.0" prefWidth="267.0" styleClass="Question" text="EN ATTENTE DE L'HÔTE">
@@ -11,6 +12,6 @@
                 <Font name="System Bold" size="25.0" />
             </font>
         </Label>
-        <Button alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="ANNULER"/>
+        <ButtonSwitchToMenu alignment="CENTER" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0" styleClass="Btn" text="ANNULER"/>
     </children>
 </VBox>

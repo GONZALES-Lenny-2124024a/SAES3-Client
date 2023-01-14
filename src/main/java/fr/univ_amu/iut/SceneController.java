@@ -9,14 +9,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Allows to switch to another page
+ * @author LennyGonzales
  */
 public class SceneController {
 
     private static Stage stage;
-    private Parent root;
 
     /**
      * Get the stage
@@ -39,17 +40,18 @@ public class SceneController {
      * @param parent the parent of the scene
      * @param width the width of the window
      * @param height the height of the window
-     * @return the initialized scene
      */
     public void initializeScene(Parent parent, double width, double height) {
         Scene scene = new Scene(parent, width, height);
-        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("css/style.css")).toExternalForm());
         stage.setScene(scene);
     }
 
     /**
-     * Supports the switch page (with name)
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * Supports the switch page
+     * @param nameNextPage the name of the next page
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull Throw if the url of the next page is null
      */
     @FXML
     public void switchTo(String nameNextPage) throws UrlOfTheNextPageIsNull, IOException {
@@ -57,7 +59,7 @@ public class SceneController {
         if(url == null) {
             throw new UrlOfTheNextPageIsNull();
         }
-        root = FXMLLoader.load(url);   // Load it
+        Parent root = FXMLLoader.load(url);   // Load it
 
         initializeScene(root,Main.getWindowWidth(), Main.getWindowHeight());
         stage.show();

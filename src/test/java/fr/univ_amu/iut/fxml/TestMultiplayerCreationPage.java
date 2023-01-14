@@ -93,7 +93,7 @@ public class TestMultiplayerCreationPage {
         TestLoginPage.connectionLoginPage(robot);
         robot.clickOn("#multiplayer");
         robot.clickOn("#create");
-        robot.clickOn("ALL");
+        robot.clickOn("Tous les modules");
     }
 
 }

@@ -8,11 +8,17 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 
 /**
- * Create a button configured for the module page
+ * Create a configured Button for the Modules page
+ * @author LennyGonzales
  */
 public class ButtonModule extends Button {
     private final String pageToSwitchTo;
 
+    /**
+     * Initialize the button
+     * @param text the button text
+     * @param pageToSwitchTo the page to switch to when the user click on a module
+     */
     public ButtonModule(String text, String pageToSwitchTo) {
         this.pageToSwitchTo = pageToSwitchTo;
         initializeButton(text);
@@ -23,7 +29,7 @@ public class ButtonModule extends Button {
      */
     public void initializeButton(String text) {
         setText(text);  // Set the button text
-        getStyleClass().add("Btn");
+        getStyleClass().add("Btn"); // Add a style class to get css style
         setPrefSize(160.0, 40.0);
         // Set on action
         setOnAction(event -> {
@@ -36,27 +42,27 @@ public class ButtonModule extends Button {
     }
 
     /**
-     * Send the module chose to the server
+     * Send the module chosen to the server
      * @param event of the button actioned
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
         Main.getServerCommunication().sendMessageToServer(((Button) event.getSource()).getText()); // Send the module chosen
     }
 
     /**
-     * Switch to the multiplayerCreation page
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * Switch page
+     * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void switchPage() throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
-        sceneController.switchTo(pageToSwitchTo);  // Switch to the multiplayerCreation page
+        sceneController.switchTo(pageToSwitchTo);
     }
 
     /**
-     * Supports the choice of a module
+     * Supports the user choice of a module
      * @param event of the button actioned
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void moduleChoice(ActionEvent event) throws IOException, UrlOfTheNextPageIsNull {
         sendModuleChoseToServer(event);

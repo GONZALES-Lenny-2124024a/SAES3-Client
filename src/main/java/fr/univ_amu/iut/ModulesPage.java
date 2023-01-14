@@ -3,7 +3,6 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.templates.ButtonModule;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
@@ -12,7 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Controller of the modules page where the user choose a module to train
+ * Controller of the modules page where the user choose a module to practice on
+ * @author LennyGonzales
  */
 public class ModulesPage {
     private VBox vboxParent;
@@ -33,8 +33,7 @@ public class ModulesPage {
 
     /**
      * Method that get the modules from the server
-     * @throws IOException if the communication with the client is closed or didn't go well
-     * @throws ClassNotFoundException if the object isn't found (the class exists on the server but not in the client)
+     * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void getModulesFromServer() throws IOException {
         List<?>  receivedObject = (List<?>) serverCommunication.receiveObjectFromServer();
@@ -54,6 +53,9 @@ public class ModulesPage {
         }
     }
 
+    /**
+     * Initialize the button which return to the menu page
+     */
     public void initializeSwitchToMenuButton() {
         ButtonSwitchToMenu buttonSwitchToMenu = new ButtonSwitchToMenu();
         buttonSwitchToMenu.setText("QUITTER");
@@ -61,17 +63,19 @@ public class ModulesPage {
         vboxParent.getChildren().add(buttonSwitchToMenu);
     }
 
+    /**
+     * Initialize the root node of the page
+     */
     public void initializeVBoxParent() {
         vboxParent = new VBox();
-        vboxParent.getStyleClass().add("background");
+        vboxParent.getStyleClass().add("background");  // Add a style class to get css style
         vboxParent.setAlignment(Pos.CENTER);
-        vboxParent.setSpacing(20.0);
+        vboxParent.setSpacing(20.0);    // Space between children
     }
 
     /**
      * Initialize the modulesController
-     * @throws IOException if the communication with the client is closed or didn't go well
-     * @throws ClassNotFoundException getModulesFromServer() => if the object isn't found (the class exists on the server but not in the client)
+     * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void initialize() throws IOException {
         initializeVBoxParent();

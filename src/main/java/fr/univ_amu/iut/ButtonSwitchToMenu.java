@@ -6,13 +6,23 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 
+/**
+ * Create a configured Button to switch to the menu page when the user click on it
+ * @author LennyGonzales
+ */
 public class ButtonSwitchToMenu extends Button {
+
     public ButtonSwitchToMenu() {
         initializeButton();
     }
 
+    /**
+     * Initialize the button
+     */
     public void initializeButton() {
-        getStyleClass().add("Btn");
+        getStyleClass().add("Btn"); // Add a style class to get css style
+
+        // When the user click on the button, we notify the server that we go back to the menu page
         setOnAction(event ->
                 {
                     try {

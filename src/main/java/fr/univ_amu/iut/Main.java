@@ -8,11 +8,12 @@ import javafx.stage.Stage;
 
 import javafx.scene.media.Media;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Launch the application
+ * @author LennyGonzales
  */
 public class Main extends Application {
 
@@ -28,13 +29,14 @@ public class Main extends Application {
      * Applications may create other stages, if needed, but they will not be
      * primary stages.
      * @param stage the primary stage for this application, onto which
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
      */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
 
-        Media sound = new Media(getClass().getResource("testAudio.mp4").toExternalForm());
+        // The background music : Music by GridStn
+        Media sound = new Media(Objects.requireNonNull(getClass().getResource("testAudio.mp4")).toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
 
@@ -43,20 +45,25 @@ public class Main extends Application {
 
         stage.setTitle("Network Stories");
 
+        SceneController.setStage(stage);    // Stores the current stage
+
+        // Initialize the scene
         SceneController sceneController = new SceneController();
-        sceneController.setStage(stage);    // Stores the current stage
         sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
         stage.show();
     }
 
+    /**
+     * Launch the application
+     */
     public static void main(String[] args) {
         launch();
     }
 
     /**
-     * Get the client
-     * @return the client
+     * Get the communication with the server
+     * @return the communication with the server
      */
     public static ServerCommunication getServerCommunication() {
         return serverCommunication;

@@ -13,6 +13,7 @@ import java.io.IOException;
 
 /**
  * Controller of the loading's page
+ * @author LennyGonzales
  */
 public class LoadingController {
 
@@ -26,8 +27,8 @@ public class LoadingController {
     }
 
     /**
-     * Verify if the server sent a message each second to know if the session begin
-     * Allows the application to not wait indefinitely until the multiplayer session's host click on the 'Lancer' button
+     * Verify if the server sent a message each second to know if the multiplayer session begin
+     * Allows the application to not wait indefinitely (freeze) until the multiplayer session's host click on the 'Lancer' button
      */
     public void verifyServerEachSecond() {
         verifyServerEachSecondTimeLine = new Timeline(
@@ -50,8 +51,11 @@ public class LoadingController {
 
     /**
      * Start the multiplayer's session
-     * @throws IOException if the communication with the client is closed or didn't go well
-     * @throws InterruptedException if the client disconnected
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull Throw when the url of the next fxml page is null
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void beginSession() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         verifyServerEachSecondTimeLine.stop();  // stop verifying the server each second

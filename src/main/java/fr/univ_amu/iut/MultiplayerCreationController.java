@@ -15,6 +15,7 @@ import java.io.IOException;
 
 /**
  * Controller of the multiplayer session's creation page
+ * @author LennyGonzales
  */
 public class MultiplayerCreationController {
     @FXML
@@ -32,7 +33,11 @@ public class MultiplayerCreationController {
 
     /**
      * Start the session
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull Throw if the url of the next page is null
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that we want to start the game by clicking on the 'Start' button
@@ -44,7 +49,7 @@ public class MultiplayerCreationController {
     }
 
     /**
-     * Get users who joined the multiplayer session
+     * Get users who joined the multiplayer session before that the user start the session
      */
     public void getEmailOfTheUsersWhoJoined() {
         Timeline timeline = new Timeline(
@@ -65,7 +70,10 @@ public class MultiplayerCreationController {
 
     /**
      * Get the session code from the server
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void getSessionCode() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         if(!(serverCommunication.receiveMessageFromServer().equals("CODE_FLAG"))) {
@@ -75,8 +83,11 @@ public class MultiplayerCreationController {
     }
 
     /**
-     * Send the solo flag + Initialize the page (Prepare question and answers)
-     * @throws IOException if the communication with the client is closed or didn't go well
+     * Initialize the page
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
+     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
+     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
