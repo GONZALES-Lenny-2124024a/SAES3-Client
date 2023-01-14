@@ -31,8 +31,9 @@ public class LoadingController {
      * Allows the application to not wait indefinitely (freeze) until the multiplayer session's host click on the 'Lancer' button
      */
     public void verifyServerEachSecond() {
+
         verifyServerEachSecondTimeLine = new Timeline(
-                new KeyFrame(Duration.seconds(1.0), e -> {
+                new KeyFrame(Duration.seconds(0.01), e -> {
 
                     try {
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
@@ -63,7 +64,6 @@ public class LoadingController {
         if (!(serverCommunication.receiveMessageFromServer()).equals("BEGIN_FLAG")) {    // When the host start the game by clicking on the 'Start' button
             throw new NotTheExpectedFlagException("BEGIN_FLAG");
         }
-
         serverCommunication.sendMessageToServer("BEGIN_FLAG");  // Say to the server to start the game
         sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
     }
