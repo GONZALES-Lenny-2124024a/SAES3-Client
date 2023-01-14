@@ -33,7 +33,7 @@ public class LoadingController {
     public void verifyServerEachSecond() {
 
         verifyServerEachSecondTimeLine = new Timeline(
-                new KeyFrame(Duration.seconds(0.01), e -> {
+                new KeyFrame(Duration.seconds(0.05), e -> {
 
                     try {
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
