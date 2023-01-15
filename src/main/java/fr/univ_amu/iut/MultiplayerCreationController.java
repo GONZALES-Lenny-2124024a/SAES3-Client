@@ -24,6 +24,7 @@ public class MultiplayerCreationController {
     private ListView<String> usersPresentListView;
     private final ServerCommunication serverCommunication;
     private final SceneController sceneController;
+    private Timeline timeline;
 
 
     public MultiplayerCreationController() {
@@ -40,6 +41,8 @@ public class MultiplayerCreationController {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+        timeline.stop();    // Stop getting email of the users who joined
+
         serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that we want to start the game by clicking on the 'Start' button
         if(!(serverCommunication.receiveMessageFromServer().equals("BEGIN_FLAG"))) { // The game begins
             throw new NotTheExpectedFlagException("BEGIN_FLAG");
@@ -52,7 +55,7 @@ public class MultiplayerCreationController {
      * Get users who joined the multiplayer session before that the user start the session
      */
     public void getEmailOfTheUsersWhoJoined() {
-        Timeline timeline = new Timeline(
+        timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.05), e -> {
                     try {
                         if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
