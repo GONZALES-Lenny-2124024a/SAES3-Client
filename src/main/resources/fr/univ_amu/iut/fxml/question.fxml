@@ -28,12 +28,12 @@
     <children>
         <Label fx:id="descriptionQuestion" prefHeight="410.0" prefWidth="436.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
             <font>
-                <Font name="Helvetica Neue" size="20.0" />
+                <Font name="Helvetica Neue" size="17.0" />
             </font>
         </Label>
         <VBox fx:id="vboxParent" prefHeight="761.0" prefWidth="283.0" GridPane.columnIndex="3" GridPane.rowIndex="2" spacing="30.0">
             <children>
-                <ImageView fx:id="characterImage" fitHeight="409.0" fitWidth="351.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="characterImage" fitHeight="325.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../img/characters/Characters.png" />
                     </image>
