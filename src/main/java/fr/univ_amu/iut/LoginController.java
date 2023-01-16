@@ -65,7 +65,7 @@ public class LoginController {
             mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
             sceneController.switchTo("fxml/menu.fxml"); // Now, the user can access to the menu page
         }  else{    // print an alert error
-            Alert connexionError = new Alert(Alert.AlertType.ERROR, "The username and/or password are incorrect");
+            Alert connexionError = new Alert(Alert.AlertType.ERROR, "Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
             connexionError.show();
         }
     }
