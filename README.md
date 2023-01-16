@@ -21,7 +21,7 @@ Avant d'installer le client, il faut télécharger le serveur.
 
   ### Installation du serveur
 
-Pour commencer, télécharger le serveur en exécutant la commande :
+Pour commencer, télécharger le serveur grâce à cette url :
 ```
   https://github.com/LennyGonzales/SAES3-Server
 ```
