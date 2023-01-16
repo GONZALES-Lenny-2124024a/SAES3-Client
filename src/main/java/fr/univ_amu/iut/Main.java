@@ -3,6 +3,7 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.server.ServerCommunication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.image.Image;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
@@ -47,7 +48,7 @@ public class Main extends Application {
         stage.setTitle("Network Stories");
 
         SceneController.setStage(stage);    // Stores the current stage
-
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("img/logo.png")).toExternalForm()));
         // Initialize the scene
         SceneController sceneController = new SceneController();
         sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
