@@ -1,8 +1,12 @@
 package fr.univ_amu.iut.server;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 
 /**
@@ -10,17 +14,23 @@ import java.net.Socket;
  * @author LennyGonzales
  */
 public class ServerCommunication {
-    private final Socket socketClient;
-    private final BufferedReader in;
+    private Socket socketClient;
+    private BufferedReader in;
     private Object object;
-    private final ObjectInputStream inObject;
-    private final ObjectOutputStream outObject;
+    private ObjectInputStream inObject;
+    private ObjectOutputStream outObject;
 
     public ServerCommunication(String hostname, int port) throws IOException {
-        socketClient = new Socket(hostname, port);
-        in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-        inObject = new ObjectInputStream(socketClient.getInputStream());
-        outObject = new ObjectOutputStream(socketClient.getOutputStream());
+        try {
+            socketClient = new Socket(hostname, port);
+            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+            inObject = new ObjectInputStream(socketClient.getInputStream());
+            outObject = new ObjectOutputStream(socketClient.getOutputStream());
+        } catch(ConnectException e) {
+            Alert connexionError = new Alert(Alert.AlertType.ERROR, "Échec de la connexion avec le serveur, veuillez réessayer ultérieurement.");
+            connexionError.setOnCloseRequest(event -> Platform.exit());
+            connexionError.showAndWait();
+        }
     }
 
 

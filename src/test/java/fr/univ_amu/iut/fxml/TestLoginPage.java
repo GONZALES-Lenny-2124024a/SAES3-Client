@@ -111,7 +111,7 @@ public class TestLoginPage {
         robot.clickOn("#mailTextField");
         robot.write("lenny.gonzales@etu.univ-amu.fr");
         robot.clickOn("#passwordTextField");
-        robot.write("lenny");
+        robot.write("jn1ae(iuaez&éIU123;");
         robot.clickOn("#submit");
     }
 }

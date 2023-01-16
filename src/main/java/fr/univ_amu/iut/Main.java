@@ -20,10 +20,10 @@ public class Main extends Application {
     private static final double WINDOW_HEIGHT = 720.0;
     private static final double WINDOW_WIDTH = 1280.0;
     private static ServerCommunication serverCommunication;
+
     public Main() throws IOException {
         serverCommunication = new ServerCommunication("127.0.0.1",10013);
     }
-
     /**
      * the application scene can be set.
      * Applications may create other stages, if needed, but they will not be
@@ -51,7 +51,6 @@ public class Main extends Application {
         // Initialize the scene
         SceneController sceneController = new SceneController();
         sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
-
         stage.show();
     }
 
