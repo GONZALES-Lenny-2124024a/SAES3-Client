@@ -24,8 +24,14 @@
         <RowConstraints maxHeight="1023.0" minHeight="10.0" prefHeight="43.60304641723633" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="1023.0" minHeight="10.0" prefHeight="668.61474609375" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="674.5061645507812" minHeight="0.0" prefHeight="19.88525390625" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="100" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
+        <Label fx:id="timerLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <font>
+                <Font name="Helvetica Neue" size="17.0" />
+            </font>
+        </Label>
         <Label fx:id="descriptionQuestion" prefHeight="410.0" prefWidth="436.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
             <font>
                 <Font name="Helvetica Neue" size="17.0" />

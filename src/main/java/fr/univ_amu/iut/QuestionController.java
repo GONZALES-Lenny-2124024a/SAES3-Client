@@ -3,12 +3,16 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,14 +37,63 @@ public class QuestionController {
     private TextField writtenResponseTextField;
     @FXML
     private ImageView characterImage;
+
     private final ServerCommunication serverCommunication;
     private final HashMap<String, Boolean> summary;
     private final Font font;
+
+    @FXML
+    private Label timerLabel;
+    private Timeline timerFunction;
+    private int endTimer;
+    private int timerValue;
 
     public QuestionController() {
         serverCommunication = Main.getServerCommunication();
         summary = new HashMap<>();
         font = new Font("System Bold", 20);
+        endTimer = 6;   // Timer : 5 seconds
+    }
+
+    /**
+     * Remove answers type
+     */
+    public void removeAnswersType() {
+        if(vboxParent.getChildren().size() <= 3) {  // If the response is a written response
+            vboxParent.getChildren().remove(writtenResponseTextField); // Remove the TextField
+        } else {    // If it's a QCM
+            vboxParent.getChildren().remove(1,4);   // Remove all the checkboxes
+        }
+    }
+
+    /**
+     * Initialize the timer
+     * @param timer
+     */
+    public void initializeTimer(int timer) {
+        timerValue = timer;
+        timerFunction = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    --timerValue;
+                    timerLabel.setText(String.valueOf(timerValue));
+                    if(timerValue <= 0) {
+                        try {
+                            serverCommunication.sendMessageToServer("TIMER_ENDED_FLAG");
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        removeAnswersType();
+
+                        try {
+                            verifyEndGame(); // Check if the answer is correct or wrong and add it to the hash map
+                        } catch (IOException | NotTheExpectedFlagException | ClassNotFoundException | NotAStringException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                })
+        );
+        timerFunction.setCycleCount(Timeline.INDEFINITE);
+        timerFunction.play();
     }
 
     /**
@@ -114,8 +167,6 @@ public class QuestionController {
     public void submitAnswer() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         if(vboxParent.getChildren().size() <= 3) {  // If the response is a written response
             serverCommunication.sendMessageToServer(writtenResponseTextField.getText());
-            vboxParent.getChildren().remove(writtenResponseTextField); // Remove the TextField
-
         } else {    // If it's a QCM
             if (answer1.isSelected()) {
                 serverCommunication.sendMessageToServer("1");
@@ -126,9 +177,9 @@ public class QuestionController {
             } else {
                 serverCommunication.sendMessageToServer("0");
             }
-            vboxParent.getChildren().remove(1,4);   // Remove all the checkboxes
         }
 
+        removeAnswersType();
         verifyEndGame(); // Check if the answer is correct or wrong and add it to the hash map
     }
 
@@ -140,11 +191,13 @@ public class QuestionController {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void verifyEndGame() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+        timerFunction.stop();
         String message = serverCommunication.receiveMessageFromServer();    // END_GAME_FLAG or the answer type of the next question
         if(message.equals("END_GAME_FLAG")) {
             endGame();
         } else {
             initializeVariables(message);
+            initializeTimer(endTimer);
         }
     }
 
@@ -183,5 +236,6 @@ public class QuestionController {
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         initializeCharacterImage();
         initializeVariables(serverCommunication.receiveMessageFromServer());
+        initializeTimer(endTimer);
     }
 }
