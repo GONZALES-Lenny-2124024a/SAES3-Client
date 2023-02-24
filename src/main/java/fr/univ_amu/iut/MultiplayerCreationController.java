@@ -40,7 +40,7 @@ public class MultiplayerCreationController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+    public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         timeline.stop();    // Stop getting email of the users who joined
 
         serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that we want to start the game by clicking on the 'Start' button
@@ -54,7 +54,9 @@ public class MultiplayerCreationController {
     /**
      * Get users who joined the multiplayer session before that the user start the session
      */
-    public void getEmailOfTheUsersWhoJoined() {
+    public void getEmailOfTheUsersWhoJoined() throws NotAStringException, IOException, ClassNotFoundException, InterruptedException {
+        usersPresentListView.getItems().add(serverCommunication.receiveMessageFromServer());
+        /*
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.05), e -> {
                     try {
@@ -69,6 +71,8 @@ public class MultiplayerCreationController {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
+         */
     }
 
     /**
@@ -78,7 +82,7 @@ public class MultiplayerCreationController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void getSessionCode() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+    public void getSessionCode() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         if(!(serverCommunication.receiveMessageFromServer().equals("CODE_FLAG"))) {
             throw new NotTheExpectedFlagException("CODE_FLAG");
         }
@@ -93,7 +97,7 @@ public class MultiplayerCreationController {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     @FXML
-    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         getSessionCode();
         getEmailOfTheUsersWhoJoined();
     }

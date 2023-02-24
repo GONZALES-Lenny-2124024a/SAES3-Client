@@ -88,6 +88,8 @@ public class QuestionController {
                             verifyEndGame(); // Check if the answer is correct or wrong and add it to the hash map
                         } catch (IOException | NotTheExpectedFlagException | ClassNotFoundException | NotAStringException ex) {
                             throw new RuntimeException(ex);
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
                         }
                     }
                 })
@@ -104,7 +106,7 @@ public class QuestionController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+    public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         descriptionQuestion.setText(serverCommunication.receiveMessageFromServer() + '\n' + serverCommunication.receiveMessageFromServer());
         switch (answerType) {
             case "QCM_FLAG" -> {
@@ -139,7 +141,7 @@ public class QuestionController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void initializeTextCheckBoxes() throws IOException, ClassNotFoundException, NotAStringException {
+    public void initializeTextCheckBoxes() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
         answer1.setText(serverCommunication.receiveMessageFromServer());
         answer2.setText(serverCommunication.receiveMessageFromServer());
         answer3.setText(serverCommunication.receiveMessageFromServer());
@@ -164,7 +166,7 @@ public class QuestionController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void submitAnswer() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+    public void submitAnswer() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         if(vboxParent.getChildren().size() <= 3) {  // If the response is a written response
             serverCommunication.sendMessageToServer(writtenResponseTextField.getText());
         } else {    // If it's a QCM
@@ -190,7 +192,7 @@ public class QuestionController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void verifyEndGame() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+    public void verifyEndGame() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         timerFunction.stop();
         String message = serverCommunication.receiveMessageFromServer();    // END_GAME_FLAG or the answer type of the next question
         if(message.equals("END_GAME_FLAG")) {
@@ -207,7 +209,7 @@ public class QuestionController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void endGame() throws IOException, ClassNotFoundException, NotAStringException {
+    public void endGame() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
         SummaryPage summaryPage = new SummaryPage(summary);
         summaryPage.initialize();
     }
@@ -218,7 +220,7 @@ public class QuestionController {
      * @throws IOException if the communication with the server is closed or didn't go well
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      */
-    public void initializeCharacterImage() throws NotAStringException, IOException, ClassNotFoundException {
+    public void initializeCharacterImage() throws NotAStringException, IOException, ClassNotFoundException, InterruptedException {
         String module = serverCommunication.receiveMessageFromServer(); // Receive the name of the module
         String imageName = module.replace(" ", "_");    //replace space by '_'
         String urlCharacterImage = Objects.requireNonNull(getClass().getResource("img/characters/" + imageName + ".png")).toExternalForm();
@@ -233,7 +235,7 @@ public class QuestionController {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     @FXML
-    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         initializeCharacterImage();
         initializeVariables(serverCommunication.receiveMessageFromServer());
         initializeTimer(endTimer);

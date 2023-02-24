@@ -52,7 +52,7 @@ public class SummaryPage {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public String getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException {
+    public String getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
         serverCommunication.sendMessageToServer(LoginController.getMail());
         return serverCommunication.receiveMessageFromServer();
     }
@@ -63,7 +63,7 @@ public class SummaryPage {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void initializeLabelsUserPoints() throws IOException, ClassNotFoundException, NotAStringException {
+    public void initializeLabelsUserPoints() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
         Label labelUserPoints = new Label("Votre nouveau nombre de points : ");
         labelUserPoints.setId("labelUserPoints");
         labelUserPoints.setStyle("-fx-text-fill: WHITE; -fx-font-size: 25");
@@ -124,7 +124,7 @@ public class SummaryPage {
      * Get the summary from the server
      * @throws IOException if the communication with the server is closed or didn't go well
      */
-    public void getSummaryFromServer() throws IOException {
+    public void getSummaryFromServer() throws IOException, InterruptedException {
         HashMap<?,?> receivedObject = (HashMap<?,?>) serverCommunication.receiveObjectFromServer();
         if((receivedObject != null) && (receivedObject.keySet().stream().allMatch(key -> key instanceof String))) {
             summary = (HashMap<String, Boolean>) receivedObject;
@@ -135,7 +135,7 @@ public class SummaryPage {
      * Initialize the summary
      * @throws IOException if the communication with the server is closed or didn't go well
      */
-    public void initializeSummary() throws IOException {
+    public void initializeSummary() throws IOException, InterruptedException {
         getSummaryFromServer();
         initializeSummaryEntries();
     }
@@ -182,7 +182,7 @@ public class SummaryPage {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void initialize() throws IOException, ClassNotFoundException, NotAStringException {
+    public void initialize() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
         initializeVBoxParent();
         initializeLabelsUserPoints();
         initializeScrollPane();

@@ -1,14 +1,15 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
+import fr.univ_amu.iut.server.MessageListener;
 import fr.univ_amu.iut.server.ServerCommunication;
 import fr.univ_amu.iut.templates.ButtonModule;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Controller of the modules page where the user choose a module to practice on
@@ -35,7 +36,7 @@ public class ModulesPage {
      * Method that get the modules from the server
      * @throws IOException if the communication with the server is closed or didn't go well
      */
-    public void getModulesFromServer() throws IOException {
+    public void getModulesFromServer() throws IOException, InterruptedException {
         List<?>  receivedObject = (List<?>) serverCommunication.receiveObjectFromServer();
         if ((receivedObject != null) && (receivedObject.get(0) instanceof String)) {    //Check the cast
             modules = (List<String>) receivedObject;
@@ -74,13 +75,44 @@ public class ModulesPage {
     }
 
     /**
+     * Initialize the interaction with the server
+     */
+    public void initializeInteractionServer() {
+        MessageListener messageListener = new MessageListener() {
+            @Override
+            public void onMessageReceived(Object message) throws NotTheExpectedFlagException {
+                if (message instanceof HashMap) {
+
+                    Iterator it = ((HashMap<String, List<String>>) message).entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry<String, List<String>> entry = (Map.Entry)it.next(); // Get element
+
+                        // Use element
+                        switch(entry.getKey()) {
+                            case "MODULES" -> Platform.runLater(() -> {
+                                modules = entry.getValue();
+                                initializeModuleButtons(pageToSwitchTo);
+                            });
+                            default -> throw new NotTheExpectedFlagException("MODULES");
+                        }
+
+                        // Remove Element
+                        it.remove();
+                    }
+                }
+            }
+        };
+        serverCommunication.setMessageListener(messageListener);
+    }
+
+
+    /**
      * Initialize the modulesController
      * @throws IOException if the communication with the server is closed or didn't go well
      */
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, InterruptedException {
+        initializeInteractionServer();
         initializeVBoxParent();
-        getModulesFromServer();
-        initializeModuleButtons(pageToSwitchTo);
         initializeSwitchToMenuButton();
         sceneController.initializeScene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
     }

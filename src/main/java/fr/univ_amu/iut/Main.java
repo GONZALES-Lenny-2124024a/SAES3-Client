@@ -47,9 +47,19 @@ public class Main extends Application {
 
         stage.setTitle("Network Stories");
 
-        SceneController.setStage(stage);    // Stores the current stage
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("img/logo.png")).toExternalForm()));
+
+        // The user close the application
+        stage.setOnCloseRequest(event -> {
+            try {
+                serverCommunication.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         // Initialize the scene
+        SceneController.setStage(stage);    // Stores the current stage
         SceneController sceneController = new SceneController();
         sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
         stage.show();

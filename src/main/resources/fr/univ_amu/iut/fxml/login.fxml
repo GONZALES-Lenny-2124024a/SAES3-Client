@@ -42,7 +42,7 @@
                 </PasswordField>
                 <HBox alignment="CENTER" prefHeight="80.0" prefWidth="400.0">
                     <children>
-                        <Button fx:id="submit" onAction="#serviceLogin" prefHeight="56.0" prefWidth="195.0" styleClass="Btn" text="SE CONNECTER" />
+                        <Button fx:id="submit" onAction="#sendLogin" prefHeight="56.0" prefWidth="195.0" styleClass="Btn" text="SE CONNECTER" />
                     </children>
                 </HBox>
             </children>

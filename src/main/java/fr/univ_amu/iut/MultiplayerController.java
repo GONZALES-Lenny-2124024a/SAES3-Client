@@ -32,7 +32,7 @@ public class MultiplayerController {
      * @throws NotAStringException Throw when the object received from the server isn't a string
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      */
-    public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotAStringException, ClassNotFoundException {
+    public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotAStringException, ClassNotFoundException, InterruptedException {
         serverCommunication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
         serverCommunication.sendMessageToServer(codeInput.getText());   // Get the multiplayer session code
 
@@ -49,7 +49,7 @@ public class MultiplayerController {
      * Send the multiplayer creation flag and switch page
      * @throws IOException if the communication with the server is closed or didn't go well
      */
-    public void creationSession() throws IOException {
+    public void creationSession() throws IOException, InterruptedException {
         serverCommunication.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
         ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml");
         modulesController.initialize();

@@ -49,7 +49,7 @@ public class MenuController{
      * Send the training flag + switch to the modules page
      * @throws IOException if the communication with the server is closed or didn't go well
      */
-    public void trainingMode() throws IOException {
+    public void trainingMode() throws IOException, InterruptedException {
         serverCommunication.sendMessageToServer("TRAINING_FLAG");
         ModulesPage modulesController = new ModulesPage("fxml/question.fxml");
         modulesController.initialize();

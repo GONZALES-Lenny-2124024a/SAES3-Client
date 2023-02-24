@@ -30,8 +30,9 @@ public class LoadingController {
      * Verify if the server sent a message each second to know if the multiplayer session begin
      * Allows the application to not wait indefinitely (freeze) until the multiplayer session's host click on the 'Lancer' button
      */
-    public void verifyServerEachSecond() {
-
+    public void verifyServerEachSecond() throws NotAStringException, IOException, ClassNotFoundException, NotTheExpectedFlagException, UrlOfTheNextPageIsNull, InterruptedException {
+        beginSession(serverCommunication.receiveMessageFromServer());
+        /*
         verifyServerEachSecondTimeLine = new Timeline(
                 new KeyFrame(Duration.seconds(0.05), e -> {
 
@@ -48,6 +49,8 @@ public class LoadingController {
         );
         verifyServerEachSecondTimeLine.setCycleCount(Timeline.INDEFINITE);
         verifyServerEachSecondTimeLine.play();
+
+         */
     }
 
     /**
@@ -58,10 +61,10 @@ public class LoadingController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void beginSession() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
-        verifyServerEachSecondTimeLine.stop();  // stop verifying the server each second
-
-        if (!(serverCommunication.receiveMessageFromServer()).equals("BEGIN_FLAG")) {    // When the host start the game by clicking on the 'Start' button
+    public void beginSession(String message) throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
+        //verifyServerEachSecondTimeLine.stop();  // stop verifying the server each second
+        if(!(message).equals("BEGIN_FLAG")) {
+        //if (!(serverCommunication.receiveMessageFromServer()).equals("BEGIN_FLAG")) {    // When the host start the game by clicking on the 'Start' button
             throw new NotTheExpectedFlagException("BEGIN_FLAG");
         }
         serverCommunication.sendMessageToServer("BEGIN_FLAG");  // Say to the server to start the game
@@ -73,7 +76,7 @@ public class LoadingController {
      * Start verifying the server each second
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws NotAStringException, NotTheExpectedFlagException, IOException, UrlOfTheNextPageIsNull, ClassNotFoundException, InterruptedException {
         verifyServerEachSecond();  // Verify if the server sent a message each second to know if the session begin
     }
 }
