@@ -18,7 +18,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * Supports the communication with the server
  * @author LennyGonzales
  */
-public class ServerCommunication {
+public class Communication {
     private SSLSocket socketClient;
     private Object object;
     private ObjectInputStream inObject;
@@ -27,7 +27,7 @@ public class ServerCommunication {
     private MessageListener messageListener;
     private Thread threadListener;
 
-    public ServerCommunication(String hostname, int port) throws IOException {
+    public Communication(String hostname, int port) throws IOException {
         try {
             Security.addProvider(new BouncyCastleProvider());
             System.setProperty("javax.net.ssl.trustStore", "myTrustStore.jts");
@@ -64,7 +64,10 @@ public class ServerCommunication {
             while(isRequested) {
                 try {
                     object = inObject.readObject();
-                    messageListener.onMessageReceived(object);
+                    if(object instanceof CommunicationFormat) {
+                        System.out.println("instanceof CommunicationFormat");
+                        messageListener.onMessageReceived((CommunicationFormat) object);
+                    }
                 } catch (ClassNotFoundException | NotTheExpectedFlagException | IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -85,15 +88,11 @@ public class ServerCommunication {
 
     /**
      * Send a String to the server
-     * @param flag to send to the server
-     * @param content to send to the server
+     * @param message (flag + content) to send to the server
      * @throws IOException if the communication with the server is closed or didn't go well
      */
-    public void sendMessage(Flags flag, Object content) throws IOException {
-        HashMap<Flags, Object> hashmap = new HashMap<>();
-        hashmap.put(flag,content);
-
-        outObject.writeObject(hashmap);
+    public void sendMessage(CommunicationFormat message) throws IOException {
+        outObject.writeObject(message);
         outObject.flush();
     }
 

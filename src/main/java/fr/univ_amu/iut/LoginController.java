@@ -1,8 +1,9 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -25,12 +26,12 @@ public class LoginController {
     private TextField mailTextField;
     @FXML
     private PasswordField passwordTextField;
-    private final ServerCommunication serverCommunication;
+    private final Communication communication;
     private static String mail;
 
     private final SceneController sceneController;
     public LoginController() {
-        serverCommunication = Main.getServerCommunication();  // Get the connection with the server
+        communication = Main.getCommunication();  // Get the connection with the server
         sceneController = new SceneController();
     }
 
@@ -39,7 +40,9 @@ public class LoginController {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void sendLogin() throws IOException {
-        serverCommunication.sendMessage(Flags.LOGIN, Arrays.asList(mailTextField.getText(), passwordTextField.getText()));
+        System.out.println("sendLogin before");
+        communication.sendMessage(new CommunicationFormat(Flags.LOGIN, Arrays.asList(mailTextField.getText(), passwordTextField.getText())));
+        System.out.println("sendLogin after");
     }
 
 
@@ -62,33 +65,23 @@ public class LoginController {
     public void initializeInteractionServer() {
         MessageListener messageListener = new MessageListener() {
             @Override
-            public void onMessageReceived(Object message) throws NotTheExpectedFlagException {
-                if (message instanceof HashMap) {
-                    Iterator it = ((HashMap<Flags, String>) message).entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry<Flags, String> entry = (Map.Entry)it.next(); // Get element
-                        // Use element
-                        switch(entry.getKey()) {
-                            case LOGIN_SUCCESSFULLY -> Platform.runLater(() -> {
-                                try {
-                                    serverCommunication.setMessageListener(null);
-                                    loginSuccessful();
-                                } catch (Exception e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-                            case LOGIN_NOT_SUCCESSFULLY -> Platform.runLater(() -> loginFailed());
-                            default -> throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY or LOGIN_NOT_SUCCESSFULLY");
+            public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
+                switch(message.getFlag()) {
+                    case LOGIN_SUCCESSFULLY -> Platform.runLater(() -> {
+                        try {
+                            communication.setMessageListener(null);
+                            loginSuccessful();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
-
-                        // Remove Element
-                        it.remove();
-                    }
+                    });
+                    case LOGIN_NOT_SUCCESSFULLY -> Platform.runLater(() -> loginFailed());
+                    default -> throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY or LOGIN_NOT_SUCCESSFULLY");
                 }
             }
         };
-        serverCommunication.setMessageListener(messageListener);
-        serverCommunication.startListening();
+        communication.setMessageListener(messageListener);
+        communication.startListening();
     }
 
     public void loginSuccessful() throws Exception {

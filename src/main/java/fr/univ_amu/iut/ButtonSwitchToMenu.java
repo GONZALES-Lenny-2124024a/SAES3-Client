@@ -26,7 +26,7 @@ public class ButtonSwitchToMenu extends Button {
         setOnAction(event ->
                 {
                     try {
-                        Main.getServerCommunication().sendMessage(Flags.BACK_TO_MENU);
+                        Main.getCommunication().sendMessage(Flags.BACK_TO_MENU);
 
                         SceneController sceneController = new SceneController();
                         sceneController.switchTo("fxml/menu.fxml");

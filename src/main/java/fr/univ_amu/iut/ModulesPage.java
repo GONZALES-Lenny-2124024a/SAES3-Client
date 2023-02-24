@@ -1,9 +1,10 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.communication.MessageListener;
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.templates.ButtonModule;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -20,14 +21,14 @@ public class ModulesPage {
     private VBox vboxParent;
 
     private List<String> modules;
-    private final ServerCommunication serverCommunication;
+    private final Communication communication;
     private final SceneController sceneController;
     private Button button;
     private final String pageToSwitchTo;
 
     public ModulesPage(String pageToSwitchTo) {
         modules = new ArrayList<>();
-        serverCommunication = Main.getServerCommunication();
+        communication = Main.getCommunication();
         sceneController = new SceneController();
         this.pageToSwitchTo = pageToSwitchTo;
         vboxParent = new VBox();
@@ -38,7 +39,7 @@ public class ModulesPage {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void getModulesFromServer() throws IOException, InterruptedException {
-        List<?>  receivedObject = (List<?>) serverCommunication.receiveObjectFromServer();
+        List<?>  receivedObject = (List<?>) communication.receiveObjectFromServer();
         if ((receivedObject != null) && (receivedObject.get(0) instanceof String)) {    //Check the cast
             modules = (List<String>) receivedObject;
         }
@@ -81,8 +82,8 @@ public class ModulesPage {
     public void initializeInteractionServer() {
         MessageListener messageListener = new MessageListener() {
             @Override
-            public void onMessageReceived(Object message) throws NotTheExpectedFlagException {
-                if (message instanceof HashMap) {
+            public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
+                /*if (message instanceof HashMap) {
 
                     Iterator it = ((HashMap<Flags, List<String>>) message).entrySet().iterator();
                     while (it.hasNext()) {
@@ -100,10 +101,10 @@ public class ModulesPage {
                         // Remove Element
                         it.remove();
                     }
-                }
+                }*/
             }
         };
-        serverCommunication.setMessageListener(messageListener);
+        communication.setMessageListener(messageListener);
     }
 
 

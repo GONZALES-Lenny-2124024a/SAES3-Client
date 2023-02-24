@@ -2,6 +2,8 @@ package fr.univ_amu.iut.templates;
 
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.communication.CommunicationFormat;
+import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -47,7 +49,8 @@ public class ButtonModule extends Button {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
-        Main.getServerCommunication().sendMessageToServer(((Button) event.getSource()).getText()); // Send the module chosen
+        Main.getCommunication().sendMessage(new CommunicationFormat(Flags.MODULE_CHOICE,((Button) event.getSource()).getText()));
+        //Main.getCommunication().sendMessage(Flags.MODULE_CHOICE,((Button) event.getSource()).getText()); // Send the module chosen
     }
 
     /**

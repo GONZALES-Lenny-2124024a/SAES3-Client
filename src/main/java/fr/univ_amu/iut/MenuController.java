@@ -1,7 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.communication.Flags;
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 
 import java.io.IOException;
@@ -11,10 +11,10 @@ import java.io.IOException;
  * @author LennyGonzales
  */
 public class MenuController{
-    private final ServerCommunication serverCommunication;
+    private final Communication communication;
 
     public MenuController() {
-        serverCommunication = Main.getServerCommunication();
+        communication = Main.getCommunication();
     }
 
     /**
@@ -23,7 +23,7 @@ public class MenuController{
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void soloMode() throws IOException, UrlOfTheNextPageIsNull {
-        serverCommunication.sendMessageToServer("SOLO_FLAG");
+        communication.sendMessageToServer("SOLO_FLAG");
         switchTo("fxml/question.fxml");
     }
 
@@ -51,7 +51,7 @@ public class MenuController{
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void trainingMode() throws IOException, InterruptedException {
-        serverCommunication.sendMessage(Flags.TRAINING);
+        communication.sendMessage(Flags.TRAINING);
         ModulesPage modulesController = new ModulesPage("fxml/question.fxml");
         modulesController.initialize();
     }

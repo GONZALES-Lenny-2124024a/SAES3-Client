@@ -1,7 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,11 +16,11 @@ import java.io.IOException;
 public class MultiplayerController {
     @FXML
     private TextField codeInput;
-    private final ServerCommunication serverCommunication;
+    private final Communication communication;
     private final SceneController sceneController;
 
     public MultiplayerController() {
-        serverCommunication = Main.getServerCommunication();
+        communication = Main.getCommunication();
         sceneController = new SceneController();
     }
 
@@ -33,11 +33,11 @@ public class MultiplayerController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      */
     public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotAStringException, ClassNotFoundException, InterruptedException {
-        serverCommunication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
-        serverCommunication.sendMessageToServer(codeInput.getText());   // Get the multiplayer session code
+        communication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
+        communication.sendMessageToServer(codeInput.getText());   // Get the multiplayer session code
 
-        if((serverCommunication.receiveMessageFromServer()).equals("SESSION_EXISTS_FLAG")) {
-            serverCommunication.sendMessageToServer(LoginController.getMail());
+        if((communication.receiveMessageFromServer()).equals("SESSION_EXISTS_FLAG")) {
+            communication.sendMessageToServer(LoginController.getMail());
             sceneController.switchTo("fxml/loading.fxml");
         } else {
             Alert joinSessionError = new Alert(Alert.AlertType.ERROR, "La session multijoueur n'existe pas");
@@ -50,7 +50,7 @@ public class MultiplayerController {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void creationSession() throws IOException, InterruptedException {
-        serverCommunication.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
+        communication.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
         ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml");
         modulesController.initialize();
     }

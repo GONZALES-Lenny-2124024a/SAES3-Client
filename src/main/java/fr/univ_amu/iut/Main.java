@@ -1,6 +1,6 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -20,10 +20,10 @@ public class Main extends Application {
 
     private static final double WINDOW_HEIGHT = 720.0;
     private static final double WINDOW_WIDTH = 1280.0;
-    private static ServerCommunication serverCommunication;
+    private static Communication communication;
 
     public Main() throws IOException {
-        serverCommunication = new ServerCommunication("127.0.0.1",10013);
+        communication = new Communication("127.0.0.1",10013);
     }
     /**
      * the application scene can be set.
@@ -52,7 +52,7 @@ public class Main extends Application {
         // The user close the application
         stage.setOnCloseRequest(event -> {
             try {
-                serverCommunication.close();
+                communication.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -76,8 +76,8 @@ public class Main extends Application {
      * Get the communication with the server
      * @return the communication with the server
      */
-    public static ServerCommunication getServerCommunication() {
-        return serverCommunication;
+    public static Communication getCommunication() {
+        return communication;
     }
 
     /**

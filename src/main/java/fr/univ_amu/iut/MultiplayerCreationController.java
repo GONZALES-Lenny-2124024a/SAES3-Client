@@ -1,7 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.Timeline;
@@ -20,13 +20,13 @@ public class MultiplayerCreationController {
     private TextField codeSession;
     @FXML
     private ListView<String> usersPresentListView;
-    private final ServerCommunication serverCommunication;
+    private final Communication communication;
     private final SceneController sceneController;
     private Timeline timeline;
 
 
     public MultiplayerCreationController() {
-        serverCommunication = Main.getServerCommunication();
+        communication = Main.getCommunication();
         sceneController = new SceneController();
     }
 
@@ -41,11 +41,11 @@ public class MultiplayerCreationController {
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         timeline.stop();    // Stop getting email of the users who joined
 
-        serverCommunication.sendMessageToServer("BEGIN");    // Send to the server that we want to start the game by clicking on the 'Start' button
-        if(!(serverCommunication.receiveMessageFromServer().equals("BEGIN_FLAG"))) { // The game begins
+        communication.sendMessageToServer("BEGIN");    // Send to the server that we want to start the game by clicking on the 'Start' button
+        if(!(communication.receiveMessageFromServer().equals("BEGIN_FLAG"))) { // The game begins
             throw new NotTheExpectedFlagException("BEGIN_FLAG");
         }
-        serverCommunication.sendMessageToServer("BEGIN_FLAG");  // Send to the server that the game begin
+        communication.sendMessageToServer("BEGIN_FLAG");  // Send to the server that the game begin
         sceneController.switchTo("fxml/question.fxml");
     }
 
@@ -53,7 +53,7 @@ public class MultiplayerCreationController {
      * Get users who joined the multiplayer session before that the user start the session
      */
     public void getEmailOfTheUsersWhoJoined() throws NotAStringException, IOException, ClassNotFoundException, InterruptedException {
-        usersPresentListView.getItems().add(serverCommunication.receiveMessageFromServer());
+        usersPresentListView.getItems().add(communication.receiveMessageFromServer());
         /*
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.05), e -> {
@@ -81,10 +81,10 @@ public class MultiplayerCreationController {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void getSessionCode() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
-        if(!(serverCommunication.receiveMessageFromServer().equals("CODE_FLAG"))) {
+        if(!(communication.receiveMessageFromServer().equals("CODE_FLAG"))) {
             throw new NotTheExpectedFlagException("CODE_FLAG");
         }
-        codeSession.setText(serverCommunication.receiveMessageFromServer());
+        codeSession.setText(communication.receiveMessageFromServer());
     }
 
     /**

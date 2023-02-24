@@ -1,7 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -37,7 +37,7 @@ public class QuestionController {
     @FXML
     private ImageView characterImage;
 
-    private final ServerCommunication serverCommunication;
+    private final Communication communication;
     private final HashMap<String, Boolean> summary;
     private final Font font;
 
@@ -48,7 +48,7 @@ public class QuestionController {
     private int timerValue;
 
     public QuestionController() {
-        serverCommunication = Main.getServerCommunication();
+        communication = Main.getCommunication();
         summary = new HashMap<>();
         font = new Font("System Bold", 20);
         endTimer = 6;   // Timer : 5 seconds
@@ -77,7 +77,7 @@ public class QuestionController {
                     timerLabel.setText(String.valueOf(timerValue));
                     if(timerValue <= 0) {
                         try {
-                            serverCommunication.sendMessageToServer("TIMER_ENDED_FLAG");
+                            communication.sendMessageToServer("TIMER_ENDED_FLAG");
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -106,7 +106,7 @@ public class QuestionController {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
-        descriptionQuestion.setText(serverCommunication.receiveMessageFromServer() + '\n' + serverCommunication.receiveMessageFromServer());
+        descriptionQuestion.setText(communication.receiveMessageFromServer() + '\n' + communication.receiveMessageFromServer());
         switch (answerType) {
             case "QCM_FLAG" -> {
                 createCheckBoxes();
@@ -141,9 +141,9 @@ public class QuestionController {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void initializeTextCheckBoxes() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
-        answer1.setText(serverCommunication.receiveMessageFromServer());
-        answer2.setText(serverCommunication.receiveMessageFromServer());
-        answer3.setText(serverCommunication.receiveMessageFromServer());
+        answer1.setText(communication.receiveMessageFromServer());
+        answer2.setText(communication.receiveMessageFromServer());
+        answer3.setText(communication.receiveMessageFromServer());
     }
 
     /**
@@ -167,16 +167,16 @@ public class QuestionController {
      */
     public void submitAnswer() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         if(vboxParent.getChildren().size() <= 3) {  // If the response is a written response
-            serverCommunication.sendMessageToServer(writtenResponseTextField.getText());
+            communication.sendMessageToServer(writtenResponseTextField.getText());
         } else {    // If it's a QCM
             if (answer1.isSelected()) {
-                serverCommunication.sendMessageToServer("1");
+                communication.sendMessageToServer("1");
             } else if (answer2.isSelected()) {
-                serverCommunication.sendMessageToServer("2");
+                communication.sendMessageToServer("2");
             } else if (answer3.isSelected()) {
-                serverCommunication.sendMessageToServer("3");
+                communication.sendMessageToServer("3");
             } else {
-                serverCommunication.sendMessageToServer("0");
+                communication.sendMessageToServer("0");
             }
         }
 
@@ -193,7 +193,7 @@ public class QuestionController {
      */
     public void verifyEndGame() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         timerFunction.stop();
-        String message = serverCommunication.receiveMessageFromServer();    // END_GAME_FLAG or the answer type of the next question
+        String message = communication.receiveMessageFromServer();    // END_GAME_FLAG or the answer type of the next question
         if(message.equals("END_GAME_FLAG")) {
             endGame();
         } else {
@@ -220,7 +220,7 @@ public class QuestionController {
      * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      */
     public void initializeCharacterImage() throws NotAStringException, IOException, ClassNotFoundException, InterruptedException {
-        String module = serverCommunication.receiveMessageFromServer(); // Receive the name of the module
+        String module = communication.receiveMessageFromServer(); // Receive the name of the module
         String imageName = module.replace(" ", "_");    //replace space by '_'
         String urlCharacterImage = Objects.requireNonNull(getClass().getResource("img/characters/" + imageName + ".png")).toExternalForm();
         characterImage.setImage(new Image(urlCharacterImage));
@@ -236,7 +236,7 @@ public class QuestionController {
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
         initializeCharacterImage();
-        initializeVariables(serverCommunication.receiveMessageFromServer());
+        initializeVariables(communication.receiveMessageFromServer());
         initializeTimer(endTimer);
     }
 }

@@ -2,7 +2,7 @@ package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
-import fr.univ_amu.iut.communication.ServerCommunication;
+import fr.univ_amu.iut.communication.Communication;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,12 +25,12 @@ public class SummaryPage {
     private final VBox vboxParent;
     private ScrollPane summaryScrollPane;
     private VBox summaryVBox;
-    private ServerCommunication serverCommunication;
+    private Communication communication;
     private HashMap<String, Boolean> summary;
 
     public SummaryPage(HashMap<String, Boolean> summary) {
         this.summary = summary;
-        serverCommunication = Main.getServerCommunication();
+        communication = Main.getCommunication();
         vboxParent = new VBox();
         summaryScrollPane = new ScrollPane();
         summaryVBox = new VBox();
@@ -53,8 +53,8 @@ public class SummaryPage {
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public String getUserPointsFromTheServer() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
-        serverCommunication.sendMessageToServer(LoginController.getMail());
-        return serverCommunication.receiveMessageFromServer();
+        communication.sendMessageToServer(LoginController.getMail());
+        return communication.receiveMessageFromServer();
     }
 
     /**
@@ -125,7 +125,7 @@ public class SummaryPage {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void getSummaryFromServer() throws IOException, InterruptedException {
-        HashMap<?,?> receivedObject = (HashMap<?,?>) serverCommunication.receiveObjectFromServer();
+        HashMap<?,?> receivedObject = (HashMap<?,?>) communication.receiveObjectFromServer();
         if((receivedObject != null) && (receivedObject.keySet().stream().allMatch(key -> key instanceof String))) {
             summary = (HashMap<String, Boolean>) receivedObject;
         }
