@@ -65,7 +65,6 @@ public class Communication {
                 try {
                     object = inObject.readObject();
                     if(object instanceof CommunicationFormat) {
-                        System.out.println("instanceof CommunicationFormat");
                         messageListener.onMessageReceived((CommunicationFormat) object);
                     }
                 } catch (ClassNotFoundException | NotTheExpectedFlagException | IOException e) {

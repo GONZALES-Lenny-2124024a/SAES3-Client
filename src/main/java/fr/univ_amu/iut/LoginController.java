@@ -40,9 +40,7 @@ public class LoginController {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void sendLogin() throws IOException {
-        System.out.println("sendLogin before");
         communication.sendMessage(new CommunicationFormat(Flags.LOGIN, Arrays.asList(mailTextField.getText(), passwordTextField.getText())));
-        System.out.println("sendLogin after");
     }
 
 
