@@ -1,26 +1,17 @@
-package fr.univ_amu.iut.server;
+package fr.univ_amu.iut.communication;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
-import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
-import javax.net.SocketFactory;
-import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.ConnectException;
-import java.net.Socket;
 import java.security.Security;
-import java.util.Arrays;
+import java.util.HashMap;
 
-import javafx.util.Duration;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
@@ -34,6 +25,7 @@ public class ServerCommunication {
     private ObjectOutputStream outObject;
     private boolean isRequested;
     private MessageListener messageListener;
+    private Thread threadListener;
 
     public ServerCommunication(String hostname, int port) throws IOException {
         try {
@@ -68,7 +60,7 @@ public class ServerCommunication {
      * @return the object
      */
     public void startListening() {
-        new Thread(() -> {
+        threadListener = new Thread(() -> {
             while(isRequested) {
                 try {
                     object = inObject.readObject();
@@ -77,7 +69,8 @@ public class ServerCommunication {
                     throw new RuntimeException(e);
                 }
             }
-        }).start();
+        });
+        threadListener.start();
     }
 
     /**
@@ -89,6 +82,33 @@ public class ServerCommunication {
         outObject.writeObject(message);
         outObject.flush();
    }
+
+    /**
+     * Send a String to the server
+     * @param flag to send to the server
+     * @param content to send to the server
+     * @throws IOException if the communication with the server is closed or didn't go well
+     */
+    public void sendMessage(Flags flag, Object content) throws IOException {
+        HashMap<Flags, Object> hashmap = new HashMap<>();
+        hashmap.put(flag,content);
+
+        outObject.writeObject(hashmap);
+        outObject.flush();
+    }
+
+    /**
+     * Send a String to the server
+     * @param flag to send to the server
+     * @throws IOException if the communication with the server is closed or didn't go well
+     */
+    public void sendMessage(Flags flag) throws IOException {
+        HashMap<Flags, Object> hashmap = new HashMap<>();
+        hashmap.put(flag,null);
+
+        outObject.writeObject(hashmap);
+        outObject.flush();
+    }
 
     /**
      * Return the message/String received from the server
@@ -132,6 +152,7 @@ public class ServerCommunication {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void close() throws IOException {
+        threadListener.interrupt();
         inObject.close();
         outObject.close();
         socketClient.close();

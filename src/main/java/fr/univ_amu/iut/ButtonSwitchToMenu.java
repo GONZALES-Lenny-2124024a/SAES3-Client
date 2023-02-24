@@ -1,7 +1,7 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
-import fr.univ_amu.iut.server.ServerCommunication;
 import javafx.scene.control.Button;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class ButtonSwitchToMenu extends Button {
         setOnAction(event ->
                 {
                     try {
-                        Main.getServerCommunication().sendMessageToServer("BACK_TO_MENU_FLAG");
+                        Main.getServerCommunication().sendMessage(Flags.BACK_TO_MENU);
 
                         SceneController sceneController = new SceneController();
                         sceneController.switchTo("fxml/menu.fxml");

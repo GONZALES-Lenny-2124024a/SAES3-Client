@@ -1,9 +1,8 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
-import fr.univ_amu.iut.server.ServerCommunication;
+import fr.univ_amu.iut.communication.ServerCommunication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;

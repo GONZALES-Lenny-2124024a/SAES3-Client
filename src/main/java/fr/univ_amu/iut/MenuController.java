@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.server.ServerCommunication;
+import fr.univ_amu.iut.communication.Flags;
+import fr.univ_amu.iut.communication.ServerCommunication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class MenuController{
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void trainingMode() throws IOException, InterruptedException {
-        serverCommunication.sendMessageToServer("TRAINING_FLAG");
+        serverCommunication.sendMessage(Flags.TRAINING);
         ModulesPage modulesController = new ModulesPage("fxml/question.fxml");
         modulesController.initialize();
     }

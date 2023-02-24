@@ -1,8 +1,9 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
-import fr.univ_amu.iut.server.MessageListener;
-import fr.univ_amu.iut.server.ServerCommunication;
+import fr.univ_amu.iut.communication.MessageListener;
+import fr.univ_amu.iut.communication.ServerCommunication;
 import fr.univ_amu.iut.templates.ButtonModule;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -83,13 +84,13 @@ public class ModulesPage {
             public void onMessageReceived(Object message) throws NotTheExpectedFlagException {
                 if (message instanceof HashMap) {
 
-                    Iterator it = ((HashMap<String, List<String>>) message).entrySet().iterator();
+                    Iterator it = ((HashMap<Flags, List<String>>) message).entrySet().iterator();
                     while (it.hasNext()) {
-                        Map.Entry<String, List<String>> entry = (Map.Entry)it.next(); // Get element
+                        Map.Entry<Flags, List<String>> entry = (Map.Entry)it.next(); // Get element
 
                         // Use element
                         switch(entry.getKey()) {
-                            case "MODULES" -> Platform.runLater(() -> {
+                            case MODULES -> Platform.runLater(() -> {
                                 modules = entry.getValue();
                                 initializeModuleButtons(pageToSwitchTo);
                             });
