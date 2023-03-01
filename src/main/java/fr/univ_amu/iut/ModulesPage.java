@@ -17,7 +17,7 @@ import java.util.*;
  * Controller of the modules page where the user choose a module to practice on
  * @author LennyGonzales
  */
-public class ModulesPage {
+public class ModulesPage implements DefaultController {
     private VBox vboxParent;
 
     private List<String> modules;
@@ -32,17 +32,6 @@ public class ModulesPage {
         sceneController = new SceneController();
         this.pageToSwitchTo = pageToSwitchTo;
         vboxParent = new VBox();
-    }
-
-    /**
-     * Method that get the modules from the server
-     * @throws IOException if the communication with the server is closed or didn't go well
-     */
-    public void getModulesFromServer() throws IOException, InterruptedException {
-        List<?>  receivedObject = (List<?>) communication.receiveObjectFromServer();
-        if ((receivedObject != null) && (receivedObject.get(0) instanceof String)) {    //Check the cast
-            modules = (List<String>) receivedObject;
-        }
     }
 
     /**
@@ -79,32 +68,26 @@ public class ModulesPage {
     /**
      * Initialize the interaction with the server
      */
-    public void initializeInteractionServer() {
+    public void initializeInteractionServer() throws IOException {
         MessageListener messageListener = new MessageListener() {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
-                /*if (message instanceof HashMap) {
-
-                    Iterator it = ((HashMap<Flags, List<String>>) message).entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry<Flags, List<String>> entry = (Map.Entry)it.next(); // Get element
-
-                        // Use element
-                        switch(entry.getKey()) {
-                            case MODULES -> Platform.runLater(() -> {
-                                modules = entry.getValue();
-                                initializeModuleButtons(pageToSwitchTo);
-                            });
-                            default -> throw new NotTheExpectedFlagException("MODULES");
+                switch(message.getFlag()) {
+                    case MODULES -> Platform.runLater(() -> {
+                        try {
+                            modules = (List<String>) message.getContent();
+                            initializeModuleButtons(pageToSwitchTo);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
-
-                        // Remove Element
-                        it.remove();
-                    }
-                }*/
+                    });
+                    default -> throw new NotTheExpectedFlagException("MODULES");
+                }
             }
         };
         communication.setMessageListener(messageListener);
+        communication.sendMessage(new CommunicationFormat(Flags.TRAINING));
+
     }
 
 

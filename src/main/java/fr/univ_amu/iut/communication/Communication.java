@@ -64,10 +64,14 @@ public class Communication {
             while(isRequested) {
                 try {
                     object = inObject.readObject();
-                    if(object instanceof CommunicationFormat) {
+                    if((object instanceof CommunicationFormat) && (messageListener != null) ) {
                         messageListener.onMessageReceived((CommunicationFormat) object);
                     }
-                } catch (ClassNotFoundException | NotTheExpectedFlagException | IOException e) {
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (NotTheExpectedFlagException e) {
+                    throw new RuntimeException(e);
+                }  catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }

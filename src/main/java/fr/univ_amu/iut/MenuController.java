@@ -10,7 +10,7 @@ import java.io.IOException;
  * Controller of the menu's page
  * @author LennyGonzales
  */
-public class MenuController{
+public class MenuController {
     private final Communication communication;
 
     public MenuController() {
@@ -51,7 +51,6 @@ public class MenuController{
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void trainingMode() throws IOException, InterruptedException {
-        communication.sendMessage(Flags.TRAINING);
         ModulesPage modulesController = new ModulesPage("fxml/question.fxml");
         modulesController.initialize();
     }

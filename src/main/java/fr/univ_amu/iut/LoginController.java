@@ -21,7 +21,7 @@ import java.util.Map;
  * Controller of the login's page
  * @author LennyGonzales
  */
-public class LoginController {
+public class LoginController implements DefaultController{
     @FXML
     private TextField mailTextField;
     @FXML
