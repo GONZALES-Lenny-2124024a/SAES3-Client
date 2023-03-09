@@ -67,11 +67,7 @@ public class Communication {
                     if((object instanceof CommunicationFormat) && (messageListener != null) ) {
                         messageListener.onMessageReceived((CommunicationFormat) object);
                     }
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (NotTheExpectedFlagException e) {
-                    throw new RuntimeException(e);
-                }  catch (IOException e) {
+                } catch (ClassNotFoundException | NotTheExpectedFlagException | IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -96,19 +92,6 @@ public class Communication {
      */
     public void sendMessage(CommunicationFormat message) throws IOException {
         outObject.writeObject(message);
-        outObject.flush();
-    }
-
-    /**
-     * Send a String to the server
-     * @param flag to send to the server
-     * @throws IOException if the communication with the server is closed or didn't go well
-     */
-    public void sendMessage(Flags flag) throws IOException {
-        HashMap<Flags, Object> hashmap = new HashMap<>();
-        hashmap.put(flag,null);
-
-        outObject.writeObject(hashmap);
         outObject.flush();
     }
 

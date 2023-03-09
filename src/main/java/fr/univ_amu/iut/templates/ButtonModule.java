@@ -50,7 +50,6 @@ public class ButtonModule extends Button {
      */
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
         Main.getCommunication().sendMessage(new CommunicationFormat(Flags.MODULE_CHOICE,((Button) event.getSource()).getText()));
-        //Main.getCommunication().sendMessage(Flags.MODULE_CHOICE,((Button) event.getSource()).getText()); // Send the module chosen
     }
 
     /**

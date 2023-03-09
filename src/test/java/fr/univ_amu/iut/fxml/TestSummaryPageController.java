@@ -25,17 +25,17 @@ import static org.testfx.util.NodeQueryUtils.hasText;
  * Test the summary page
  */
 @ExtendWith(ApplicationExtension.class)
-public class TestSummaryPage {
+public class TestSummaryPageController {
     Stage stage;
 
     @Start
     public void start(Stage stage) throws Exception {
         Platform.runLater(() -> {
-            TestSummaryPage.this.stage = new Stage();
+            TestSummaryPageController.this.stage = new Stage();
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
-                        new Main().start(TestSummaryPage.this.stage);
+                        new Main().start(TestSummaryPageController.this.stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

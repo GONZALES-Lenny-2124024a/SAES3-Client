@@ -37,12 +37,12 @@
 }
 
 .list-cell:filled {
-  -fx-background-color: #FF4272;
   -fx-text-fill: white;
 }
 
-
-.list-cell { /* <=== changed to even */
-  -fx-background-color: #647295;
-  -fx-border-color: white;
+.list-cell:even {
+  -fx-background-color: white;
+}
+.list-cell:odd {
+  -fx-background-color: #dcdcdc;
 }

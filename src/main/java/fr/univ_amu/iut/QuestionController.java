@@ -1,57 +1,67 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.CommunicationFormat;
+import fr.univ_amu.iut.communication.MessageListener;
+import fr.univ_amu.iut.domain.MultipleChoiceQuestion;
+import fr.univ_amu.iut.domain.Question;
+import fr.univ_amu.iut.domain.WrittenResponseQuestion;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
+import fr.univ_amu.iut.templates.CheckBoxAnswer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Controller of the question's page
  * @author LennyGonzales
  */
-public class QuestionController {
+public class QuestionController implements DefaultController{
     @FXML
     private VBox vboxParent;
     @FXML
     private Label descriptionQuestion;
     @FXML
-    private CheckBox answer1;
+    private CheckBoxAnswer answer1;
     @FXML
-    private CheckBox answer2;
+    private CheckBoxAnswer answer2;
     @FXML
-    private CheckBox answer3;
+    private CheckBoxAnswer answer3;
     @FXML
     private TextField writtenResponseTextField;
     @FXML
     private ImageView characterImage;
 
     private final Communication communication;
-    private final HashMap<String, Boolean> summary;
-    private final Font font;
 
     @FXML
     private Label timerLabel;
     private Timeline timerFunction;
     private int endTimer;
     private int timerValue;
+    private Question currentQuestion;
+    private static List<Question> story;
+    private Iterator<Question> iteratorStory;
 
     public QuestionController() {
         communication = Main.getCommunication();
-        summary = new HashMap<>();
-        font = new Font("System Bold", 20);
         endTimer = 6;   // Timer : 5 seconds
+        story = new ArrayList<>();
+    }
+
+    public static List<Question> getStory() {
+        return story;
     }
 
     /**
@@ -77,19 +87,11 @@ public class QuestionController {
                     timerLabel.setText(String.valueOf(timerValue));
                     if(timerValue <= 0) {
                         try {
-                            communication.sendMessageToServer("TIMER_ENDED_FLAG");
-                        } catch (IOException ex) {
+                            submitAnswer();
+                        } catch (IOException | NotAStringException | ClassNotFoundException | InterruptedException | UrlOfTheNextPageIsNull ex) {
                             throw new RuntimeException(ex);
                         }
                         removeAnswersType();
-
-                        try {
-                            verifyEndGame(); // Check if the answer is correct or wrong and add it to the hash map
-                        } catch (IOException | NotTheExpectedFlagException | ClassNotFoundException | NotAStringException ex) {
-                            throw new RuntimeException(ex);
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
                     }
                 })
         );
@@ -99,51 +101,25 @@ public class QuestionController {
 
     /**
      * Initialize the question and the answers
-     * @param answerType the type of the answer (written response or multiple choice)
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
+     * @param question question object
      */
-    public void initializeVariables(String answerType) throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
-        descriptionQuestion.setText(communication.receiveMessageFromServer() + '\n' + communication.receiveMessageFromServer());
-        switch (answerType) {
-            case "QCM_FLAG" -> {
-                createCheckBoxes();
-                initializeTextCheckBoxes();
-            }
-            case "WRITTEN_RESPONSE_QUESTION_FLAG" -> createWrittenResponse();
-            default -> throw new NotTheExpectedFlagException("QCM_FLAG or WRITTEN_RESPONSE_QUESTION_FLAG");
+    public void initializeVariables(Question question) {
+        descriptionQuestion.setText(question.getDescription() + '\n' + question.getQuestion());
+        if(question instanceof MultipleChoiceQuestion) {
+            createCheckBoxes((MultipleChoiceQuestion) question);
+        } else if (question instanceof WrittenResponseQuestion) {
+            createWrittenResponse();
         }
     }
 
     /**
      * Create the checkboxes by adding them in the fxml, fix their fx:id and their font
      */
-    public void createCheckBoxes() {
-        for (int numCheckBox = 1; numCheckBox < 4; ++numCheckBox) {
-            CheckBox checkBoxAnswer = new CheckBox();
-            checkBoxAnswer.setWrapText(true);
-            checkBoxAnswer.setId("answer" + numCheckBox);
-            checkBoxAnswer.setFont(font);
-            checkBoxAnswer.setStyle("-fx-text-fill: #e7e7e7");
-            vboxParent.getChildren().add(numCheckBox,checkBoxAnswer); // Puts this checkbox at the good position (after the title, description and question | before the button to submit and leave)
-        }
-        answer1 = ((CheckBox) vboxParent.lookup("#answer1"));
-        answer2 = ((CheckBox) vboxParent.lookup("#answer2"));
-        answer3 = ((CheckBox) vboxParent.lookup("#answer3"));
-    }
-
-    /**
-     * Set the text of the checkboxes
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
-     */
-    public void initializeTextCheckBoxes() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
-        answer1.setText(communication.receiveMessageFromServer());
-        answer2.setText(communication.receiveMessageFromServer());
-        answer3.setText(communication.receiveMessageFromServer());
+    public void createCheckBoxes(MultipleChoiceQuestion question) {
+        answer1 = new CheckBoxAnswer("answer1", question.getAnswer1());
+        answer2 = new CheckBoxAnswer("answer2", question.getAnswer2());
+        answer3 = new CheckBoxAnswer("answer3", question.getAnswer3());
+        vboxParent.getChildren().addAll(answer1,answer2,answer3);
     }
 
     /**
@@ -151,7 +127,6 @@ public class QuestionController {
      */
     public void createWrittenResponse() {
         TextField textField = new TextField();
-        textField.setFont(font);
         textField.setPrefWidth(1000);
         textField.setId("writtenAnswer");
         vboxParent.getChildren().add(1, textField);
@@ -160,70 +135,71 @@ public class QuestionController {
 
     /**
      * Submit the question to the server
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
-    public void submitAnswer() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
-        if(vboxParent.getChildren().size() <= 3) {  // If the response is a written response
-            communication.sendMessageToServer(writtenResponseTextField.getText());
+    public void submitAnswer() throws IOException, NotAStringException, ClassNotFoundException, InterruptedException, UrlOfTheNextPageIsNull {
+        timerFunction.stop();
+
+        if(vboxParent.getChildren().size() <= 3) {  // If the answer is a written response
+            ((WrittenResponseQuestion) currentQuestion).setTrueAnswer(writtenResponseTextField.getText());
         } else {    // If it's a QCM
             if (answer1.isSelected()) {
-                communication.sendMessageToServer("1");
+                ((MultipleChoiceQuestion) currentQuestion).setTrueAnswer(1);
             } else if (answer2.isSelected()) {
-                communication.sendMessageToServer("2");
+                ((MultipleChoiceQuestion) currentQuestion).setTrueAnswer(2);
             } else if (answer3.isSelected()) {
-                communication.sendMessageToServer("3");
-            } else {
-                communication.sendMessageToServer("0");
+                ((MultipleChoiceQuestion) currentQuestion).setTrueAnswer(3);
             }
         }
 
         removeAnswersType();
-        verifyEndGame(); // Check if the answer is correct or wrong and add it to the hash map
-    }
-
-    /**
-     * Check if there are no more question (end game)
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
-     */
-    public void verifyEndGame() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
-        timerFunction.stop();
-        String message = communication.receiveMessageFromServer();    // END_GAME_FLAG or the answer type of the next question
-        if(message.equals("END_GAME_FLAG")) {
-            endGame();
-        } else {
-            initializeVariables(message);
-            initializeTimer(endTimer);
-        }
-    }
-
-    /**
-     * Supports the end game
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
-     */
-    public void endGame() throws IOException, ClassNotFoundException, NotAStringException, InterruptedException {
-        SummaryPage summaryPage = new SummaryPage(summary);
-        summaryPage.initialize();
+        nextQuestion();
     }
 
     /**
      * Initialize the character image who represents the module
-     * @throws NotAStringException Throw when the message received from the server isn't a string
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      */
-    public void initializeCharacterImage() throws NotAStringException, IOException, ClassNotFoundException, InterruptedException {
-        String module = communication.receiveMessageFromServer(); // Receive the name of the module
+    public void initializeCharacterImage() {
+        String module = story.get(0).getModule();
         String imageName = module.replace(" ", "_");    //replace space by '_'
         String urlCharacterImage = Objects.requireNonNull(getClass().getResource("img/characters/" + imageName + ".png")).toExternalForm();
         characterImage.setImage(new Image(urlCharacterImage));
+    }
+
+    @Override
+    public void initializeInteractionServer() {
+        MessageListener messageListener = new MessageListener() {
+            @Override
+            public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
+                switch (message.getFlag()) {
+                    case STORY -> Platform.runLater(() -> {
+                        try {
+                            story = ((List<Question>) message.getContent());
+                            Collections.shuffle(story);     // Permutes randomly
+
+                            initializeCharacterImage();
+
+                            iteratorStory = story.iterator();
+                            nextQuestion();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    default -> throw new NotTheExpectedFlagException("STORY");
+                }
+            }
+        };
+        communication.setMessageListener(messageListener);
+    }
+
+    public void nextQuestion() throws IOException, UrlOfTheNextPageIsNull {
+        if(iteratorStory.hasNext()) {   // next question
+            currentQuestion = iteratorStory.next();
+            initializeVariables(currentQuestion);
+            initializeTimer(endTimer);
+        } else {    // Change page
+            SceneController sceneController = new SceneController();
+            sceneController.switchTo("fxml/summary.fxml");
+        }
     }
 
     /**
@@ -235,8 +211,7 @@ public class QuestionController {
      */
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
-        initializeCharacterImage();
-        initializeVariables(communication.receiveMessageFromServer());
-        initializeTimer(endTimer);
+        initializeInteractionServer();
     }
+
 }
