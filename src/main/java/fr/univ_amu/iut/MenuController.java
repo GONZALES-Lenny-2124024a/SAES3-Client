@@ -1,5 +1,6 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -23,7 +24,7 @@ public class MenuController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void soloMode() throws IOException, UrlOfTheNextPageIsNull {
-        communication.sendMessageToServer("SOLO_FLAG");
+        communication.sendMessage(new CommunicationFormat(Flags.SOLO));
         switchTo("fxml/question.fxml");
     }
 

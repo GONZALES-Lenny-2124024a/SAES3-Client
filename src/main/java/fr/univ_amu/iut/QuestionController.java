@@ -139,9 +139,9 @@ public class QuestionController implements DefaultController{
     public void submitAnswer() throws IOException, NotAStringException, ClassNotFoundException, InterruptedException, UrlOfTheNextPageIsNull {
         timerFunction.stop();
 
-        if(vboxParent.getChildren().size() <= 3) {  // If the answer is a written response
+        if(currentQuestion instanceof WrittenResponseQuestion) {
             ((WrittenResponseQuestion) currentQuestion).setTrueAnswer(writtenResponseTextField.getText());
-        } else {    // If it's a QCM
+        } else if (currentQuestion instanceof MultipleChoiceQuestion) {    // If it's a QCM
             if (answer1.isSelected()) {
                 ((MultipleChoiceQuestion) currentQuestion).setTrueAnswer(1);
             } else if (answer2.isSelected()) {

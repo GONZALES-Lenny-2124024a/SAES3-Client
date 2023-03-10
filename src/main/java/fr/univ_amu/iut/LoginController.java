@@ -84,6 +84,7 @@ public class LoginController implements DefaultController{
 
     public void loginSuccessful() throws Exception {
         mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
+        communication.setMessageListener(null);
         sceneController.switchTo("fxml/menu.fxml"); // Now, the user can access to the menu page
     }
 

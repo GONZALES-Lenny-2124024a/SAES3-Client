@@ -64,7 +64,9 @@ public class Communication {
             while(isRequested) {
                 try {
                     object = inObject.readObject();
-                    if((object instanceof CommunicationFormat) && (messageListener != null) ) {
+                    if(object instanceof CommunicationFormat) {
+                        while(messageListener == null) {
+                        }
                         messageListener.onMessageReceived((CommunicationFormat) object);
                     }
                 } catch (ClassNotFoundException | NotTheExpectedFlagException | IOException e) {

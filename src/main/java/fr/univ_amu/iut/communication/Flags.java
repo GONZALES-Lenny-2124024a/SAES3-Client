@@ -12,5 +12,6 @@ public enum Flags {
     ANSWERS,
     SUMMARY,
     USER_POINTS,
-    EMAIL
+    EMAIL,
+    SOLO
 }
