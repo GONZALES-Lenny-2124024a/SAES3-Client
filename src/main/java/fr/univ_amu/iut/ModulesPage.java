@@ -25,12 +25,14 @@ public class ModulesPage implements DefaultController {
     private final SceneController sceneController;
     private Button button;
     private final String pageToSwitchTo;
+    private final Flags flag;
 
-    public ModulesPage(String pageToSwitchTo) {
+    public ModulesPage(String pageToSwitchTo, Flags flag) {
         modules = new ArrayList<>();
         communication = Main.getCommunication();
         sceneController = new SceneController();
         this.pageToSwitchTo = pageToSwitchTo;
+        this.flag = flag;
         vboxParent = new VBox();
     }
 
@@ -86,8 +88,7 @@ public class ModulesPage implements DefaultController {
             }
         };
         communication.setMessageListener(messageListener);
-        communication.sendMessage(new CommunicationFormat(Flags.TRAINING));
-
+        communication.sendMessage(new CommunicationFormat(flag));
     }
 
 

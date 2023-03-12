@@ -91,7 +91,6 @@ public class QuestionController implements DefaultController{
                         } catch (IOException | NotAStringException | ClassNotFoundException | InterruptedException | UrlOfTheNextPageIsNull ex) {
                             throw new RuntimeException(ex);
                         }
-                        removeAnswersType();
                     }
                 })
         );
@@ -184,7 +183,7 @@ public class QuestionController implements DefaultController{
                             throw new RuntimeException(e);
                         }
                     });
-                    default -> throw new NotTheExpectedFlagException("STORY");
+                    default -> throw new NotTheExpectedFlagException("STORY" + message.getFlag());
                 }
             }
         };

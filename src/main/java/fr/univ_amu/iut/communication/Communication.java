@@ -2,6 +2,9 @@ package fr.univ_amu.iut.communication;
 
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -12,6 +15,7 @@ import java.net.ConnectException;
 import java.security.Security;
 import java.util.HashMap;
 
+import javafx.util.Duration;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
@@ -65,11 +69,13 @@ public class Communication {
                 try {
                     object = inObject.readObject();
                     if(object instanceof CommunicationFormat) {
+                        // stop until messageListener not null
                         while(messageListener == null) {
+                            Thread.sleep(100);
                         }
                         messageListener.onMessageReceived((CommunicationFormat) object);
                     }
-                } catch (ClassNotFoundException | NotTheExpectedFlagException | IOException e) {
+                } catch (ClassNotFoundException | NotTheExpectedFlagException | IOException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }

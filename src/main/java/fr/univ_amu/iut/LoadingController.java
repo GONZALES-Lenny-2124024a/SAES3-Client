@@ -1,10 +1,14 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.CommunicationFormat;
+import fr.univ_amu.iut.communication.Flags;
+import fr.univ_amu.iut.communication.MessageListener;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -13,7 +17,7 @@ import java.io.IOException;
  * Controller of the loading's page
  * @author LennyGonzales
  */
-public class LoadingController {
+public class LoadingController implements DefaultController{
 
     private final Communication communication;
     private final SceneController sceneController;
@@ -24,49 +28,26 @@ public class LoadingController {
         sceneController = new SceneController();
     }
 
-    /**
-     * Verify if the server sent a message each second to know if the multiplayer session begin
-     * Allows the application to not wait indefinitely (freeze) until the multiplayer session's host click on the 'Lancer' button
-     */
-    public void verifyServerEachSecond() throws NotAStringException, IOException, ClassNotFoundException, NotTheExpectedFlagException, UrlOfTheNextPageIsNull, InterruptedException {
-        beginSession(communication.receiveMessageFromServer());
-        /*
-        verifyServerEachSecondTimeLine = new Timeline(
-                new KeyFrame(Duration.seconds(0.05), e -> {
-
-                    try {
-                        if(serverCommunication.isReceiveMessageFromServer()) {   // Verify if the server sent a message
-                            beginSession();
+    @Override
+    public void initializeInteractionServer() throws IOException {
+        MessageListener messageListener = new MessageListener() {
+            @Override
+            public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
+                switch(message.getFlag()) {
+                    case BEGIN -> Platform.runLater(() -> {
+                        try {
+                            communication.setMessageListener(null);
+                            communication.sendMessage(new CommunicationFormat(Flags.BEGIN));
+                            sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
+                        } catch (IOException | UrlOfTheNextPageIsNull e) {
+                            throw new RuntimeException(e);
                         }
-                    } catch (IOException | UrlOfTheNextPageIsNull | NotTheExpectedFlagException |
-                             ClassNotFoundException | NotAStringException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-                })
-        );
-        verifyServerEachSecondTimeLine.setCycleCount(Timeline.INDEFINITE);
-        verifyServerEachSecondTimeLine.play();
-
-         */
-    }
-
-    /**
-     * Start the multiplayer's session
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws UrlOfTheNextPageIsNull Throw when the url of the next fxml page is null
-     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
-     */
-    public void beginSession(String message) throws IOException, UrlOfTheNextPageIsNull, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
-        //verifyServerEachSecondTimeLine.stop();  // stop verifying the server each second
-        if(!(message).equals("BEGIN_FLAG")) {
-        //if (!(serverCommunication.receiveMessageFromServer()).equals("BEGIN_FLAG")) {    // When the host start the game by clicking on the 'Start' button
-            throw new NotTheExpectedFlagException("BEGIN_FLAG");
-        }
-        communication.sendMessageToServer("BEGIN_FLAG");  // Say to the server to start the game
-        sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
+                    });
+                    default -> throw new NotTheExpectedFlagException("BEGIN");
+                }
+            }
+        };
+        communication.setMessageListener(messageListener);
     }
 
     /**
@@ -75,6 +56,6 @@ public class LoadingController {
      */
     @FXML
     public void initialize() throws NotAStringException, NotTheExpectedFlagException, IOException, UrlOfTheNextPageIsNull, ClassNotFoundException, InterruptedException {
-        verifyServerEachSecond();  // Verify if the server sent a message each second to know if the session begin
+        initializeInteractionServer();
     }
 }

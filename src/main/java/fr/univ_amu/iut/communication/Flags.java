@@ -13,5 +13,12 @@ public enum Flags {
     SUMMARY,
     USER_POINTS,
     EMAIL,
-    SOLO
+    SOLO,
+    MULTIPLAYER_CREATION,
+    CODE,
+    SESSION_EXISTS,
+    SESSION_NOT_EXISTS,
+    BEGIN,
+    NEW_PLAYER,
+    MULTIPLAYER_JOIN
 }

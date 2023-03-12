@@ -2,6 +2,7 @@ package fr.univ_amu.iut.templates;
 
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -49,7 +50,9 @@ public class ButtonModule extends Button {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
-        Main.getCommunication().sendMessage(new CommunicationFormat(Flags.MODULE_CHOICE,((Button) event.getSource()).getText()));
+        Communication communication = Main.getCommunication();
+        communication.setMessageListener(null);
+        communication.sendMessage(new CommunicationFormat(Flags.MODULE_CHOICE,((Button) event.getSource()).getText()));
     }
 
     /**

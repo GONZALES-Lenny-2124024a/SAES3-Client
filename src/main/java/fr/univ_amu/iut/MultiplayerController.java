@@ -1,8 +1,13 @@
 package fr.univ_amu.iut;
 
+import fr.univ_amu.iut.communication.CommunicationFormat;
+import fr.univ_amu.iut.communication.Flags;
+import fr.univ_amu.iut.communication.MessageListener;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
+import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -13,7 +18,7 @@ import java.io.IOException;
  * Controller of the multiplayer's page
  * @author LennyGonzales
  */
-public class MultiplayerController {
+public class MultiplayerController implements DefaultController{
     @FXML
     private TextField codeInput;
     private final Communication communication;
@@ -28,21 +33,9 @@ public class MultiplayerController {
      * Send the multiplayer join flag, the multiplayer session code and the email of the user
      * Switch to the loading page
      * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws UrlOfTheNextPageIsNull Throw when the url of the next fxml page is null
-     * @throws NotAStringException Throw when the object received from the server isn't a string
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
      */
-    public void joinSession() throws IOException, UrlOfTheNextPageIsNull, NotAStringException, ClassNotFoundException, InterruptedException {
-        communication.sendMessageToServer("MULTIPLAYER_JOIN_FLAG");
-        communication.sendMessageToServer(codeInput.getText());   // Get the multiplayer session code
-
-        if((communication.receiveMessageFromServer()).equals("SESSION_EXISTS_FLAG")) {
-            communication.sendMessageToServer(LoginController.getMail());
-            sceneController.switchTo("fxml/loading.fxml");
-        } else {
-            Alert joinSessionError = new Alert(Alert.AlertType.ERROR, "La session multijoueur n'existe pas");
-            joinSessionError.show();
-        }
+    public void joinSession() throws IOException {
+        communication.sendMessage(new CommunicationFormat(Flags.MULTIPLAYER_JOIN, codeInput.getText())); // Send the multiplayer session code
     }
 
     /**
@@ -50,8 +43,7 @@ public class MultiplayerController {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void creationSession() throws IOException, InterruptedException {
-        communication.sendMessageToServer("MULTIPLAYER_CREATION_FLAG");
-        ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml");
+        ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml", Flags.MULTIPLAYER_CREATION);
         modulesController.initialize();
     }
 
@@ -62,5 +54,36 @@ public class MultiplayerController {
      */
     public void switchToMenu() throws IOException, UrlOfTheNextPageIsNull {
         sceneController.switchTo("fxml/menu.fxml");
+    }
+
+    @Override
+    public void initializeInteractionServer() throws IOException {
+        MessageListener messageListener = new MessageListener() {
+            @Override
+            public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
+                switch(message.getFlag()) {
+                    case SESSION_EXISTS -> Platform.runLater(() -> {
+                        try {
+                            communication.setMessageListener(null);
+                            communication.sendMessage(new CommunicationFormat(Flags.EMAIL, LoginController.getMail()));
+                            sceneController.switchTo("fxml/loading.fxml");
+                        } catch (IOException | UrlOfTheNextPageIsNull e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    case SESSION_NOT_EXISTS -> Platform.runLater(() -> {
+                        Alert joinSessionError = new Alert(Alert.AlertType.ERROR, "La session multijoueur n'existe pas");
+                        joinSessionError.show();
+                    });
+                    default -> throw new NotTheExpectedFlagException("SESSION_EXISTS");
+                }
+            }
+        };
+        communication.setMessageListener(messageListener);
+    }
+
+    @FXML
+    public void initialize() throws IOException {
+        initializeInteractionServer();
     }
 }
