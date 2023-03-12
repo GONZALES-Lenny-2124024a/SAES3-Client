@@ -79,7 +79,9 @@ public class LoginController implements DefaultController{
             }
         };
         communication.setMessageListener(messageListener);
-        communication.startListening();
+        if(!communication.getIsListening()) {
+            communication.startListening();
+        }
     }
 
     public void loginSuccessful() throws Exception {

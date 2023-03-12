@@ -5,7 +5,6 @@ module fr.univ_amu.iut {
     requires transitive javafx.base;
     requires transitive javafx.graphics;
     requires java.desktop;
-    requires bcprov.jdk15on;
 
     opens fr.univ_amu.iut to javafx.fxml;
     exports fr.univ_amu.iut;

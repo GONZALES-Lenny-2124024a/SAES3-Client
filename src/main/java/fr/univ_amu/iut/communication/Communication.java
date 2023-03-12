@@ -1,10 +1,6 @@
 package fr.univ_amu.iut.communication;
 
-import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
-import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -12,11 +8,6 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.ConnectException;
-import java.security.Security;
-import java.util.HashMap;
-
-import javafx.util.Duration;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  * Supports the communication with the server
@@ -30,12 +21,15 @@ public class Communication {
     private boolean isRequested;
     private MessageListener messageListener;
     private Thread threadListener;
+    private boolean isListening = false;
 
     public Communication(String hostname, int port) throws IOException {
         try {
-            Security.addProvider(new BouncyCastleProvider());
-            System.setProperty("javax.net.ssl.trustStore", "myTrustStore.jts");
-            System.setProperty("javax.net.ssl.trustStorePassword", "password"); //----to do
+            System.setProperty("javax.net.ssl.keyStore", "keyStore.jks");
+            System.setProperty("javax.net.ssl.keyStorePassword", "Gyaz1ycgG-9bu");   // ----!!!
+            System.setProperty("javax.net.ssl.trustStore", "trustStore.jts");
+            System.setProperty("javax.net.ssl.trustStorePassword", "Gyaz1ycgG-9bu"); //----to do
+
             SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             socketClient = (SSLSocket) factory.createSocket(hostname, port);
             socketClient.setEnabledProtocols(new String[] { "TLSv1.3" });
@@ -80,18 +74,13 @@ public class Communication {
                 }
             }
         });
+        isListening = true;
         threadListener.start();
     }
 
-    /**
-     * Send a String to the server
-     * @param message to send to the server
-     * @throws IOException if the communication with the server is closed or didn't go well
-     */
-   public void sendMessageToServer(String message) throws IOException {
-        outObject.writeObject(message);
-        outObject.flush();
-   }
+    public boolean getIsListening() {
+        return isListening;
+    }
 
     /**
      * Send a String to the server
@@ -101,42 +90,6 @@ public class Communication {
     public void sendMessage(CommunicationFormat message) throws IOException {
         outObject.writeObject(message);
         outObject.flush();
-    }
-
-    /**
-     * Return the message/String received from the server
-     * @return the message or null if the server disconnected
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws NotAStringException throw when the Object received isn't a String
-     * @throws ClassNotFoundException if the object class not found
-     */
-    public String receiveMessageFromServer() throws IOException, NotAStringException {
-        try {
-            if((object = inObject.readObject()) instanceof String) {
-                return object.toString();
-            }
-            throw new NotAStringException(object);
-        } catch (EOFException | ClassNotFoundException e) {
-            close();
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Return the object received from the server
-     * @return the object or null if the server disconnected
-     * @throws IOException if the communication with the server is closed or didn't go well
-     */
-    public Object receiveObjectFromServer() throws IOException {
-        try {
-            object = inObject.readObject();
-            return object;
-        } catch (EOFException | ClassNotFoundException e) {
-            close();
-            e.printStackTrace();
-        }
-        return null;
     }
 
 
