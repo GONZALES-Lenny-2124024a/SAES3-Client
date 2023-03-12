@@ -88,7 +88,7 @@ public class ModulesPage implements DefaultController {
             }
         };
         communication.setMessageListener(messageListener);
-        communication.sendMessage(new CommunicationFormat(flag));
+        communication.sendMessage(new CommunicationFormat(flag, MenuController.getNbQuestions()));
     }
 
 

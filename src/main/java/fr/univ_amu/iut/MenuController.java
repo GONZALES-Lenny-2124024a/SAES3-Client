@@ -4,6 +4,11 @@ import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
+import javafx.scene.control.Slider;
 
 import java.io.IOException;
 
@@ -13,9 +18,13 @@ import java.io.IOException;
  */
 public class MenuController {
     private final Communication communication;
+    @FXML
+    private Slider nbQuestionsSlider;
+    private static IntegerProperty nbQuestions;
 
     public MenuController() {
         communication = Main.getCommunication();
+        nbQuestions = new SimpleIntegerProperty();
     }
 
     /**
@@ -24,7 +33,7 @@ public class MenuController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void soloMode() throws IOException, UrlOfTheNextPageIsNull {
-        communication.sendMessage(new CommunicationFormat(Flags.SOLO));
+        communication.sendMessage(new CommunicationFormat(Flags.SOLO, nbQuestions.get()));
         switchTo("fxml/question.fxml");
     }
 
@@ -65,5 +74,14 @@ public class MenuController {
     public void switchTo(String nameNextPage) throws IOException, UrlOfTheNextPageIsNull {
         SceneController sceneController = new SceneController();
         sceneController.switchTo(nameNextPage);
+    }
+
+    public static int getNbQuestions() {
+        return nbQuestions.get();
+    }
+
+    @FXML
+    public void initialize() {
+        nbQuestions.bindBidirectional(nbQuestionsSlider.valueProperty());
     }
 }
