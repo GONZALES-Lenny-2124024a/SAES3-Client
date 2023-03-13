@@ -51,7 +51,7 @@ public class ModulesPage implements DefaultController {
      * Initialize the button which return to the menu page
      */
     public void initializeSwitchToMenuButton() {
-        Button buttonSwitchToMenu = new Button();
+        ButtonSwitchToMenu buttonSwitchToMenu = new ButtonSwitchToMenu();
         buttonSwitchToMenu.setText("QUITTER");
         buttonSwitchToMenu.setId("quit");
         vboxParent.getChildren().add(buttonSwitchToMenu);

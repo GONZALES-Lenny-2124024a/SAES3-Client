@@ -66,9 +66,11 @@ public class MultiplayerCreationController implements DefaultController{
     /**
      * Cancel the session
      * @throws IOException if the communication with the server is closed or didn't go well
+     * @trows UrlOfTheNextPageIsNull if the url doesn't exists
      */
-    public void cancelSession() throws IOException {
+    public void cancelSession() throws IOException, UrlOfTheNextPageIsNull {
         communication.sendMessage(new CommunicationFormat(Flags.CANCEL_CREATE_SESSION, codeSession.getText()));
+        sceneController.switchTo("fxml/menu.fxml");
     }
 
     /**

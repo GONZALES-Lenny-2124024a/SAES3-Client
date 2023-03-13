@@ -47,15 +47,6 @@ public class MultiplayerController implements DefaultController{
         modulesController.initialize();
     }
 
-    /**
-     * Switch to the menu's page
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws UrlOfTheNextPageIsNull Throw when the url of the next fxml page is null
-     */
-    public void switchToMenu() throws IOException, UrlOfTheNextPageIsNull {
-        sceneController.switchTo("fxml/menu.fxml");
-    }
-
     @Override
     public void initializeInteractionServer() throws IOException {
         MessageListener messageListener = new MessageListener() {

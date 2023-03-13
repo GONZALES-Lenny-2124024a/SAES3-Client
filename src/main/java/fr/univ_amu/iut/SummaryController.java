@@ -52,12 +52,6 @@ public class SummaryController implements DefaultController {
         }
     }
 
-    @FXML
-    public void switchToMenu() throws UrlOfTheNextPageIsNull, IOException {
-        SceneController sceneController = new SceneController();
-        sceneController.switchTo("fxml/menu.fxml");
-    }
-
     @Override
     public void initializeInteractionServer() throws IOException {
         MessageListener messageListener = new MessageListener() {

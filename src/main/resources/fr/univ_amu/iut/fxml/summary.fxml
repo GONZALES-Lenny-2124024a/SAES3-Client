@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import fr.univ_amu.iut.ButtonSwitchToMenu?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fr.univ_amu.iut.SummaryController"
       maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" >
 
@@ -16,5 +17,5 @@
         <ListView fx:id="listViewSummary" prefHeight="200.0" prefWidth="200.0">
         </ListView>
 
-        <Button onAction="#switchToMenu">Revenir au menu principal</Button>
+        <ButtonSwitchToMenu>Revenir au menu principal</ButtonSwitchToMenu>
 </VBox>

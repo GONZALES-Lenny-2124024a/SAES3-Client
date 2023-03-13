@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
+<?import fr.univ_amu.iut.ButtonSwitchToMenu?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.MultiplayerController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -42,11 +43,11 @@
                         <Insets right="50.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="leave" mnemonicParsing="false" onAction="#switchToMenu" styleClass="Btn" stylesheets="@../css/style.css" text="QUITTER" textAlignment="CENTER" userData="menu.fxml">
+                <ButtonSwitchToMenu fx:id="leave" mnemonicParsing="false" styleClass="Btn" stylesheets="@../css/style.css" text="QUITTER" textAlignment="CENTER" userData="menu.fxml">
                     <font>
                         <Font size="20.0" />
                     </font>
-                </Button>
+                </ButtonSwitchToMenu>
             </children>
             <GridPane.margin>
                 <Insets top="-180.0" />
