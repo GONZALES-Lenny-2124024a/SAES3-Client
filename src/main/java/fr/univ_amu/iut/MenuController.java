@@ -11,12 +11,14 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.Slider;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Controller of the menu's page
  * @author LennyGonzales
  */
 public class MenuController {
+    private static final String DEFAULT_MODULE = "Tous les modules";
     private final Communication communication;
     @FXML
     private Slider nbQuestionsSlider;
@@ -33,7 +35,7 @@ public class MenuController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void soloMode() throws IOException, UrlOfTheNextPageIsNull {
-        communication.sendMessage(new CommunicationFormat(Flags.SOLO, nbQuestions.get()));
+        communication.sendMessage(new CommunicationFormat(Flags.STORY, Arrays.asList(DEFAULT_MODULE, nbQuestions.get())));
         switchTo("fxml/question.fxml");
     }
 
@@ -61,7 +63,7 @@ public class MenuController {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void trainingMode() throws IOException, InterruptedException {
-        ModulesPage modulesController = new ModulesPage("fxml/question.fxml", Flags.TRAINING);
+        ModulesPage modulesController = new ModulesPage("fxml/question.fxml", Flags.SOLO);
         modulesController.initialize();
     }
 

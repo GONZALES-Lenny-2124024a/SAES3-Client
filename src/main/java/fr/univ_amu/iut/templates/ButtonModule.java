@@ -1,6 +1,7 @@
 package fr.univ_amu.iut.templates;
 
 import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.MenuController;
 import fr.univ_amu.iut.SceneController;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.communication.CommunicationFormat;
@@ -9,6 +10,7 @@ import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Create a configured Button for the Modules page
@@ -52,7 +54,7 @@ public class ButtonModule extends Button {
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
         Communication communication = Main.getCommunication();
         communication.setMessageListener(null);
-        communication.sendMessage(new CommunicationFormat(Flags.MODULE_CHOICE,((Button) event.getSource()).getText()));
+        communication.sendMessage(new CommunicationFormat(Flags.STORY, Arrays.asList(((Button) event.getSource()).getText(), MenuController.getNbQuestions())));
     }
 
     /**
