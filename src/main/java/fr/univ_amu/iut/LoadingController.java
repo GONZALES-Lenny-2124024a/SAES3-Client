@@ -21,7 +21,6 @@ public class LoadingController implements DefaultController{
 
     private final Communication communication;
     private final SceneController sceneController;
-    private Timeline verifyServerEachSecondTimeLine;
 
     public LoadingController() {
         communication = Main.getCommunication();
@@ -37,7 +36,7 @@ public class LoadingController implements DefaultController{
                     case BEGIN -> Platform.runLater(() -> {
                         try {
                             communication.setMessageListener(null);
-                            communication.sendMessage(new CommunicationFormat(Flags.BEGIN));
+                            communication.sendMessage(new CommunicationFormat(Flags.BEGIN, MultiplayerController.getSessionCode()));    // --!!! send sessionCode
                             sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
                         } catch (IOException | UrlOfTheNextPageIsNull e) {
                             throw new RuntimeException(e);

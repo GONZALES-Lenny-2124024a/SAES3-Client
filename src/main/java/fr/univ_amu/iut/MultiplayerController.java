@@ -21,6 +21,7 @@ import java.io.IOException;
 public class MultiplayerController implements DefaultController{
     @FXML
     private TextField codeInput;
+    private static String sessionCode;
     private final Communication communication;
     private final SceneController sceneController;
 
@@ -30,12 +31,21 @@ public class MultiplayerController implements DefaultController{
     }
 
     /**
+     * Get the session code as String
+     * @return code session
+     */
+    public static String getSessionCode() {
+        return sessionCode;
+    }
+
+    /**
      * Send the multiplayer join flag, the multiplayer session code and the email of the user
      * Switch to the loading page
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void joinSession() throws IOException {
-        communication.sendMessage(new CommunicationFormat(Flags.MULTIPLAYER_JOIN, codeInput.getText())); // Send the multiplayer session code
+        sessionCode = codeInput.getText();
+        communication.sendMessage(new CommunicationFormat(Flags.MULTIPLAYER_JOIN, sessionCode)); // Send the multiplayer session code
     }
 
     /**
@@ -56,7 +66,6 @@ public class MultiplayerController implements DefaultController{
                     case SESSION_EXISTS -> Platform.runLater(() -> {
                         try {
                             communication.setMessageListener(null);
-                            communication.sendMessage(new CommunicationFormat(Flags.EMAIL, LoginController.getMail()));
                             sceneController.switchTo("fxml/loading.fxml");
                         } catch (IOException | UrlOfTheNextPageIsNull e) {
                             throw new RuntimeException(e);
