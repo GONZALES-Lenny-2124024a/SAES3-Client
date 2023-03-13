@@ -76,7 +76,6 @@ public class SummaryController implements DefaultController {
         };
         communication.setMessageListener(messageListener);
         communication.sendMessage(new CommunicationFormat(Flags.SUMMARY, story));   // Give the answers
-        communication.sendMessage(new CommunicationFormat(Flags.EMAIL, LoginController.getMail())); // Give the mail
     }
 
     /**
