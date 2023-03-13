@@ -18,14 +18,16 @@ import java.util.Arrays;
  */
 public class ButtonModule extends Button {
     private final String pageToSwitchTo;
+    private final Flags flag;
 
     /**
      * Initialize the button
      * @param text the button text
      * @param pageToSwitchTo the page to switch to when the user click on a module
      */
-    public ButtonModule(String text, String pageToSwitchTo) {
+    public ButtonModule(String text, String pageToSwitchTo, Flags flag) {
         this.pageToSwitchTo = pageToSwitchTo;
+        this.flag = flag;
         initializeButton(text);
     }
 
@@ -54,7 +56,7 @@ public class ButtonModule extends Button {
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
         Communication communication = Main.getCommunication();
         communication.setMessageListener(null);
-        communication.sendMessage(new CommunicationFormat(Flags.STORY, Arrays.asList(((Button) event.getSource()).getText(), MenuController.getNbQuestions())));
+        communication.sendMessage(new CommunicationFormat(flag, Arrays.asList(((Button) event.getSource()).getText(), MenuController.getNbQuestions())));
     }
 
     /**

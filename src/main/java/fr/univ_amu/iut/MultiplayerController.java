@@ -43,7 +43,7 @@ public class MultiplayerController implements DefaultController{
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void creationSession() throws IOException, InterruptedException {
-        ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml", Flags.MULTIPLAYER_CREATION);
+        ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml", Flags.CREATE_SESSION);
         modulesController.initialize();
     }
 

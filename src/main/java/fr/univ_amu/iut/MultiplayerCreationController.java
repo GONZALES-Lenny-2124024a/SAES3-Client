@@ -56,14 +56,19 @@ public class MultiplayerCreationController implements DefaultController{
      * Start the session
      * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull Throw if the url of the next page is null
-     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull {
         communication.setMessageListener(null);
-        communication.sendMessage(new CommunicationFormat(Flags.BEGIN, LoginController.getMail()));    // Send to the server that we want to start the game by clicking on the 'Start' button
+        communication.sendMessage(new CommunicationFormat(Flags.BEGIN, codeSession.getText()));    // Send to the server that we want to start the game by clicking on the 'Start' button
         sceneController.switchTo("fxml/question.fxml");
+    }
+
+    /**
+     * Cancel the session
+     * @throws IOException if the communication with the server is closed or didn't go well
+     */
+    public void cancelSession() throws IOException {
+        communication.sendMessage(new CommunicationFormat(Flags.CANCEL_CREATE_SESSION, codeSession.getText()));
     }
 
     /**

@@ -63,7 +63,7 @@ public class MenuController {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void trainingMode() throws IOException, InterruptedException {
-        ModulesPage modulesController = new ModulesPage("fxml/question.fxml", Flags.SOLO);
+        ModulesPage modulesController = new ModulesPage("fxml/question.fxml", Flags.STORY);
         modulesController.initialize();
     }
 

@@ -42,7 +42,7 @@ public class ModulesPage implements DefaultController {
     public void initializeModuleButtons(String pageToSwitchTo) {
         Iterator<String> iterator = modules.iterator();
         while(iterator.hasNext()) {
-            button = new ButtonModule(iterator.next(), pageToSwitchTo);
+            button = new ButtonModule(iterator.next(), pageToSwitchTo, flag);
             vboxParent.getChildren().add(button);
         }
     }
@@ -51,7 +51,7 @@ public class ModulesPage implements DefaultController {
      * Initialize the button which return to the menu page
      */
     public void initializeSwitchToMenuButton() {
-        ButtonSwitchToMenu buttonSwitchToMenu = new ButtonSwitchToMenu();
+        Button buttonSwitchToMenu = new Button();
         buttonSwitchToMenu.setText("QUITTER");
         buttonSwitchToMenu.setId("quit");
         vboxParent.getChildren().add(buttonSwitchToMenu);

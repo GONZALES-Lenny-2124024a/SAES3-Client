@@ -10,6 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import fr.univ_amu.iut.ButtonSwitchToMenu?>
+<?import javafx.scene.control.Button?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.LoadingController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.35519409179688" minWidth="10.0" prefWidth="33.36334991455078" />
@@ -22,11 +23,11 @@
         <RowConstraints maxHeight="318.3109130859375" minHeight="10.0" prefHeight="139.2581787109375" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <ButtonSwitchToMenu mnemonicParsing="false" prefHeight="47.0" prefWidth="210.0" styleClass="Btn" stylesheets="@../css/style.css" text="ANNULER" textAlignment="CENTER" userData="multijoueur.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="210.0" styleClass="Btn" stylesheets="@../css/style.css" text="ANNULER" textAlignment="CENTER" userData="multijoueur.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
             <font>
                 <Font size="25.0" />
             </font>
-        </ButtonSwitchToMenu>
+        </Button>
         <ImageView fitHeight="277.0" fitWidth="366.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <image>
                 <Image url="@../img/characters/Ethernet.png" />
