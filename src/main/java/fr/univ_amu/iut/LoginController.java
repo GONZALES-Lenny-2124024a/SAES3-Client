@@ -12,6 +12,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,9 +43,35 @@ public class LoginController implements DefaultController{
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void sendLogin() throws IOException {
-        communication.sendMessage(new CommunicationFormat(Flags.LOGIN, Arrays.asList(mailTextField.getText(), passwordTextField.getText())));
+        communication.sendMessage(new CommunicationFormat(Flags.LOGIN, Arrays.asList(mailTextField.getText(), encryptPassword(passwordTextField.getText()))));
     }
 
+    /**
+     * Encrypt the password with SHA512 algorithm
+     * @param str the String to hash
+     * @return hashtext the String hashed
+     * @throws RuntimeException if SHA-512 algorithm is not found
+     */
+    public String encryptPassword(String str)
+    {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");    // getInstance() is called with the SHA-512 algorithm
+
+            // To calculate the message digest of the input string
+            byte[] messageDigest = md.digest(str.getBytes());   // Returned as a byte array
+            BigInteger no = new BigInteger(1, messageDigest);   // Convert bytes array into signum representation
+            StringBuilder hashtext = new StringBuilder(no.toString(16));    // Convert message summary to hexadecimal value
+
+            // Add the previous 0 to get the 32-bit.
+            while (hashtext.length() < 32) {
+                hashtext.insert(0,'0');
+            }
+            return hashtext.toString();
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     /**
