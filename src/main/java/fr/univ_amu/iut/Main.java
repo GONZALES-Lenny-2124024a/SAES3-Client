@@ -11,6 +11,7 @@ import javafx.scene.media.Media;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Launch the application
@@ -21,10 +22,8 @@ public class Main extends Application {
     private static final double WINDOW_HEIGHT = 720.0;
     private static final double WINDOW_WIDTH = 1280.0;
     private static Communication communication;
+    private static Stage stage;
 
-    public Main() throws IOException {
-        communication = new Communication("127.0.0.1",10013);
-    }
     /**
      * the application scene can be set.
      * Applications may create other stages, if needed, but they will not be
@@ -34,7 +33,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/captcha.fxml"));
 
         // The background music
         /*
@@ -44,21 +43,14 @@ public class Main extends Application {
         mediaPlayer.play();
          */
 
+        this.stage = stage;
+
         // Screen settings
         stage.setResizable(false);  // The window isn't resizable
 
         stage.setTitle("Network Stories");
 
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("img/logo.png")).toExternalForm()));
-
-        // The user close the application
-        stage.setOnCloseRequest(event -> {
-            try {
-                communication.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
 
         // Initialize the scene
         SceneController.setStage(stage);    // Stores the current stage
@@ -80,6 +72,22 @@ public class Main extends Application {
      */
     public static Communication getCommunication() {
         return communication;
+    }
+
+    /**
+     * Set the communication instance
+     * @param communication the communication with the server
+     */
+    public static void setCommunication(Communication communication) {
+        Main.communication = communication;
+
+        stage.setOnCloseRequest(event -> {  // The user close the application
+            try {
+                communication.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
