@@ -23,7 +23,7 @@
         <RowConstraints maxHeight="318.3109130859375" minHeight="10.0" prefHeight="139.2581787109375" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="210.0" styleClass="Btn" stylesheets="@../css/style.css" text="ANNULER" textAlignment="CENTER" userData="multijoueur.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <Button onAction="#cancelJoin" mnemonicParsing="false" prefHeight="47.0" prefWidth="210.0" styleClass="Btn" stylesheets="@../css/style.css" text="ANNULER" textAlignment="CENTER" userData="multijoueur.fxml" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
             <font>
                 <Font size="25.0" />
             </font>

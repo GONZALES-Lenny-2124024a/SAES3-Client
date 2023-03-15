@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import fr.univ_amu.iut.ButtonSwitchToMenu?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fr.univ_amu.iut.SummaryController"
       maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" >
 
@@ -14,8 +15,19 @@
         <Label fx:id="labelUserPoints" style="-fx-text-fill: WHITE; -fx-font-size: 35"></Label>
 
 
-        <ListView fx:id="listViewSummary" prefHeight="200.0" prefWidth="200.0">
+        <ListView fx:id="listViewSummary" prefHeight="200.0" maxWidth="600.0">
         </ListView>
+
+        <TableView fx:id="tableViewLeaderboard" visible="false" maxWidth="0.0" maxHeight="0.0">
+                <columns>
+                        <TableColumn prefWidth="300.0" fx:id="columnMail" text="Utilisateurs">
+                                <cellValueFactory><PropertyValueFactory property="email"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="100.0" fx:id="columnAnswers" text="Nombre de bonnes réponses">
+                                <cellValueFactory><PropertyValueFactory property="correctAnswers"/></cellValueFactory>
+                        </TableColumn>
+                </columns>
+        </TableView>
 
         <ButtonSwitchToMenu>Revenir au menu principal</ButtonSwitchToMenu>
 </VBox>

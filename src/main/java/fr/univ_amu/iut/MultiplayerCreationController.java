@@ -59,7 +59,7 @@ public class MultiplayerCreationController implements DefaultController{
      */
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull {
         communication.setMessageListener(null);
-        communication.sendMessage(new CommunicationFormat(Flags.BEGIN, codeSession.getText()));    // Send to the server that we want to start the game by clicking on the 'Start' button
+        communication.sendMessage(new CommunicationFormat(Flags.BEGIN));    // Send to the server that we want to start the game by clicking on the 'Start' button
         sceneController.switchTo("fxml/question.fxml");
     }
 
@@ -69,7 +69,7 @@ public class MultiplayerCreationController implements DefaultController{
      * @throws UrlOfTheNextPageIsNull if the url doesn't exists
      */
     public void cancelSession() throws IOException, UrlOfTheNextPageIsNull {
-        communication.sendMessage(new CommunicationFormat(Flags.CANCEL_CREATE_SESSION, codeSession.getText()));
+        communication.sendMessage(new CommunicationFormat(Flags.CANCEL_SESSION, codeSession.getText()));
         sceneController.switchTo("fxml/menu.fxml");
     }
 

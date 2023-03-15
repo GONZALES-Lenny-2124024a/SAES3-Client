@@ -3,17 +3,18 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
+import fr.univ_amu.iut.domain.LeaderboardEntry;
 import fr.univ_amu.iut.domain.Question;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.communication.Communication;
-import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -32,6 +33,9 @@ public class SummaryController implements DefaultController {
     private Label labelUserPoints;
     @FXML
     private ListView listViewSummary;
+
+    @FXML
+    private TableView<LeaderboardEntry> tableViewLeaderboard;
 
     public SummaryController() {    // Get story
         this.story = QuestionController.getStory(); // Get the story with the user answers
@@ -64,12 +68,30 @@ public class SummaryController implements DefaultController {
                     case USER_POINTS -> Platform.runLater(() -> {
                         labelUserPoints.setText(message.getContent().toString());
                     });
-                    default -> throw new NotTheExpectedFlagException("SUMMARY or USER_POINTS");
+                    case LEADERBOARD -> Platform.runLater(() -> {
+                        displayLeaderboard((HashMap<String, Integer>) message.getContent());
+                    });
+                    default -> throw new NotTheExpectedFlagException("SUMMARY or USER_POINTS or LEADERBOARD");
                 }
             }
         };
         communication.setMessageListener(messageListener);
         communication.sendMessage(new CommunicationFormat(Flags.SUMMARY, story));   // Give the answers
+    }
+
+    /**
+     * Display the leaderboard
+     */
+    public void displayLeaderboard(HashMap<String, Integer> leaderboard) {
+        ObservableList<LeaderboardEntry> observableList = FXCollections.observableArrayList();
+
+        for(Map.Entry<String,Integer> entry : leaderboard.entrySet()) {
+            observableList.add(new LeaderboardEntry(entry.getKey(), entry.getValue()));
+        }
+        tableViewLeaderboard.getItems().removeAll();
+        tableViewLeaderboard.getItems().addAll(observableList);
+
+        tableViewLeaderboard.setVisible(true); tableViewLeaderboard.setMaxWidth(400.0); tableViewLeaderboard.setMaxHeight(200.0);    // See the leaderboard
     }
 
     /**

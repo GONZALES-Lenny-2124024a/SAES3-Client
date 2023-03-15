@@ -10,6 +10,7 @@ import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
 import java.io.IOException;
 
@@ -22,9 +23,21 @@ public class LoadingController implements DefaultController{
     private final Communication communication;
     private final SceneController sceneController;
 
+
     public LoadingController() {
         communication = Main.getCommunication();
         sceneController = new SceneController();
+    }
+
+    /**
+     * Cancel a session joined
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull if the url provided is null
+     */
+    @FXML
+    public void cancelJoin() throws IOException, UrlOfTheNextPageIsNull {
+        communication.sendMessage(new CommunicationFormat(Flags.CANCEL_SESSION));
+        sceneController.switchTo("fxml/multiplayer.fxml");
     }
 
     @Override
@@ -39,6 +52,16 @@ public class LoadingController implements DefaultController{
                             communication.sendMessage(new CommunicationFormat(Flags.BEGIN, MultiplayerController.getSessionCode()));    // --!!! send sessionCode
                             sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
                         } catch (IOException | UrlOfTheNextPageIsNull e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    case CANCEL_SESSION -> Platform.runLater(() -> {
+                        try {
+                            sceneController.switchTo("fxml/multiplayer.fxml");
+                            cancelJoin(); // Delete the instance of the multiplayer session in the server
+                        } catch (UrlOfTheNextPageIsNull e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     });

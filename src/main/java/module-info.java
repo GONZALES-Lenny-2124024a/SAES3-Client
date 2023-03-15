@@ -10,4 +10,5 @@ module fr.univ_amu.iut {
     exports fr.univ_amu.iut;
     exports fr.univ_amu.iut.communication;
     opens fr.univ_amu.iut.communication to javafx.fxml;
+    opens fr.univ_amu.iut.domain to javafx.base;
 }
