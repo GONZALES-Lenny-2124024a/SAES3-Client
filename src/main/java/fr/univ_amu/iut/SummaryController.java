@@ -8,6 +8,7 @@ import fr.univ_amu.iut.domain.Question;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.communication.Communication;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,6 +43,10 @@ public class SummaryController implements DefaultController {
         communication = Main.getCommunication();
     }
 
+    /**
+     * Display the summary
+     * @param summaryToDisplay summary to display
+     */
     public void displaySummary(HashMap<Question, Boolean> summaryToDisplay) {
         Iterator iteratorSummary = summaryToDisplay.entrySet().iterator();
         Map.Entry<Question, Boolean> answerEntry;
@@ -54,6 +59,17 @@ public class SummaryController implements DefaultController {
             answerLabel.setTextFill((answerEntry.getValue()) ? Color.GREEN : Color.RED);
             listViewSummary.getItems().add(answerLabel);
         }
+    }
+
+    /**
+     * The player switch to the menu and doesn't want anymore a update of the leaderboard
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull if the url is null
+     */
+    public void leaveSession() throws IOException, UrlOfTheNextPageIsNull {
+        communication.sendMessage(new CommunicationFormat(Flags.LEAVE_SESSION));
+        SceneController sceneController = new SceneController();
+        sceneController.switchTo("fxml/menu.fxml");
     }
 
     @Override
