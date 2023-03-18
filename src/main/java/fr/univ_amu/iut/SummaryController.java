@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 
@@ -104,8 +105,12 @@ public class SummaryController implements DefaultController {
         for(Map.Entry<String,Integer> entry : leaderboard.entrySet()) {
             observableList.add(new LeaderboardEntry(entry.getKey(), entry.getValue()));
         }
-        tableViewLeaderboard.getItems().removeAll();
+        tableViewLeaderboard.getItems().clear();
         tableViewLeaderboard.getItems().addAll(observableList);
+
+        TableColumn<LeaderboardEntry, Integer> scoreColumn = (TableColumn<LeaderboardEntry, Integer>) tableViewLeaderboard.getColumns().get(1);
+        scoreColumn.setSortType(TableColumn.SortType.DESCENDING);
+        tableViewLeaderboard.getSortOrder().setAll(scoreColumn);
 
         tableViewLeaderboard.setVisible(true); tableViewLeaderboard.setMaxWidth(400.0); tableViewLeaderboard.setMaxHeight(200.0);    // See the leaderboard
     }
