@@ -29,5 +29,5 @@
                 </columns>
         </TableView>
 
-        <ButtonSwitchToMenu>Revenir au menu principal</ButtonSwitchToMenu>
+        <Button onAction="#leaveSession">Revenir au menu principal</Button>
 </VBox>

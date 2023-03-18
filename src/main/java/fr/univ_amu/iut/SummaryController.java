@@ -8,12 +8,14 @@ import fr.univ_amu.iut.domain.Question;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.communication.Communication;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 
@@ -42,6 +44,10 @@ public class SummaryController implements DefaultController {
         communication = Main.getCommunication();
     }
 
+    /**
+     * Display the summary
+     * @param summaryToDisplay summary to display
+     */
     public void displaySummary(HashMap<Question, Boolean> summaryToDisplay) {
         Iterator iteratorSummary = summaryToDisplay.entrySet().iterator();
         Map.Entry<Question, Boolean> answerEntry;
@@ -54,6 +60,17 @@ public class SummaryController implements DefaultController {
             answerLabel.setTextFill((answerEntry.getValue()) ? Color.GREEN : Color.RED);
             listViewSummary.getItems().add(answerLabel);
         }
+    }
+
+    /**
+     * The player switch to the menu and doesn't want anymore a update of the leaderboard
+     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws UrlOfTheNextPageIsNull if the url is null
+     */
+    public void leaveSession() throws IOException, UrlOfTheNextPageIsNull {
+        communication.sendMessage(new CommunicationFormat(Flags.LEAVE_SESSION));
+        SceneController sceneController = new SceneController();
+        sceneController.switchTo("fxml/menu.fxml");
     }
 
     @Override
@@ -88,8 +105,12 @@ public class SummaryController implements DefaultController {
         for(Map.Entry<String,Integer> entry : leaderboard.entrySet()) {
             observableList.add(new LeaderboardEntry(entry.getKey(), entry.getValue()));
         }
-        tableViewLeaderboard.getItems().removeAll();
+        tableViewLeaderboard.getItems().clear();
         tableViewLeaderboard.getItems().addAll(observableList);
+
+        TableColumn<LeaderboardEntry, Integer> scoreColumn = (TableColumn<LeaderboardEntry, Integer>) tableViewLeaderboard.getColumns().get(1);
+        scoreColumn.setSortType(TableColumn.SortType.DESCENDING);
+        tableViewLeaderboard.getSortOrder().setAll(scoreColumn);
 
         tableViewLeaderboard.setVisible(true); tableViewLeaderboard.setMaxWidth(400.0); tableViewLeaderboard.setMaxHeight(200.0);    // See the leaderboard
     }

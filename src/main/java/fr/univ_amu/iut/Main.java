@@ -36,12 +36,10 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/captcha.fxml"));
 
         // The background music
-        /*
         Media sound = new Media(Objects.requireNonNull(getClass().getResource("videos/music.mp3")).toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
-         */
 
         this.stage = stage;
 
