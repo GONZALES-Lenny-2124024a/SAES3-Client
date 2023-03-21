@@ -5,7 +5,6 @@ import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
 import fr.univ_amu.iut.domain.LeaderboardEntry;
 import fr.univ_amu.iut.domain.Question;
-import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -26,10 +25,10 @@ import java.util.*;
  * Controller of the summary's page
  * @author LennyGonzales , MathieuSauva
  */
-public class SummaryController implements DefaultController {
+public class SummaryController implements CommunicationController {
 
-    private Communication communication;
-    private List<Question> story;
+    private final Communication communication;
+    private final List<Question> story;
 
     @FXML
     private Label labelUserPoints;
@@ -49,12 +48,12 @@ public class SummaryController implements DefaultController {
      * @param summaryToDisplay summary to display
      */
     public void displaySummary(HashMap<Question, Boolean> summaryToDisplay) {
-        Iterator iteratorSummary = summaryToDisplay.entrySet().iterator();
+        Iterator<Map.Entry<Question, Boolean>> iteratorSummary = summaryToDisplay.entrySet().iterator();
         Map.Entry<Question, Boolean> answerEntry;
         Label answerLabel;
 
         while(iteratorSummary.hasNext()) {
-            answerEntry = (Map.Entry) iteratorSummary.next();
+            answerEntry = iteratorSummary.next();
 
             answerLabel = new Label(answerEntry.getKey().getQuestion());
             answerLabel.setTextFill((answerEntry.getValue()) ? Color.GREEN : Color.RED);
@@ -63,7 +62,7 @@ public class SummaryController implements DefaultController {
     }
 
     /**
-     * The player switch to the menu and doesn't want anymore a update of the leaderboard
+     * The player switch to the menu and doesn't want anymore an update of the leaderboard
      * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url is null
      */
@@ -73,19 +72,23 @@ public class SummaryController implements DefaultController {
         sceneController.switchTo("fxml/menu.fxml");
     }
 
+    /**
+     * Initialize the interaction with the server to receive server message(s)
+     * @throws IOException if the communication with the server didn't go well
+     */
     @Override
     public void initializeInteractionServer() throws IOException {
         MessageListener messageListener = new MessageListener() {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
                 switch (message.getFlag()) {
-                    case SUMMARY -> Platform.runLater(() -> {
+                    case SUMMARY -> Platform.runLater(() -> {   // The server sent the summary
                         displaySummary((HashMap<Question, Boolean>) message.getContent());
                     });
-                    case USER_POINTS -> Platform.runLater(() -> {
+                    case USER_POINTS -> Platform.runLater(() -> {   // The server sent the user points
                         labelUserPoints.setText(message.getContent().toString());
                     });
-                    case LEADERBOARD -> Platform.runLater(() -> {
+                    case LEADERBOARD -> Platform.runLater(() -> {   // the server sent the leaderboard
                         displayLeaderboard((HashMap<String, Integer>) message.getContent());
                     });
                     default -> throw new NotTheExpectedFlagException("SUMMARY or USER_POINTS or LEADERBOARD");
@@ -118,11 +121,9 @@ public class SummaryController implements DefaultController {
     /**
      * Initialize the page
      * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     @FXML
-    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
+    public void initialize() throws IOException {
         initializeInteractionServer();
     }
 }

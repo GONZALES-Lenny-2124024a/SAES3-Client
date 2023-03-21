@@ -1,9 +1,7 @@
 package fr.univ_amu.iut.domain;
 
-import java.util.Optional;
-
 /**
- * Represents a tuple of the QCM table
+ * Represents a tuple of the MultipleChoiceQuestions table
  * @author LennyGonzales
  */
 public class MultipleChoiceQuestion extends Question implements Cloneable {

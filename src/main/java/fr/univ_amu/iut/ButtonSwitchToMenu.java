@@ -1,7 +1,5 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.communication.CommunicationFormat;
-import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.scene.control.Button;
 

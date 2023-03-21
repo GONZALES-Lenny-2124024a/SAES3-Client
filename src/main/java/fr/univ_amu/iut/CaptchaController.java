@@ -16,11 +16,15 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * Controller of the captcha's page
+ * @author LennyGonzales
+ */
 public class CaptchaController {
     private static final int MAX_TRY = 2;
     private static final int LENGTH_CAPTCHA = 8;
     private static final String CAPTCHA_CHAR_LIST = "abcdefghijklmnopqrstuvwxyz" +
-                                                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                                                    "ABCDEFHIJKLMNOPQRSTUVWXYZ" +
                                                     "1234567890" +
                                                     "?!~,+-()[]{}";
 
@@ -69,7 +73,6 @@ public class CaptchaController {
             new KeyFrame(Duration.seconds(TIMER_BEFORE_REFRESH_IN_SECONDS), e -> {
                 timeBeforeRefresh.stop();   // stop the timer
                 verifyRemainingTry();
-                initializeCaptcha();
             })
         );
         timeBeforeRefresh.setCycleCount(Timeline.INDEFINITE);
@@ -78,7 +81,7 @@ public class CaptchaController {
 
     /**
      * Verify the user try
-     * @return if the user have enter the right answer
+     * @return if the user have entered the right answer
      * @throws UrlOfTheNextPageIsNull if the url of the next page (login page) is null
      * @throws IOException if the communication with the server didn't go well
      */
@@ -105,6 +108,7 @@ public class CaptchaController {
         if(remainingTry > 0) {
             Alert connexionError = new Alert(Alert.AlertType.ERROR, "Mauvaise réponse !");
             connexionError.show();
+            userInput.clear();  // Clear the input
             initializeCaptcha();
             return true;
         }

@@ -17,13 +17,12 @@ import java.util.*;
  * Controller of the modules page where the user choose a module to practice on
  * @author LennyGonzales
  */
-public class ModulesPage implements DefaultController {
+public class ModulesPage implements CommunicationController {
     private VBox vboxParent;
 
     private List<String> modules;
     private final Communication communication;
     private final SceneController sceneController;
-    private Button button;
     private final String pageToSwitchTo;
     private final Flags flag;
 
@@ -41,6 +40,7 @@ public class ModulesPage implements DefaultController {
      */
     public void initializeModuleButtons(String pageToSwitchTo) {
         Iterator<String> iterator = modules.iterator();
+        Button button;
         while(iterator.hasNext()) {
             button = new ButtonModule(iterator.next(), pageToSwitchTo, flag);
             vboxParent.getChildren().add(button);
@@ -68,14 +68,15 @@ public class ModulesPage implements DefaultController {
     }
 
     /**
-     * Initialize the interaction with the server
+     * Initialize the interaction with the server to receive server message(s)
+     * @throws IOException if the communication with the server didn't go well
      */
     public void initializeInteractionServer() throws IOException {
         MessageListener messageListener = new MessageListener() {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
                 switch(message.getFlag()) {
-                    case MODULES -> Platform.runLater(() -> {
+                    case MODULES -> Platform.runLater(() -> {   // The server sent all the modules
                         try {
                             modules = (List<String>) message.getContent();
                             initializeModuleButtons(pageToSwitchTo);

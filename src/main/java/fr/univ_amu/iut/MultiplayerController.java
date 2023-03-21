@@ -3,7 +3,6 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
-import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -18,10 +17,9 @@ import java.io.IOException;
  * Controller of the multiplayer's page
  * @author LennyGonzales
  */
-public class MultiplayerController implements DefaultController{
+public class MultiplayerController implements CommunicationController {
     @FXML
     private TextField codeInput;
-    private static String sessionCode;
     private final Communication communication;
     private final SceneController sceneController;
 
@@ -31,21 +29,12 @@ public class MultiplayerController implements DefaultController{
     }
 
     /**
-     * Get the session code as String
-     * @return code session
-     */
-    public static String getSessionCode() {
-        return sessionCode;
-    }
-
-    /**
      * Send the multiplayer join flag, the multiplayer session code and the email of the user
      * Switch to the loading page
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void joinSession() throws IOException {
-        sessionCode = codeInput.getText();
-        communication.sendMessage(new CommunicationFormat(Flags.MULTIPLAYER_JOIN, sessionCode)); // Send the multiplayer session code
+        communication.sendMessage(new CommunicationFormat(Flags.MULTIPLAYER_JOIN, codeInput.getText())); // Send the multiplayer session code
     }
 
     /**
@@ -57,8 +46,10 @@ public class MultiplayerController implements DefaultController{
         modulesController.initialize();
     }
 
-    @Override
-    public void initializeInteractionServer() throws IOException {
+    /**
+     * Initialize the interaction with the server to receive server message(s)
+     */
+    public void initializeInteractionServer() {
         MessageListener messageListener = new MessageListener() {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
@@ -75,7 +66,7 @@ public class MultiplayerController implements DefaultController{
                         Alert joinSessionError = new Alert(Alert.AlertType.ERROR, "La session multijoueur n'existe pas");
                         joinSessionError.show();
                     });
-                    default -> throw new NotTheExpectedFlagException("SESSION_EXISTS");
+                    default -> throw new NotTheExpectedFlagException("SESSION_EXISTS or SESSION_NOT_EXISTS");
                 }
             }
         };

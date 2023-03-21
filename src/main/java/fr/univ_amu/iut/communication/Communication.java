@@ -26,9 +26,9 @@ public class Communication {
     public Communication(String hostname, int port) throws IOException {
         try {
             System.setProperty("javax.net.ssl.keyStore", "keyStore.jks");
-            System.setProperty("javax.net.ssl.keyStorePassword", "Gyaz1ycgG-9bu");   // ----!!!
+            System.setProperty("javax.net.ssl.keyStorePassword", "Gyaz1ycgG-9bu");
             System.setProperty("javax.net.ssl.trustStore", "trustStore.jts");
-            System.setProperty("javax.net.ssl.trustStorePassword", "Gyaz1ycgG-9bu"); //----to do
+            System.setProperty("javax.net.ssl.trustStorePassword", "Gyaz1ycgG-9bu");
 
             SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             socketClient = (SSLSocket) factory.createSocket(hostname, port);
@@ -47,15 +47,14 @@ public class Communication {
 
     /**
      * Set the listener
-     * @param messageListener
+     * @param messageListener the new message listener
      */
     public void setMessageListener(MessageListener messageListener) {
         this.messageListener = messageListener;
     }
 
     /**
-     * Return the object received from the server
-     * @return the object
+     * Start listening the server and return the message to the message listener
      */
     public void startListening() {
         threadListener = new Thread(() -> {
@@ -78,6 +77,10 @@ public class Communication {
         threadListener.start();
     }
 
+    /**
+     * Return if the client is listening
+     * @return if the client is listening
+     */
     public boolean getIsListening() {
         return isListening;
     }

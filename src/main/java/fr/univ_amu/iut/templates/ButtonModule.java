@@ -55,7 +55,7 @@ public class ButtonModule extends Button {
      */
     public void sendModuleChoseToServer(ActionEvent event) throws IOException {
         Communication communication = Main.getCommunication();
-        communication.setMessageListener(null);
+        communication.setMessageListener(null); // To get the new server messages on the next page
         communication.sendMessage(new CommunicationFormat(flag, Arrays.asList(((Button) event.getSource()).getText(), MenuController.getNbQuestions())));
     }
 

@@ -7,7 +7,6 @@ import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
 import javafx.scene.control.Slider;
 
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class MenuController {
     }
 
     /**
-     * Send the solo flag + Initialize the page (Prepare question and answers)
+     * Send the solo flag and switch to the question page
      * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
@@ -54,7 +53,6 @@ public class MenuController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void disconnection() throws IOException, UrlOfTheNextPageIsNull {
-        LoginController.setMail("");
         switchTo("fxml/login.fxml");
     }
 
@@ -68,7 +66,7 @@ public class MenuController {
     }
 
     /**
-     * Switch to a next page
+     * Switch to a provided next page
      * @param nameNextPage the page to switch to
      * @throws IOException if the communication with the server is closed or didn't go well
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
@@ -78,12 +76,16 @@ public class MenuController {
         sceneController.switchTo(nameNextPage);
     }
 
+    /**
+     * Get the number of questions specified on the slider
+     * @return the number of questions
+     */
     public static int getNbQuestions() {
         return nbQuestions.get();
     }
 
     @FXML
     public void initialize() {
-        nbQuestions.bindBidirectional(nbQuestionsSlider.valueProperty());
+        nbQuestions.bindBidirectional(nbQuestionsSlider.valueProperty());   // Bind the slider value with the nbQuestions variable value
     }
 }

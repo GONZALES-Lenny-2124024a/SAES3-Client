@@ -3,6 +3,10 @@ package fr.univ_amu.iut.templates;
 import javafx.scene.control.CheckBox;
 import javafx.scene.text.Font;
 
+/**
+ * Represents a checkbox answer for a multiple choice questions
+ * @author LennyGonzales
+ */
 public class CheckBoxAnswer extends CheckBox {
     public CheckBoxAnswer(String id, String text) {
         this.setId(id);

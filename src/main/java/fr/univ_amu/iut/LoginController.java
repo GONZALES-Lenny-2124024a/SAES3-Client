@@ -16,22 +16,17 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Controller of the login's page
  * @author LennyGonzales
  */
-public class LoginController implements DefaultController{
+public class LoginController implements CommunicationController {
     @FXML
     private TextField mailTextField;
     @FXML
     private PasswordField passwordTextField;
     private final Communication communication;
-    private static String mail;
-
     private final SceneController sceneController;
     public LoginController() {
         communication = Main.getCommunication();  // Get the connection with the server
@@ -73,22 +68,9 @@ public class LoginController implements DefaultController{
         }
     }
 
-
     /**
-     * Get the mail of the user
-     * @return the mail of the user
+     * Initialize the interaction with the server to receive server message(s)
      */
-    public static String getMail() { return mail;}
-
-    /**
-     * Set the mail of the user
-     * @param newMail the new mail of the user
-     */
-    public static void setMail(String newMail) {
-        mail = newMail;
-    }
-
-
     public void initializeInteractionServer() {
         MessageListener messageListener = new MessageListener() {
             @Override
@@ -97,12 +79,15 @@ public class LoginController implements DefaultController{
                     case LOGIN_SUCCESSFULLY -> Platform.runLater(() -> {
                         try {
                             communication.setMessageListener(null);
-                            loginSuccessful();
+                            sceneController.switchTo("fxml/menu.fxml"); // Now, the user can access to the menu page
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
                     });
-                    case LOGIN_NOT_SUCCESSFULLY -> Platform.runLater(() -> loginFailed());
+                    case LOGIN_NOT_SUCCESSFULLY -> Platform.runLater(() ->  {
+                        Alert connexionError = new Alert(Alert.AlertType.ERROR, "Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
+                        connexionError.show();
+                    });
                     default -> throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY or LOGIN_NOT_SUCCESSFULLY");
                 }
             }
@@ -111,17 +96,6 @@ public class LoginController implements DefaultController{
         if(!communication.getIsListening()) {
             communication.startListening();
         }
-    }
-
-    public void loginSuccessful() throws Exception {
-        mail = mailTextField.getText();  // Store the mail into a static variable for the multiplayer (send the mail to the host when the user join a multiplayer session)
-        communication.setMessageListener(null);
-        sceneController.switchTo("fxml/menu.fxml"); // Now, the user can access to the menu page
-    }
-
-    public void loginFailed() {
-        Alert connexionError = new Alert(Alert.AlertType.ERROR, "Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
-        connexionError.show();
     }
 
     @FXML

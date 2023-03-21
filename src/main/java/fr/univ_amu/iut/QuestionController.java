@@ -5,7 +5,6 @@ import fr.univ_amu.iut.communication.MessageListener;
 import fr.univ_amu.iut.domain.MultipleChoiceQuestion;
 import fr.univ_amu.iut.domain.Question;
 import fr.univ_amu.iut.domain.WrittenResponseQuestion;
-import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
@@ -27,7 +26,7 @@ import java.util.*;
  * Controller of the question's page
  * @author LennyGonzales
  */
-public class QuestionController implements DefaultController{
+public class QuestionController implements CommunicationController {
     @FXML
     private VBox vboxParent;
     @FXML
@@ -48,15 +47,14 @@ public class QuestionController implements DefaultController{
     @FXML
     private Label timerLabel;
     private Timeline timerFunction;
-    private int endTimer;
-    private int timerValue;
+    private static final int NUMBER_OF_SECONDS_TIMER = 90;   // The number of seconds for the timer
+    private int timerCurrentValue;
     private Question currentQuestion;
     private static List<Question> story;
     private Iterator<Question> iteratorStory;
 
     public QuestionController() {
         communication = Main.getCommunication();
-        endTimer = 6;   // Timer : 5 seconds
         story = new ArrayList<>();
     }
 
@@ -77,18 +75,18 @@ public class QuestionController implements DefaultController{
 
     /**
      * Initialize the timer
-     * @param timer
+     * @param timer the number of seconds of the timer
      */
     public void initializeTimer(int timer) {
-        timerValue = timer;
+        timerCurrentValue = timer;
         timerFunction = new Timeline(
                 new KeyFrame(Duration.seconds(1), e -> {
-                    --timerValue;
-                    timerLabel.setText(String.valueOf(timerValue));
-                    if(timerValue <= 0) {
+                    --timerCurrentValue;
+                    timerLabel.setText(String.valueOf(timerCurrentValue));
+                    if(timerCurrentValue <= 0) {
                         try {
                             submitAnswer();
-                        } catch (IOException | NotAStringException | ClassNotFoundException | InterruptedException | UrlOfTheNextPageIsNull ex) {
+                        } catch (IOException | UrlOfTheNextPageIsNull ex) {
                             throw new RuntimeException(ex);
                         }
                     }
@@ -100,7 +98,7 @@ public class QuestionController implements DefaultController{
 
     /**
      * Initialize the question and the answers
-     * @param question question object
+     * @param question the current question
      */
     public void initializeVariables(Question question) {
         descriptionQuestion.setText(question.getDescription() + '\n' + question.getQuestion());
@@ -112,7 +110,8 @@ public class QuestionController implements DefaultController{
     }
 
     /**
-     * Create the checkboxes by adding them in the fxml, fix their fx:id and their font
+     * Create the checkboxes
+     * @param question the current multiple choice question
      */
     public void createCheckBoxes(MultipleChoiceQuestion question) {
         answer1 = new CheckBoxAnswer("answer1", question.getAnswer1());
@@ -122,7 +121,7 @@ public class QuestionController implements DefaultController{
     }
 
     /**
-     * Create the TextField by adding it in the fxml and set his font
+     * Create the TextField for a written response question
      */
     public void createWrittenResponse() {
         TextField textField = new TextField();
@@ -134,13 +133,15 @@ public class QuestionController implements DefaultController{
 
     /**
      * Submit the question to the server
+     * @throws IOException if the switch page didn't work
+     * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
-    public void submitAnswer() throws IOException, NotAStringException, ClassNotFoundException, InterruptedException, UrlOfTheNextPageIsNull {
+    public void submitAnswer() throws IOException, UrlOfTheNextPageIsNull {
         timerFunction.stop();
 
         if(currentQuestion instanceof WrittenResponseQuestion) {
             ((WrittenResponseQuestion) currentQuestion).setTrueAnswer(writtenResponseTextField.getText());
-        } else if (currentQuestion instanceof MultipleChoiceQuestion) {    // If it's a QCM
+        } else if (currentQuestion instanceof MultipleChoiceQuestion) {
             if (answer1.isSelected()) {
                 ((MultipleChoiceQuestion) currentQuestion).setTrueAnswer(1);
             } else if (answer2.isSelected()) {
@@ -164,6 +165,9 @@ public class QuestionController implements DefaultController{
         characterImage.setImage(new Image(urlCharacterImage));
     }
 
+    /**
+     * Initialize the interaction with the server to receive server message(s)
+     */
     @Override
     public void initializeInteractionServer() {
         MessageListener messageListener = new MessageListener() {
@@ -183,33 +187,31 @@ public class QuestionController implements DefaultController{
                             throw new RuntimeException(e);
                         }
                     });
-                    default -> throw new NotTheExpectedFlagException("STORY" + message.getFlag());
+                    default -> throw new NotTheExpectedFlagException("STORY");
                 }
             }
         };
         communication.setMessageListener(messageListener);
     }
 
+    /**
+     * Initialize the next question
+     * @throws IOException if the switch page didn't work
+     * @throws UrlOfTheNextPageIsNull if the url of the next page is null
+     */
     public void nextQuestion() throws IOException, UrlOfTheNextPageIsNull {
         if(iteratorStory.hasNext()) {   // next question
             currentQuestion = iteratorStory.next();
             initializeVariables(currentQuestion);
-            initializeTimer(endTimer);
+            initializeTimer(NUMBER_OF_SECONDS_TIMER);
         } else {    // Change page
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/summary.fxml");
         }
     }
 
-    /**
-     * Initialize the first question
-     * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
-     * @throws ClassNotFoundException Throw if the object class not found when we receive an object from the server
-     * @throws NotAStringException Throw when the message received from the server isn't a string
-     */
     @FXML
-    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
+    public void initialize() {
         initializeInteractionServer();
     }
 

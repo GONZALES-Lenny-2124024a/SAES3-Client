@@ -7,7 +7,6 @@ import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -19,7 +18,7 @@ import java.io.IOException;
  * Controller of the multiplayer session's creation page
  * @author LennyGonzales
  */
-public class MultiplayerCreationController implements DefaultController{
+public class MultiplayerCreationController implements CommunicationController {
     @FXML
     private TextField codeSession;
     @FXML
@@ -33,19 +32,21 @@ public class MultiplayerCreationController implements DefaultController{
         sceneController = new SceneController();
     }
 
-    @Override
-    public void initializeInteractionServer() throws IOException {
+    /**
+     * Initialize the interaction with the server to receive server message(s)
+     */
+    public void initializeInteractionServer() {
         MessageListener messageListener = new MessageListener() {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
                 switch(message.getFlag()) {
-                    case CODE -> Platform.runLater(() -> {
+                    case CODE -> Platform.runLater(() -> {  // The server sent a random code for the session
                         codeSession.setText(message.getContent().toString());
                     });
                     case NEW_PLAYER -> Platform.runLater(() -> {
                         usersPresentListView.getItems().add(message.getContent().toString());
                     });
-                    default -> throw new NotTheExpectedFlagException("CODE");
+                    default -> throw new NotTheExpectedFlagException("CODE or NEW_PLAYER");
                 }
             }
         };
@@ -66,7 +67,7 @@ public class MultiplayerCreationController implements DefaultController{
     /**
      * Cancel the session
      * @throws IOException if the communication with the server is closed or didn't go well
-     * @throws UrlOfTheNextPageIsNull if the url doesn't exists
+     * @throws UrlOfTheNextPageIsNull if the url doesn't exist
      */
     public void cancelSession() throws IOException, UrlOfTheNextPageIsNull {
         communication.sendMessage(new CommunicationFormat(Flags.CANCEL_SESSION, codeSession.getText()));
@@ -81,7 +82,7 @@ public class MultiplayerCreationController implements DefaultController{
      * @throws NotAStringException Throw when the message received from the server isn't a string
      */
     @FXML
-    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException, InterruptedException {
+    public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         initializeInteractionServer();
     }
 }

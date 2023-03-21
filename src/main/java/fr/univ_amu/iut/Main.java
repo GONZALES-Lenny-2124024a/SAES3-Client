@@ -11,7 +11,6 @@ import javafx.scene.media.Media;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * Launch the application
@@ -29,32 +28,43 @@ public class Main extends Application {
      * Applications may create other stages, if needed, but they will not be
      * primary stages.
      * @param stage the primary stage for this application, onto which
-     * @throws IOException if the communication with the server is closed or didn't go well
+     * @throws IOException if an error occurs during fxml loading
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/captcha.fxml"));
-
-        // The background music
-        Media sound = new Media(Objects.requireNonNull(getClass().getResource("videos/music.mp3")).toExternalForm());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
+        initializeMusic("videos/music.mp3");
 
         this.stage = stage;
+        initializeWindow();
+    }
 
+    /**
+     * Initialize the window (settings and scene)
+     * @throws IOException if an error occurs during fxml loading
+     */
+    public void initializeWindow() throws IOException {
         // Screen settings
         stage.setResizable(false);  // The window isn't resizable
-
         stage.setTitle("Network Stories");
-
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("img/logo.png")).toExternalForm()));
 
         // Initialize the scene
         SceneController.setStage(stage);    // Stores the current stage
         SceneController sceneController = new SceneController();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/captcha.fxml"));
         sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
+
         stage.show();
+    }
+
+    /**
+     * Initialize the background music
+     */
+    public void initializeMusic(String fileName) {
+        Media sound = new Media(Objects.requireNonNull(getClass().getResource(fileName)).toExternalForm());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
     }
 
     /**
@@ -79,7 +89,7 @@ public class Main extends Application {
     public static void setCommunication(Communication communication) {
         Main.communication = communication;
 
-        stage.setOnCloseRequest(event -> {  // The user close the application
+        stage.setOnCloseRequest(event -> {  // If the user close the application
             try {
                 communication.close();
             } catch (IOException e) {

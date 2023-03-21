@@ -7,10 +7,8 @@ import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 
 import java.io.IOException;
 
@@ -18,7 +16,7 @@ import java.io.IOException;
  * Controller of the loading's page
  * @author LennyGonzales
  */
-public class LoadingController implements DefaultController{
+public class LoadingController implements CommunicationController {
 
     private final Communication communication;
     private final SceneController sceneController;
@@ -40,32 +38,31 @@ public class LoadingController implements DefaultController{
         sceneController.switchTo("fxml/multiplayer.fxml");
     }
 
-    @Override
-    public void initializeInteractionServer() throws IOException {
+    /**
+     * Initialize the interaction with the server to receive server message(s)
+     */
+    public void initializeInteractionServer() {
         MessageListener messageListener = new MessageListener() {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
                 switch(message.getFlag()) {
-                    case BEGIN -> Platform.runLater(() -> {
+                    case BEGIN -> Platform.runLater(() -> { // The multiplayer session begin
                         try {
                             communication.setMessageListener(null);
-                            communication.sendMessage(new CommunicationFormat(Flags.BEGIN, MultiplayerController.getSessionCode()));    // --!!! send sessionCode
+                            communication.sendMessage(new CommunicationFormat(Flags.BEGIN));
                             sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
                         } catch (IOException | UrlOfTheNextPageIsNull e) {
                             throw new RuntimeException(e);
                         }
                     });
-                    case CANCEL_SESSION -> Platform.runLater(() -> {
+                    case CANCEL_SESSION -> Platform.runLater(() -> {    // If the host of the multiplayer session canceled the session
                         try {
-                            sceneController.switchTo("fxml/multiplayer.fxml");
                             cancelJoin(); // Delete the instance of the multiplayer session in the server
-                        } catch (UrlOfTheNextPageIsNull e) {
-                            throw new RuntimeException(e);
-                        } catch (IOException e) {
+                        } catch (IOException | UrlOfTheNextPageIsNull e) {
                             throw new RuntimeException(e);
                         }
                     });
-                    default -> throw new NotTheExpectedFlagException("BEGIN");
+                    default -> throw new NotTheExpectedFlagException("BEGIN or CANCEL_SESSION");
                 }
             }
         };
