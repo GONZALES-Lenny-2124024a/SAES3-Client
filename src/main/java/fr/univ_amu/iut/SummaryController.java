@@ -40,6 +40,7 @@ public class SummaryController implements CommunicationController {
 
     public SummaryController() {    // Get story
         this.story = QuestionController.getStory(); // Get the story with the user answers
+        QuestionController.setStory(null);
         communication = Main.getCommunication();
     }
 

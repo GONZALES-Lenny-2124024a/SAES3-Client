@@ -50,17 +50,22 @@ public class QuestionController implements CommunicationController {
     private static final int NUMBER_OF_SECONDS_TIMER = 90;   // The number of seconds for the timer
     private int timerCurrentValue;
     private Question currentQuestion;
-    private static List<Question> story;
+    private static List<Question> story = null;
     private Iterator<Question> iteratorStory;
 
     public QuestionController() {
         communication = Main.getCommunication();
-        story = new ArrayList<>();
     }
 
     public static List<Question> getStory() {
         return story;
     }
+
+    /**
+     * Set the story (in the loading page) | Allows us to divide the number of communications with the server by 2 for each user in the multiplayer session (4 communications => 2 communications)
+     * @param newStory the new story
+     */
+    public static void setStory(List<Question> newStory) { story = newStory; }
 
     /**
      * Remove answers type
@@ -174,7 +179,7 @@ public class QuestionController implements CommunicationController {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
                 switch (message.getFlag()) {
-                    case STORY -> Platform.runLater(() -> {
+                    case STORY -> Platform.runLater(() -> { // If the session isn't a multiplayer session, the server sends the story here and not in the loading page
                         try {
                             story = ((List<Question>) message.getContent());
                             Collections.shuffle(story);     // Permutes randomly
@@ -211,8 +216,14 @@ public class QuestionController implements CommunicationController {
     }
 
     @FXML
-    public void initialize() {
-        initializeInteractionServer();
+    public void initialize() throws IOException, UrlOfTheNextPageIsNull {
+        if(story != null) { // If it's a multiplayer session
+            Collections.shuffle(story);     // Permutes randomly
+            initializeCharacterImage();
+            iteratorStory = story.iterator();
+            nextQuestion();
+        } else {
+            initializeInteractionServer();
+        }
     }
-
 }

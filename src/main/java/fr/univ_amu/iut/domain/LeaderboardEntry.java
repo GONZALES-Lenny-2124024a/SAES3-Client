@@ -18,4 +18,28 @@ public class LeaderboardEntry {
         this.email = new SimpleStringProperty(email);
         this.correctAnswers = new SimpleIntegerProperty(correctAnswers);
     }
+
+    public String getEmail() {
+        return email.get();
+    }
+
+    public StringProperty emailProperty() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email.set(email);
+    }
+
+    public int getCorrectAnswers() {
+        return correctAnswers.get();
+    }
+
+    public IntegerProperty correctAnswersProperty() {
+        return correctAnswers;
+    }
+
+    public void setCorrectAnswers(int correctAnswers) {
+        this.correctAnswers.set(correctAnswers);
+    }
 }

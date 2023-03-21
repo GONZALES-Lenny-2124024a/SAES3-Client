@@ -3,6 +3,7 @@ package fr.univ_amu.iut;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
+import fr.univ_amu.iut.domain.Question;
 import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
@@ -11,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Controller of the loading's page
@@ -46,10 +48,10 @@ public class LoadingController implements CommunicationController {
             @Override
             public void onMessageReceived(CommunicationFormat message) throws NotTheExpectedFlagException {
                 switch(message.getFlag()) {
-                    case BEGIN -> Platform.runLater(() -> { // The multiplayer session begin
+                    case STORY -> Platform.runLater(() -> { // The multiplayer session begin
                         try {
                             communication.setMessageListener(null);
-                            communication.sendMessage(new CommunicationFormat(Flags.BEGIN));
+                            QuestionController.setStory((List<Question>) message.getContent());
                             sceneController.switchTo("fxml/question.fxml");   // Switch to the question's page
                         } catch (IOException | UrlOfTheNextPageIsNull e) {
                             throw new RuntimeException(e);

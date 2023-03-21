@@ -3,7 +3,7 @@ package fr.univ_amu.iut.communication;
 import java.io.Serializable;
 
 /**
- * The communication format with the server
+ * The communication format
  * @author LennyGonzales
  */
 public class CommunicationFormat implements Serializable {
