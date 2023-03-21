@@ -1,7 +1,6 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.communication.Communication;
-import fr.univ_amu.iut.exceptions.NotAStringException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
