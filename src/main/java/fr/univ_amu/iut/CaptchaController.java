@@ -87,16 +87,16 @@ public class CaptchaController {
      */
     public boolean verifyUserTry() throws UrlOfTheNextPageIsNull, IOException {
         timeBeforeRefresh.stop();   // stop the timer
-        //if(userInput.getText().equals(labelCaptcha.getText())) {
+        if(userInput.getText().equals(labelCaptcha.getText())) {
             Main.setCommunication(new Communication("127.0.0.1",10013));    // Start the communication with the server
 
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/login.fxml");    // Switch to the login page
             return true;
-        //}
+        }
 
-        //verifyRemainingTry();
-        //return false;
+        verifyRemainingTry();
+        return false;
     }
 
     /**

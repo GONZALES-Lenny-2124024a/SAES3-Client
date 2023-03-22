@@ -32,7 +32,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        //initializeMusic("videos/music.mp3");
+        initializeMusic("videos/music.mp3");
 
         this.stage = stage;
         initializeWindow();
