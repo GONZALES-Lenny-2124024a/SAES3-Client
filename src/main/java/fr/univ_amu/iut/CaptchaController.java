@@ -38,10 +38,22 @@ public class CaptchaController {
     @FXML
     private TextField userInput;
 
-    private Timeline timeBeforeRefresh;
+    private static Timeline timeBeforeRefresh;
 
     public CaptchaController() {
         remainingTry = MAX_TRY;
+    }
+
+    /**
+     * Get the timeline
+     * @return the timeline object
+     */
+    public static Timeline getTimeBeforeRefresh() {
+        return timeBeforeRefresh;
+    }
+
+    public static void setTimeBeforeRefresh(Timeline timeBeforeRefresh) {
+        CaptchaController.timeBeforeRefresh = timeBeforeRefresh;
     }
 
     /**
@@ -88,8 +100,6 @@ public class CaptchaController {
     public boolean verifyUserTry() throws UrlOfTheNextPageIsNull, IOException {
         timeBeforeRefresh.stop();   // stop the timer
         if(userInput.getText().equals(labelCaptcha.getText())) {
-            Main.setCommunication(new Communication("127.0.0.1",10013));    // Start the communication with the server
-
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/login.fxml");    // Switch to the login page
             return true;

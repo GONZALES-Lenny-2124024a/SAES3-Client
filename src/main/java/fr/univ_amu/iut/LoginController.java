@@ -28,8 +28,11 @@ public class LoginController implements CommunicationController {
     private PasswordField passwordTextField;
     private final Communication communication;
     private final SceneController sceneController;
-    public LoginController() {
-        communication = Main.getCommunication();  // Get the connection with the server
+    public LoginController() throws IOException {
+        if(Main.getCommunication() == null) {
+            Main.setCommunication(new Communication()); // Start the communication with the server
+        }
+        this.communication = Main.getCommunication();
         sceneController = new SceneController();
     }
 

@@ -14,6 +14,8 @@ import java.net.ConnectException;
  * @author LennyGonzales
  */
 public class Communication {
+    private static final String HOSTNAME = "127.0.0.1";
+    private static final int PORT = 10013;
     private SSLSocket socketClient;
     private Object object;
     private ObjectInputStream inObject;
@@ -23,7 +25,7 @@ public class Communication {
     private Thread threadListener;
     private boolean isListening = false;
 
-    public Communication(String hostname, int port) throws IOException {
+    public Communication() throws IOException {
         try {
             System.setProperty("javax.net.ssl.keyStore", "keyStore.jks");
             System.setProperty("javax.net.ssl.keyStorePassword", "Gyaz1ycgG-9bu");
@@ -31,7 +33,7 @@ public class Communication {
             System.setProperty("javax.net.ssl.trustStorePassword", "Gyaz1ycgG-9bu");
 
             SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            socketClient = (SSLSocket) factory.createSocket(hostname, port);
+            socketClient = (SSLSocket) factory.createSocket(HOSTNAME, PORT);
             socketClient.setEnabledProtocols(new String[] { "TLSv1.3" });
 
             inObject = new ObjectInputStream(socketClient.getInputStream());

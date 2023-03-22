@@ -1,5 +1,7 @@
 package fr.univ_amu.iut.fxml;
 
+import fr.univ_amu.iut.CaptchaController;
+import fr.univ_amu.iut.LoginController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
@@ -36,6 +38,7 @@ public class TestMenuPage {
                 FxToolkit.setupStage((sta) -> {
                     try {
                         new Main().start(TestMenuPage.this.stage);
+                        CaptchaController.getTimeBeforeRefresh().stop();
                         SceneController sceneController = new SceneController();
                         sceneController.switchTo("fxml/menu.fxml");
                     } catch (Exception e) {
@@ -56,59 +59,39 @@ public class TestMenuPage {
     }
 
     @Test
-    public void shouldStageIsShowing(FxRobot robot) {
+    public void shouldHaveDefaultSettings() {
         assertEquals(stage.isShowing(), true);
-    }
-
-    @Test
-    public void shouldGetTitle(FxRobot robot) {
         assertEquals(stage.getTitle(), "Network Stories");
-    }
-
-    @Test
-    public void shouldWindowHeightEquals720() { assertEquals(720.0, stage.getScene().getHeight()); }
-
-    @Test
-    public void shouldWindowWidthEquals1280() { assertEquals(  1280.0, stage.getScene().getWidth()); }
-
-    @Test
-    public void shouldSoloButtonContainsSoloText() {
-        verifyThat("#solo", hasText("SOLO"));
+        assertEquals(720.0, stage.getScene().getHeight());
+        assertEquals(  1280.0, stage.getScene().getWidth());
     }
 
     @Test
     public void shouldContainsPasswordButton() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#solo") != null);
-    }
-
-    @Test
-    public void shouldMultiplayerButtonContainsMultijoueurText() {
-        verifyThat("#multiplayer", hasText("MULTIJOUEUR"));
+        verifyThat("#solo", hasText("SOLO"));
     }
 
     @Test
     public void shouldContainsMultiplayerButton() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#multiplayer") != null);
-    }
-
-
-    @Test
-    public void shouldTrainingButtonContainsEntrainementText() {
-        verifyThat("#training", hasText("ENTRAINEMENT"));
+        verifyThat("#multiplayer", hasText("MULTIJOUEUR"));
     }
 
     @Test
     public void shouldContainsTrainingButton() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#training") != null);
-    }
-
-    @Test
-    public void shouldDeconnexionButonContainsDeconnexionText() {
-        verifyThat("#disconnection", hasText("DECONNEXION"));
+        verifyThat("#training", hasText("ENTRAINEMENT"));
     }
 
     @Test
     public void shouldContainsDeconnexionButton() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#disconnection") != null);
+        verifyThat("#disconnection", hasText("DECONNEXION"));
+    }
+
+    @Test
+    public void shouldContainsSlider() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#nbQuestionsSlider") != null);
     }
 }

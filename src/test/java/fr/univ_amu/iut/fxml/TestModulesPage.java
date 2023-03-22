@@ -1,5 +1,6 @@
 package fr.univ_amu.iut.fxml;
 
+import fr.univ_amu.iut.CaptchaController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
@@ -36,6 +37,9 @@ public class TestModulesPage {
                 FxToolkit.setupStage((sta) -> {
                     try {
                         new Main().start(TestModulesPage.this.stage);
+                        CaptchaController.getTimeBeforeRefresh().stop();
+                        SceneController sceneController = new SceneController();
+                        sceneController.switchTo("fxml/login.fxml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -54,43 +58,26 @@ public class TestModulesPage {
     }
 
     @Test
-    public void shouldStageIsShowing(FxRobot robot) {
+    public void shouldHaveDefaultSettings(FxRobot robot) throws InterruptedException {
         goToTheModulesPage(robot);
+
         assertEquals(stage.isShowing(), true);
-    }
-
-    @Test
-    public void shouldGetTitle(FxRobot robot) {
-        goToTheModulesPage(robot);
         assertEquals(stage.getTitle(), "Network Stories");
-    }
-
-    @Test
-    public void shouldWindowHeightEquals720(FxRobot robot) {
-        goToTheModulesPage(robot);
         assertEquals(720.0, stage.getScene().getHeight());
-    }
-
-    @Test
-    public void shouldWindowWidthEquals1280(FxRobot robot) {
-        goToTheModulesPage(robot);
         assertEquals(  1280.0, stage.getScene().getWidth());
     }
 
     @Test
-    public void shouldContainsQuitButton(FxRobot robot) {
+    public void shouldContainsQuitButton(FxRobot robot) throws InterruptedException {
         goToTheModulesPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#quit") != null);
-    }
 
-    @Test
-    public void shouldPasswordTextFieldContainsEmptyText(FxRobot robot) {
-        goToTheModulesPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#quit") != null);
         verifyThat("#quit", hasText("QUITTER"));
     }
 
-    public void goToTheModulesPage(FxRobot robot) {
+    public void goToTheModulesPage(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
+        Thread.sleep(50);
         robot.clickOn("#training");
     }
 }

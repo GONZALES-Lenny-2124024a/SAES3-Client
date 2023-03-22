@@ -1,6 +1,5 @@
 package fr.univ_amu.iut.fxml;
 
-import fr.univ_amu.iut.CaptchaController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
@@ -8,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -20,23 +20,20 @@ import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.util.NodeQueryUtils.hasText;
 
 /**
- * Test the login's page
+ * Test the captcha's page
  */
 @ExtendWith(ApplicationExtension.class)
-public class TestLoginPage {
+public class TestCaptchaPage {
     Stage stage;
 
     @Start
     public void start(Stage stage) throws Exception {
         Platform.runLater(() -> {
-            TestLoginPage.this.stage = new Stage();
+            TestCaptchaPage.this.stage = new Stage();
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
-                        new Main().start(TestLoginPage.this.stage);
-                        CaptchaController.getTimeBeforeRefresh().stop();
-                        SceneController sceneController = new SceneController();
-                        sceneController.switchTo("fxml/login.fxml");
+                        new Main().start(TestCaptchaPage.this.stage);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -65,37 +62,22 @@ public class TestLoginPage {
     @Test
     public void shouldContainsButtonSubmit() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
-        verifyThat("#submit", hasText("SE CONNECTER"));
+        verifyThat("#submit", hasText("Valider"));
     }
 
     @Test
-    public void shouldContainsMailTextField() {
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#mailTextField") != null);
-        verifyThat("#mailTextField", hasText(""));
+    public void shouldContainsCaptchaLabel() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#labelCaptcha") != null);
     }
 
     @Test
-    public void shouldContainsPasswordlTextField() {
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#passwordTextField") != null);
-        verifyThat("#passwordTextField", hasText(""));
+    public void shouldContainsUserInputTextField() {
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#userInput") != null);
     }
 
     @Test
-    public void shouldNotLogin(FxRobot robot) {
+    public void shouldShowAnError(FxRobot robot) {
         robot.clickOn("#submit");
         robot.clickOn("OK");
-    }
-
-    @Test
-    public void shouldLogin(FxRobot robot) {
-        connectionLoginPage(robot);
-    }
-
-    public static void connectionLoginPage(FxRobot robot) {
-        robot.clickOn("#mailTextField");
-        robot.write("lenny.gonzales@etu.univ-amu.fr");
-        robot.clickOn("#passwordTextField");
-        robot.write("jn1ae(iuaez&éIU123;");
-        robot.clickOn("#submit");
     }
 }

@@ -19,6 +19,6 @@
 
         <TextField fx:id="userInput" promptText="Entrez le captcha"></TextField>
 
-        <Button onAction="#verifyUserTry">Valider</Button>
+        <Button fx:id="submit" onAction="#verifyUserTry">Valider</Button>
     </children>
 </VBox>

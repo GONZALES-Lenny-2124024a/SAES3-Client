@@ -1,5 +1,6 @@
 package fr.univ_amu.iut.fxml;
 
+import fr.univ_amu.iut.CaptchaController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
@@ -36,6 +37,9 @@ public class TestQuestionPage {
                 FxToolkit.setupStage((sta) -> {
                     try {
                         new Main().start(TestQuestionPage.this.stage);
+                        CaptchaController.getTimeBeforeRefresh().stop();
+                        SceneController sceneController = new SceneController();
+                        sceneController.switchTo("fxml/login.fxml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -54,43 +58,26 @@ public class TestQuestionPage {
     }
 
     @Test
-    public void shouldStageIsShowing(FxRobot robot) {
+    public void shouldHaveDefaultSettings(FxRobot robot) throws InterruptedException {
         goToQuestionPage(robot);
+
         assertEquals(stage.isShowing(), true);
-    }
-
-    @Test
-    public void shouldGetTitle(FxRobot robot) {
-        goToQuestionPage(robot);
         assertEquals(stage.getTitle(), "Network Stories");
-    }
-
-    @Test
-    public void shouldWindowWidthEquals1280(FxRobot robot) {
-        goToQuestionPage(robot);
+        assertEquals(720.0, stage.getScene().getHeight());
         assertEquals(  1280.0, stage.getScene().getWidth());
     }
 
     @Test
-    public void shouldWindowHeightEquals720(FxRobot robot) {
+    public void shouldContainsButtonSubmit(FxRobot robot) throws InterruptedException {
         goToQuestionPage(robot);
-        assertEquals(720.0, stage.getScene().getHeight());
-    }
-
-    @Test
-    public void shouldSubmitButtonContainsValiderText(FxRobot robot) {
-        goToQuestionPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
         verifyThat("#submit", hasText("VALIDER"));
     }
 
-    @Test
-    public void shouldContainsButtonSubmit(FxRobot robot) {
-        goToQuestionPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
-    }
-
-    public void goToQuestionPage(FxRobot robot) {
+    public void goToQuestionPage(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
+        Thread.sleep(50);
         robot.clickOn("#solo");
+        Thread.sleep(300);
     }
 }

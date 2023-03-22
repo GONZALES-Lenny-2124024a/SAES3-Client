@@ -1,5 +1,6 @@
 package fr.univ_amu.iut.fxml;
 
+import fr.univ_amu.iut.CaptchaController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
@@ -30,6 +31,9 @@ public class TestUserJourneys {
                 FxToolkit.setupStage((sta) -> {
                     try {
                         new Main().start(TestUserJourneys.this.stage);
+                        CaptchaController.getTimeBeforeRefresh().stop();
+                        SceneController sceneController = new SceneController();
+                        sceneController.switchTo("fxml/login.fxml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -66,12 +70,18 @@ public class TestUserJourneys {
      * @param robot
      */
     @Test
-    public void UserJourneyStudentTrainWithTrainingModeAndTestHimWithSoloMode(FxRobot robot) {
+    public void UserJourneyStudentTrainWithTrainingModeAndTestHimWithSoloMode(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
+
+        Thread.sleep(50);
         robot.clickOn("#training");
+        Thread.sleep(300);
         robot.clickOn("Tous les modules");
+        Thread.sleep(300);
         doStory(robot);
+
         robot.clickOn("#solo");
+        Thread.sleep(300);
         doStory(robot);
     }
 
@@ -81,14 +91,21 @@ public class TestUserJourneys {
      * @param robot
      */
     @Test
-    public void UserJourneyStudentTestByCreatingMultiplayerSessionAndTestHimWithSoloMode(FxRobot robot) {
+    public void UserJourneyStudentTestByCreatingMultiplayerSessionAndTestHimWithSoloMode(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
+
+        Thread.sleep(50);
         robot.clickOn("#multiplayer");
+        Thread.sleep(50);
         robot.clickOn("#create");
+        Thread.sleep(300);
         robot.clickOn("Tous les modules");
+        Thread.sleep(300);
         robot.clickOn("#start");
+        Thread.sleep(300);
         doStory(robot);
         robot.clickOn("#solo");
+        Thread.sleep(300);
         doStory(robot);
     }
 

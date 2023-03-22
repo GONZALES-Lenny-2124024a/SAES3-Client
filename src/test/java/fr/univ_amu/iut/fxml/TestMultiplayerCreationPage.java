@@ -1,5 +1,6 @@
 package fr.univ_amu.iut.fxml;
 
+import fr.univ_amu.iut.CaptchaController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
@@ -36,6 +37,9 @@ public class TestMultiplayerCreationPage {
                 FxToolkit.setupStage((sta) -> {
                     try {
                         new Main().start(TestMultiplayerCreationPage.this.stage);
+                        CaptchaController.getTimeBeforeRefresh().stop();
+                        SceneController sceneController = new SceneController();
+                        sceneController.switchTo("fxml/login.fxml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -54,46 +58,37 @@ public class TestMultiplayerCreationPage {
     }
 
     @Test
-    public void shouldWindowWidthEquals1280(FxRobot robot) {
+    public void shouldHaveDefaultSettings(FxRobot robot) throws InterruptedException {
         goToTheMultiplayerCreationPage(robot);
+
+        assertEquals(stage.isShowing(), true);
+        assertEquals(stage.getTitle(), "Network Stories");
+        assertEquals(720.0, stage.getScene().getHeight());
         assertEquals(  1280.0, stage.getScene().getWidth());
     }
 
     @Test
-    public void shouldWindowHeightEquals720(FxRobot robot) {
+    public void shouldContainsButtonStart(FxRobot robot) throws InterruptedException {
         goToTheMultiplayerCreationPage(robot);
-        assertEquals(720.0, stage.getScene().getHeight());
-    }
-
-    @Test
-    public void shouldStartButtonContainsLancerText(FxRobot robot) {
-        goToTheMultiplayerCreationPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#start") != null);
         verifyThat("#start", hasText("LANCER"));
     }
 
     @Test
-    public void shouldContainsButtonStart(FxRobot robot) {
+    public void shouldContainsButtonBack(FxRobot robot) throws InterruptedException {
         goToTheMultiplayerCreationPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#start") != null);
-    }
-
-    @Test
-    public void shouldBackButtonContainsRetourText(FxRobot robot) {
-        goToTheMultiplayerCreationPage(robot);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#back") != null);
         verifyThat("#back", hasText("RETOUR"));
     }
 
-    @Test
-    public void shouldContainsButtonBack(FxRobot robot) {
-        goToTheMultiplayerCreationPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#back") != null);
-    }
-
-    public void goToTheMultiplayerCreationPage(FxRobot robot) {
+    public void goToTheMultiplayerCreationPage(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
+        Thread.sleep(100);
         robot.clickOn("#multiplayer");
+        Thread.sleep(100);
         robot.clickOn("#create");
+        Thread.sleep(200);
         robot.clickOn("Tous les modules");
+        Thread.sleep(200);
     }
-
 }

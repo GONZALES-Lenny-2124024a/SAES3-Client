@@ -1,5 +1,6 @@
 package fr.univ_amu.iut.fxml;
 
+import fr.univ_amu.iut.CaptchaController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
 import javafx.application.Platform;
@@ -36,6 +37,9 @@ public class TestSummaryPageController {
                 FxToolkit.setupStage((sta) -> {
                     try {
                         new Main().start(TestSummaryPageController.this.stage);
+                        CaptchaController.getTimeBeforeRefresh().stop();
+                        SceneController sceneController = new SceneController();
+                        sceneController.switchTo("fxml/login.fxml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -54,56 +58,52 @@ public class TestSummaryPageController {
     }
 
     @Test
-    public void shouldWindowWidthEquals1280(FxRobot robot) {
+    public void shouldHaveDefaultSettings(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
+
+        assertEquals(stage.isShowing(), true);
+        assertEquals(stage.getTitle(), "Network Stories");
+        assertEquals(720.0, stage.getScene().getHeight());
         assertEquals(  1280.0, stage.getScene().getWidth());
     }
 
     @Test
-    public void shouldWindowHeightEquals720(FxRobot robot) {
-        goToTheSummaryPage(robot);
-        assertEquals(720.0, stage.getScene().getHeight());
-    }
-
-    @Test
-    public void shouldContainsLeaveButton(FxRobot robot) {
+    public void shouldContainsLeaveButton(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
+        verifyThat("#leave", hasText("Revenir au menu principal"));
     }
 
     @Test
-    public void shouldLeaveButtonContainsQuitterText(FxRobot robot) {
+    public void shouldContainsSummaryScrollPane(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
-        verifyThat("#leave", hasText("QUITTER"));
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#listViewSummary") != null);
     }
 
     @Test
-    public void shouldContainsSummaryScrollPane(FxRobot robot) {
+    public void shouldContainsUserPointsLabel(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#summaryScrollPane") != null);
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#labelUserPointsTitle") != null);
+        verifyThat("#labelUserPointsTitle", hasText("Votre nouveau nombre de points : "));
     }
 
     @Test
-    public void shouldContainsUserPointsLabel(FxRobot robot) {
+    public void shouldContainsUserPoints(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#labelUserPoints") != null);
     }
 
     @Test
-    public void shouldUserPointsLabelContainsText(FxRobot robot) {
+    public void shouldContainsLeaderboard(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
-        verifyThat("#labelUserPoints", hasText("Votre nouveau nombre de points : "));
+        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#tableViewLeaderboard") != null);
     }
 
-    @Test
-    public void shouldContainsUserPoints(FxRobot robot) {
-        goToTheSummaryPage(robot);
-        assertTrue(SceneController.getStage().getScene().getRoot().lookup("#userPoints") != null);
-    }
-
-    public void goToTheSummaryPage(FxRobot robot) {
+    public void goToTheSummaryPage(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
+        Thread.sleep(100);
         robot.clickOn("#solo");
+        Thread.sleep(300);
         while((SceneController.getStage().getScene().getRoot().lookup("#answer1") != null) || (SceneController.getStage().getScene().getRoot().lookup("#writtenAnswer") != null)) {
             robot.clickOn("#submit");
         }
