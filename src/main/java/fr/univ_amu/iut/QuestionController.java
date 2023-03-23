@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.communication.CommunicationFormat;
+import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
 import fr.univ_amu.iut.domain.MultipleChoiceQuestion;
 import fr.univ_amu.iut.domain.Question;
@@ -213,6 +214,18 @@ public class QuestionController implements CommunicationController {
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/summary.fxml");
         }
+    }
+
+    /**
+     * Leave the session
+     * @throws IOException if the communication with the server didn't go well
+     * @throws UrlOfTheNextPageIsNull if the url of the next page is null
+     */
+    public void leave() throws IOException, UrlOfTheNextPageIsNull {
+        story = null;
+        communication.sendMessage(new CommunicationFormat(Flags.LEAVE_SESSION));
+        SceneController sceneController = new SceneController();
+        sceneController.switchTo("fxml/menu.fxml");
     }
 
     @FXML

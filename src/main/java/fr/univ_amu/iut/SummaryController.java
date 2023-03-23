@@ -92,7 +92,7 @@ public class SummaryController implements CommunicationController {
                     case LEADERBOARD -> Platform.runLater(() -> {   // the server sent the leaderboard
                         displayLeaderboard((HashMap<String, Integer>) message.getContent());
                     });
-                    default -> throw new NotTheExpectedFlagException("SUMMARY or USER_POINTS or LEADERBOARD");
+                    default -> throw new NotTheExpectedFlagException("SUMMARY or USER_POINTS or LEADERBOARD " + message.getFlag());
                 }
             }
         };
