@@ -10,6 +10,7 @@ import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,10 +19,13 @@ import java.util.List;
  * Controller of the loading's page
  * @author LennyGonzales
  */
-public class LoadingController implements CommunicationController {
+public class LoadingController extends Speech implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page de chargement. appuyer sur espace pour revenir au menu principal.";
 
     private final Communication communication;
     private final SceneController sceneController;
+    @FXML
+    private Button leave;
 
 
     public LoadingController() {
@@ -78,5 +82,6 @@ public class LoadingController implements CommunicationController {
     @FXML
     public void initialize() throws NotAStringException, NotTheExpectedFlagException, IOException, UrlOfTheNextPageIsNull, ClassNotFoundException, InterruptedException {
         initializeInteractionServer();
+        initializeTextToSpeech(leave.getParent(), DEFAULT_SPEECH);
     }
 }

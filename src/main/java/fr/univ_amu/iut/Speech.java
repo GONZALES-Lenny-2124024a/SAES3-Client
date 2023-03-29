@@ -12,9 +12,12 @@ import java.io.IOException;
  * Represents the text-to-speech
  */
 public class Speech {
-    private static boolean isBlind = true;
     private static final KeyCode KEY = KeyCode.R;
     private static final float DEFAULT_RATE = 80f;
+
+
+    private static boolean isBlind = true;
+
     private Thread threadSpeech;
 
     public Speech() {

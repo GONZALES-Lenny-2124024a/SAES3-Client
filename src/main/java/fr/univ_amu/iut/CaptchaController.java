@@ -19,7 +19,7 @@ import java.util.Random;
  * Controller of the captcha's page
  * @author LennyGonzales
  */
-public class CaptchaController extends Speech{
+public class CaptchaController extends Speech {
     private static final int MAX_TRY = 2;
     private static final int LENGTH_CAPTCHA = 8;
     private static final String CAPTCHA_CHAR_LIST = "abcdefghijklmnopqrstuvwxyz" +
@@ -99,7 +99,6 @@ public class CaptchaController extends Speech{
     public boolean verifyUserTry() throws UrlOfTheNextPageIsNull, IOException, InterruptedException {
         timeBeforeRefresh.stop();   // stop the timer
         if(userInput.getText().equals(labelCaptcha.getText())) {
-            interruptThreadRunning();
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/login.fxml");    // Switch to the login page
             return true;
@@ -140,6 +139,7 @@ public class CaptchaController extends Speech{
     public void initialize() throws InterruptedException {
         initializeFont();
         initializeCaptcha();
+
         initializeTextToSpeech(labelCaptcha.getParent(), labelCaptcha.getText());
     }
 }

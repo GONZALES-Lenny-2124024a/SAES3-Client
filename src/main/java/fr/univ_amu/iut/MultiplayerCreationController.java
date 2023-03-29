@@ -18,7 +18,7 @@ import java.io.IOException;
  * Controller of the multiplayer session's creation page
  * @author LennyGonzales
  */
-public class MultiplayerCreationController implements CommunicationController {
+public class MultiplayerCreationController extends Speech implements CommunicationController {
     @FXML
     private TextField codeSession;
     @FXML
@@ -59,6 +59,7 @@ public class MultiplayerCreationController implements CommunicationController {
      * @throws UrlOfTheNextPageIsNull Throw if the url of the next page is null
      */
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull {
+        interruptThreadRunning();
         communication.setMessageListener(null);
         communication.sendMessage(new CommunicationFormat(Flags.BEGIN));    // Send to the server that we want to start the game by clicking on the 'Start' button
         sceneController.switchTo("fxml/question.fxml");
@@ -70,8 +71,25 @@ public class MultiplayerCreationController implements CommunicationController {
      * @throws UrlOfTheNextPageIsNull if the url doesn't exist
      */
     public void cancelSession() throws IOException, UrlOfTheNextPageIsNull {
+        interruptThreadRunning();
         communication.sendMessage(new CommunicationFormat(Flags.CANCEL_SESSION, codeSession.getText()));
         sceneController.switchTo("fxml/menu.fxml");
+    }
+
+    /**
+     * Initialize keys bind for blind people
+     */
+    public void initializeKeysBind() {
+        codeSession.getParent().setOnKeyPressed(e -> {
+            try {
+                switch(e.getCode()) {
+                    case DIGIT1 -> sessionBegin();
+                    case DIGIT3 -> cancelSession();
+                }
+            } catch (IOException | UrlOfTheNextPageIsNull ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 
     /**
@@ -84,5 +102,8 @@ public class MultiplayerCreationController implements CommunicationController {
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         initializeInteractionServer();
+
+        initializeKeysBind();
+        initializeTextToSpeech(codeSession.getParent(), "Page de création. 1 : Lancer la partie. 2 : Quitter la partie");
     }
 }

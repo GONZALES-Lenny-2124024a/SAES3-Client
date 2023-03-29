@@ -83,6 +83,7 @@ public class LoginController extends Speech implements CommunicationController {
                 switch(message.getFlag()) {
                     case LOGIN_SUCCESSFULLY -> Platform.runLater(() -> {
                         try {
+                            interruptThreadRunning();
                             communication.setMessageListener(null);
                             sceneController.switchTo("fxml/menu.fxml"); // Now, the user can access to the menu page
                         } catch (Exception e) {
@@ -91,6 +92,7 @@ public class LoginController extends Speech implements CommunicationController {
                     });
                     case LOGIN_NOT_SUCCESSFULLY -> Platform.runLater(() ->  {
                         Alert connexionError = new Alert(Alert.AlertType.ERROR, "Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
+                        speech("Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
                         connexionError.show();
                     });
                     default -> throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY or LOGIN_NOT_SUCCESSFULLY");
@@ -109,7 +111,7 @@ public class LoginController extends Speech implements CommunicationController {
         initializeTextToSpeech(mailTextField.getParent(), DEFAULT_SPEECH);
 
         mailTextField.getParent().setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {     // The user pressed on enter,
+            if (e.getCode() == KeyCode.ENTER) {     // When the user pressed on enter, it sends the form
                 try {
                     sendLogin();
                 } catch (IOException ex) {

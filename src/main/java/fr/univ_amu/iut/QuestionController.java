@@ -27,7 +27,7 @@ import java.util.*;
  * Controller of the question's page
  * @author LennyGonzales
  */
-public class QuestionController implements CommunicationController {
+public class QuestionController extends Speech implements CommunicationController {
     @FXML
     private VBox vboxParent;
     @FXML
@@ -53,6 +53,7 @@ public class QuestionController implements CommunicationController {
     private Question currentQuestion;
     private static List<Question> story = null;
     private Iterator<Question> iteratorStory;
+    private StringBuilder textToSpeech;
 
     public QuestionController() {
         communication = Main.getCommunication();
@@ -108,11 +109,16 @@ public class QuestionController implements CommunicationController {
      */
     public void initializeVariables(Question question) {
         descriptionQuestion.setText(question.getDescription() + '\n' + question.getQuestion());
+        textToSpeech = new StringBuilder("Description : " + question.getDescription() + ". Question : " + question.getQuestion());
         if(question instanceof MultipleChoiceQuestion) {
             createCheckBoxes((MultipleChoiceQuestion) question);
+            textToSpeech.append("Réponse une (tape 1): " + ((MultipleChoiceQuestion) question).getAnswer1() + "Réponse deux (tape 2): " + ((MultipleChoiceQuestion) question).getAnswer2() + "Réponse trois (tape 3): " + ((MultipleChoiceQuestion) question).getAnswer3());
         } else if (question instanceof WrittenResponseQuestion) {
             createWrittenResponse();
+            textToSpeech.append("Ecrit la réponse et appuie sur entrer");
         }
+        initializeTextToSpeech(vboxParent.getParent(), textToSpeech.toString());
+
     }
 
     /**
@@ -211,6 +217,7 @@ public class QuestionController implements CommunicationController {
             initializeVariables(currentQuestion);
             initializeTimer(NUMBER_OF_SECONDS_TIMER);
         } else {    // Change page
+            interruptThreadRunning();
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/summary.fxml");
         }
@@ -222,14 +229,35 @@ public class QuestionController implements CommunicationController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void leave() throws IOException, UrlOfTheNextPageIsNull {
+        interruptThreadRunning();
         story = null;
         communication.sendMessage(new CommunicationFormat(Flags.LEAVE_SESSION));
         SceneController sceneController = new SceneController();
         sceneController.switchTo("fxml/menu.fxml");
     }
 
+
+    /**
+     * Initialize keys bind for blind people
+     */
+    public void initializeKeysBind() {
+        vboxParent.getParent().setOnKeyPressed(e -> {
+            try {
+                switch(e.getCode()) {
+                    case DIGIT0 -> { if (answer1 != null) { answer1.setSelected(!answer1.isSelected()); } } // Can check and uncheck answer
+                    case DIGIT1 -> { if (answer2 != null) { answer2.setSelected(!answer1.isSelected()); } }
+                    case DIGIT2 -> { if (answer3 != null) { answer3.setSelected(!answer1.isSelected()); } }
+                    case ENTER -> submitAnswer();
+                }
+            } catch (IOException | UrlOfTheNextPageIsNull ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
     @FXML
     public void initialize() throws IOException, UrlOfTheNextPageIsNull {
+        initializeKeysBind();
+
         if(story != null) { // If it's a multiplayer session
             Collections.shuffle(story);     // Permutes randomly
             initializeCharacterImage();

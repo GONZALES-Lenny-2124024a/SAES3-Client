@@ -1,6 +1,7 @@
 package fr.univ_amu.iut.fxml;
 
 import fr.univ_amu.iut.*;
+import fr.univ_amu.iut.Speech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;

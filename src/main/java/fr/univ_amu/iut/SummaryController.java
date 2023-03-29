@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.*;
  * Controller of the summary's page
  * @author LennyGonzales , MathieuSauva
  */
-public class SummaryController implements CommunicationController {
+public class SummaryController extends Speech implements CommunicationController {
 
     private final Communication communication;
     private final List<Question> story;
@@ -52,14 +53,27 @@ public class SummaryController implements CommunicationController {
         Iterator<Map.Entry<Question, Boolean>> iteratorSummary = summaryToDisplay.entrySet().iterator();
         Map.Entry<Question, Boolean> answerEntry;
         Label answerLabel;
+        String question;
 
+        StringBuilder textToSpeech = new StringBuilder("Taper 1 pour revenir au menu principal. ");
         while(iteratorSummary.hasNext()) {
             answerEntry = iteratorSummary.next();
 
-            answerLabel = new Label(answerEntry.getKey().getQuestion());
-            answerLabel.setTextFill((answerEntry.getValue()) ? Color.GREEN : Color.RED);
+            question = answerEntry.getKey().getQuestion();
+            answerLabel = new Label(question);
+            textToSpeech.append(question);
+
+            if(answerEntry.getValue()) {
+                answerLabel.setTextFill(Color.GREEN);
+                textToSpeech.append(". Bonne réponse");
+            } else {
+                answerLabel.setTextFill(Color.RED);
+                textToSpeech.append(". Mauvaise réponse");
+            }
             listViewSummary.getItems().add(answerLabel);
         }
+
+        initializeTextToSpeech(tableViewLeaderboard.getParent(), textToSpeech.toString());
     }
 
     /**
@@ -68,6 +82,7 @@ public class SummaryController implements CommunicationController {
      * @throws UrlOfTheNextPageIsNull if the url is null
      */
     public void leaveSession() throws IOException, UrlOfTheNextPageIsNull {
+        interruptThreadRunning();
         communication.setMessageListener(null);
         communication.sendMessage(new CommunicationFormat(Flags.LEAVE_SESSION));
         SceneController sceneController = new SceneController();
@@ -121,11 +136,26 @@ public class SummaryController implements CommunicationController {
     }
 
     /**
+     * Initialize keys bind for blind people
+     */
+    public void initializeKeysBind() {
+        tableViewLeaderboard.getParent().setOnKeyPressed(e -> {
+            try {
+                if(e.getCode() == KeyCode.ENTER) { leaveSession(); }
+            } catch (IOException | UrlOfTheNextPageIsNull ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+
+    /**
      * Initialize the page
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     @FXML
     public void initialize() throws IOException {
+        initializeKeysBind();
+
         initializeInteractionServer();
     }
 }

@@ -17,7 +17,7 @@ import java.util.*;
  * Controller of the modules page where the user choose a module to practice on
  * @author LennyGonzales
  */
-public class ModulesPage implements CommunicationController {
+public class ModulesPage extends Speech implements CommunicationController {
     private VBox vboxParent;
 
     private List<String> modules;
@@ -40,9 +40,13 @@ public class ModulesPage implements CommunicationController {
      */
     public void initializeModuleButtons(String pageToSwitchTo) {
         Iterator<String> iterator = modules.iterator();
-        Button button;
         while(iterator.hasNext()) {
-            button = new ButtonModule(iterator.next(), pageToSwitchTo, flag);
+            Button button = new ButtonModule(iterator.next(), pageToSwitchTo, flag);
+            button.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    speech(button.getText());
+                }
+            });
             vboxParent.getChildren().add(button);
         }
     }
@@ -80,6 +84,7 @@ public class ModulesPage implements CommunicationController {
                         try {
                             modules = (List<String>) message.getContent();
                             initializeModuleButtons(pageToSwitchTo);
+                            initializeTextToSpeech(vboxParent, "Appuyer sur la touche Tab pour naviguer. Appuyer sur espace pour sélectionner le module");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
