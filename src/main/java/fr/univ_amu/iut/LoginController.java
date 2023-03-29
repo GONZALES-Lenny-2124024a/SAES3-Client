@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -21,7 +22,8 @@ import java.util.Arrays;
  * Controller of the login's page
  * @author LennyGonzales
  */
-public class LoginController implements CommunicationController {
+public class LoginController extends Speech implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page Login. Entre ton email, appuie sur tab, entre ton mot de passe, et clique sur la touche entrer";
     @FXML
     private TextField mailTextField;
     @FXML
@@ -102,7 +104,18 @@ public class LoginController implements CommunicationController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws InterruptedException {
         initializeInteractionServer();
+        initializeTextToSpeech(mailTextField.getParent(), DEFAULT_SPEECH);
+
+        mailTextField.getParent().setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {     // The user pressed on enter,
+                try {
+                    sendLogin();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
     }
 }

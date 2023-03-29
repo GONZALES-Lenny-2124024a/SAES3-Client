@@ -1,6 +1,5 @@
 package fr.univ_amu.iut;
 
-import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,16 +19,15 @@ import java.util.Random;
  * Controller of the captcha's page
  * @author LennyGonzales
  */
-public class CaptchaController {
+public class CaptchaController extends Speech{
     private static final int MAX_TRY = 2;
     private static final int LENGTH_CAPTCHA = 8;
     private static final String CAPTCHA_CHAR_LIST = "abcdefghijklmnopqrstuvwxyz" +
                                                     "ABCDEFHIJKLMNOPQRSTUVWXYZ" +
-                                                    "1234567890" +
-                                                    "?!~,+-()[]{}";
+                                                    "1234567890";
 
     private static final int TIMER_BEFORE_REFRESH_IN_SECONDS = 20;
-
+    private static final String ERROR_INCORRECT_ANSWER = "Mauvaise réponse";
 
     private int remainingTry;
     @FXML
@@ -39,7 +37,6 @@ public class CaptchaController {
     private TextField userInput;
 
     private static Timeline timeBeforeRefresh;
-
     public CaptchaController() {
         remainingTry = MAX_TRY;
     }
@@ -50,10 +47,6 @@ public class CaptchaController {
      */
     public static Timeline getTimeBeforeRefresh() {
         return timeBeforeRefresh;
-    }
-
-    public static void setTimeBeforeRefresh(Timeline timeBeforeRefresh) {
-        CaptchaController.timeBeforeRefresh = timeBeforeRefresh;
     }
 
     /**
@@ -74,6 +67,7 @@ public class CaptchaController {
             captchaText.append(CAPTCHA_CHAR_LIST.toCharArray()[random.nextInt(CAPTCHA_CHAR_LIST.length())]);
         }
         labelCaptcha.setText(captchaText.toString());
+
         initializeTimerBeforeRefresh();
     }
 
@@ -84,9 +78,14 @@ public class CaptchaController {
         timeBeforeRefresh = new Timeline(
             new KeyFrame(Duration.seconds(TIMER_BEFORE_REFRESH_IN_SECONDS), e -> {
                 timeBeforeRefresh.stop();   // stop the timer
-                verifyRemainingTry();
+                try {
+                    verifyRemainingTry();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
             })
         );
+
         timeBeforeRefresh.setCycleCount(Timeline.INDEFINITE);
         timeBeforeRefresh.play();
     }
@@ -97,9 +96,10 @@ public class CaptchaController {
      * @throws UrlOfTheNextPageIsNull if the url of the next page (login page) is null
      * @throws IOException if the communication with the server didn't go well
      */
-    public boolean verifyUserTry() throws UrlOfTheNextPageIsNull, IOException {
+    public boolean verifyUserTry() throws UrlOfTheNextPageIsNull, IOException, InterruptedException {
         timeBeforeRefresh.stop();   // stop the timer
         if(userInput.getText().equals(labelCaptcha.getText())) {
+            interruptThreadRunning();
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/login.fxml");    // Switch to the login page
             return true;
@@ -113,11 +113,12 @@ public class CaptchaController {
      * Verify if the user still have remaining try before forced exit
      * @return if the user have remaining try
      */
-    public boolean verifyRemainingTry() {
+    public boolean verifyRemainingTry() throws InterruptedException {
         --remainingTry;
-        if(remainingTry > 0) {
-            Alert connexionError = new Alert(Alert.AlertType.ERROR, "Mauvaise réponse !");
+        if (remainingTry > 0) {
+            Alert connexionError = new Alert(Alert.AlertType.ERROR, ERROR_INCORRECT_ANSWER);
             connexionError.show();
+            speech(ERROR_INCORRECT_ANSWER + " clique sur la touche entrer pour pouvoir recommencer");
             userInput.clear();  // Clear the input
             initializeCaptcha();
             return true;
@@ -127,9 +128,17 @@ public class CaptchaController {
         return false;
     }
 
+    /**
+     * Set isBlind variable
+     */
+    public void setIsBlind() {
+        setIsBlind(!getIsBlind());
+    }
+
     @FXML
-    public void initialize() {
+    public void initialize() throws InterruptedException {
         initializeFont();
         initializeCaptcha();
+        initializeTextToSpeech(labelCaptcha.getParent(), labelCaptcha.getText());
     }
 }

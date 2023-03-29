@@ -3,6 +3,7 @@ package fr.univ_amu.iut.fxml;
 import fr.univ_amu.iut.CaptchaController;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.Speech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -36,6 +37,7 @@ public class TestMultiplayerCreationPage {
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
+                        Speech.setIsBlind(false);
                         new Main().start(TestMultiplayerCreationPage.this.stage);
                         CaptchaController.getTimeBeforeRefresh().stop();
                         SceneController sceneController = new SceneController();

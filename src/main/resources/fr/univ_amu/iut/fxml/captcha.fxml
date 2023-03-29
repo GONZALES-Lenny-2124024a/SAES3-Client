@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Font?>
-<VBox xmlns="http://javafx.com/javafx"
+<VBox fx:id="vbox" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="fr.univ_amu.iut.CaptchaController"
             prefHeight="720.0" prefWidth="1280.0"
@@ -20,5 +20,7 @@
         <TextField fx:id="userInput" promptText="Entrez le captcha"></TextField>
 
         <Button fx:id="submit" onAction="#verifyUserTry">Valider</Button>
+
+        <Button fx:id="isBlindButton" onAction="#setIsBlind">Cliquez ici si vous n'êtes pas aveugle</Button>
     </children>
 </VBox>
