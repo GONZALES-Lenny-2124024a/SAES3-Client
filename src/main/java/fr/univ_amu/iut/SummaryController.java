@@ -68,6 +68,7 @@ public class SummaryController implements CommunicationController {
      * @throws UrlOfTheNextPageIsNull if the url is null
      */
     public void leaveSession() throws IOException, UrlOfTheNextPageIsNull {
+        communication.setMessageListener(null);
         communication.sendMessage(new CommunicationFormat(Flags.LEAVE_SESSION));
         SceneController sceneController = new SceneController();
         sceneController.switchTo("fxml/menu.fxml");

@@ -132,6 +132,7 @@ public class CaptchaController extends Speech{
      * Set isBlind variable
      */
     public void setIsBlind() {
+        interruptThreadRunning();
         setIsBlind(!getIsBlind());
     }
 
