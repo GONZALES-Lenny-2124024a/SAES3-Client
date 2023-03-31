@@ -53,7 +53,7 @@ public class CaptchaController extends Speech {
      * Initialize the captcha font
      */
     public void initializeFont() {
-        Font font = Font.loadFont(Objects.requireNonNull(getClass().getResource("fonts/fontCaptcha.otf")).toExternalForm(), 60);
+        Font font = Font.loadFont(getClass().getResourceAsStream("fonts/zxx.ttf"), 60);
         labelCaptcha.setFont(font);
     }
 
