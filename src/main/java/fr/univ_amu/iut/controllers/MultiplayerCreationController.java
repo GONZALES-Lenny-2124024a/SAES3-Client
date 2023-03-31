@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -9,8 +11,8 @@ import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
@@ -18,18 +20,21 @@ import java.io.IOException;
  * Controller of the multiplayer session's creation page
  * @author LennyGonzales
  */
-public class MultiplayerCreationController extends Speech implements CommunicationController {
+public class MultiplayerCreationController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page de création de session multijoueur";
     @FXML
-    private TextField codeSession;
+    private Label codeSession;
     @FXML
     private ListView usersPresentListView;
     private final Communication communication;
     private final SceneController sceneController;
+    private Speech speech;
 
 
     public MultiplayerCreationController() {
         communication = Main.getCommunication();
         sceneController = new SceneController();
+        speech = new Speech();
     }
 
     /**
@@ -59,7 +64,6 @@ public class MultiplayerCreationController extends Speech implements Communicati
      * @throws UrlOfTheNextPageIsNull Throw if the url of the next page is null
      */
     public void sessionBegin() throws IOException, UrlOfTheNextPageIsNull {
-        interruptThreadRunning();
         communication.setMessageListener(null);
         communication.sendMessage(new CommunicationFormat(Flags.BEGIN));    // Send to the server that we want to start the game by clicking on the 'Start' button
         sceneController.switchTo("fxml/question.fxml");
@@ -71,7 +75,6 @@ public class MultiplayerCreationController extends Speech implements Communicati
      * @throws UrlOfTheNextPageIsNull if the url doesn't exist
      */
     public void cancelSession() throws IOException, UrlOfTheNextPageIsNull {
-        interruptThreadRunning();
         communication.sendMessage(new CommunicationFormat(Flags.CANCEL_SESSION, codeSession.getText()));
         sceneController.switchTo("fxml/menu.fxml");
     }
@@ -104,6 +107,6 @@ public class MultiplayerCreationController extends Speech implements Communicati
         initializeInteractionServer();
 
         initializeKeysBind();
-        initializeTextToSpeech(codeSession.getParent(), "Page de création. 1 : Lancer la partie. 2 : Quitter la partie");
+        speech.initializeTextToSpeech(codeSession.getParent(), DEFAULT_SPEECH);
     }
 }

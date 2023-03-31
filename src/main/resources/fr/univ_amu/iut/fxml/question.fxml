@@ -11,8 +11,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import fr.univ_amu.iut.ButtonSwitchToMenu?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.QuestionController">
+<?import fr.univ_amu.iut.templates.ButtonSwitchToMenu?>
+<?import fr.univ_amu.iut.templates.ButtonSpeech?>
+<?import fr.univ_amu.iut.templates.LabelSpeech?>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.controllers.QuestionController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="950.7994995117188" minWidth="10.0" prefWidth="186.07369995117188" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1025.3733215332031" minWidth="10.0" prefWidth="613.4263000488281" />
@@ -33,11 +35,11 @@
                 <Font name="Helvetica Neue" size="17.0" />
             </font>
         </Label>
-        <Label fx:id="descriptionQuestion" prefHeight="410.0" prefWidth="436.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+        <LabelSpeech fx:id="descriptionQuestion" prefHeight="410.0" prefWidth="436.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
             <font>
                 <Font name="Helvetica Neue" size="17.0" />
             </font>
-        </Label>
+        </LabelSpeech>
         <VBox fx:id="vboxParent" prefHeight="761.0" prefWidth="283.0" GridPane.columnIndex="3" GridPane.rowIndex="2" spacing="30.0">
             <children>
                 <ImageView fx:id="characterImage" fitHeight="325.0" pickOnBounds="true" preserveRatio="true">
@@ -56,15 +58,15 @@
             </image>
         </ImageView>
         <ImageView fitHeight="718.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-        <Button fx:id="submit" onAction="#submitAnswer" mnemonicParsing="false" prefHeight="62.0" prefWidth="213.0" styleClass="Btn" text="VALIDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+        <ButtonSpeech fx:id="submit" onAction="#submitAnswer" mnemonicParsing="false" prefHeight="62.0" prefWidth="213.0" styleClass="Btn" text="VALIDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
             <font>
                 <Font size="21.0" />
             </font>
-        </Button>
-        <Button fx:id="leave" onAction="#leave" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" styleClass="Btn" text="QUITTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+        </ButtonSpeech>
+        <ButtonSpeech fx:id="leave" onAction="#leave" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" styleClass="Btn" text="QUITTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
             <font>
                 <Font size="21.0" />
             </font>
-        </Button>
+        </ButtonSpeech>
     </children>
 </GridPane>

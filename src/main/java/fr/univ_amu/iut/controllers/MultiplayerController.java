@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -17,17 +19,18 @@ import java.io.IOException;
  * Controller of the multiplayer's page
  * @author LennyGonzales
  */
-public class MultiplayerController extends Speech implements CommunicationController {
+public class MultiplayerController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page multijoueur";
     @FXML
     private TextField codeInput;
-    @FXML
-    private ButtonSwitchToMenu leave;
     private final Communication communication;
     private final SceneController sceneController;
+    private Speech speech;
 
     public MultiplayerController() {
         communication = Main.getCommunication();
         sceneController = new SceneController();
+        speech = new Speech();
     }
 
     /**
@@ -36,7 +39,6 @@ public class MultiplayerController extends Speech implements CommunicationContro
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void joinSession() throws IOException {
-        interruptThreadRunning();
         communication.sendMessage(new CommunicationFormat(Flags.MULTIPLAYER_JOIN, codeInput.getText())); // Send the multiplayer session code
     }
 
@@ -45,9 +47,17 @@ public class MultiplayerController extends Speech implements CommunicationContro
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void creationSession() throws IOException, InterruptedException {
-        interruptThreadRunning();
         ModulesPage modulesController = new ModulesPage("fxml/multiplayerCreation.fxml", Flags.CREATE_SESSION);
         modulesController.initialize();
+    }
+
+    /**
+     * Return to the menu page
+     * @throws UrlOfTheNextPageIsNull if the url of the next page is null
+     * @throws IOException
+     */
+    public void leave() throws UrlOfTheNextPageIsNull, IOException {
+        sceneController.switchTo("fxml/menu.fxml");
     }
 
     /**
@@ -68,6 +78,7 @@ public class MultiplayerController extends Speech implements CommunicationContro
                     });
                     case SESSION_NOT_EXISTS -> Platform.runLater(() -> {
                         Alert joinSessionError = new Alert(Alert.AlertType.ERROR, "La session multijoueur n'existe pas");
+                        speech.speech(joinSessionError.getContentText());
                         joinSessionError.show();
                     });
                     default -> throw new NotTheExpectedFlagException("SESSION_EXISTS or SESSION_NOT_EXISTS");
@@ -77,29 +88,9 @@ public class MultiplayerController extends Speech implements CommunicationContro
         communication.setMessageListener(messageListener);
     }
 
-    /**
-     * Initialize keys bind for blind people
-     */
-    public void initializeKeysBind() {
-        codeInput.getParent().setOnKeyPressed(e -> {
-            try {
-                switch(e.getCode()) {
-                    case DIGIT0 -> joinSession();
-                    case DIGIT1 -> creationSession();
-                    case DIGIT3 -> leave.getOnAction();
-                }
-            } catch (IOException | InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
-        leave.setOnAction(e -> { interruptThreadRunning(); });
-    }
-
     @FXML
     public void initialize() throws IOException {
         initializeInteractionServer();
-        initializeKeysBind();
-        initializeTextToSpeech(codeInput.getParent(), "Page multijoueur. Entrer un code de session.  1 : rejoindre une session. 2 : créer une session. 3 : revenir au menu principal");
+        speech.initializeTextToSpeech(codeInput.getParent(), DEFAULT_SPEECH);
     }
 }

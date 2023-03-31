@@ -1,5 +1,6 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,7 +44,7 @@ public class SceneController {
      */
     public void initializeScene(Parent parent, double width, double height) {
         Scene scene = new Scene(parent, width, height);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("css/style.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(Main.class.getResource("css/style.css")).toExternalForm());
         stage.setScene(scene);
     }
 
@@ -55,7 +56,7 @@ public class SceneController {
      */
     @FXML
     public void switchTo(String nameNextPage) throws UrlOfTheNextPageIsNull, IOException {
-        URL url = getClass().getResource(nameNextPage);
+        URL url = Main.class.getResource(nameNextPage);
         if(url == null) {
             throw new UrlOfTheNextPageIsNull();
         }

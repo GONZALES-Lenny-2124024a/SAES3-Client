@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -16,7 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -26,7 +27,8 @@ import java.util.*;
  * Controller of the summary's page
  * @author LennyGonzales , MathieuSauva
  */
-public class SummaryController extends Speech implements CommunicationController {
+public class SummaryController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page sommaire";
 
     private final Communication communication;
     private final List<Question> story;
@@ -38,11 +40,13 @@ public class SummaryController extends Speech implements CommunicationController
 
     @FXML
     private TableView<LeaderboardEntry> tableViewLeaderboard;
+    private Speech speech;
 
     public SummaryController() {    // Get story
         this.story = QuestionController.getStory(); // Get the story with the user answers
         QuestionController.setStory(null);
         communication = Main.getCommunication();
+        speech = new Speech();
     }
 
     /**
@@ -55,7 +59,7 @@ public class SummaryController extends Speech implements CommunicationController
         Label answerLabel;
         String question;
 
-        StringBuilder textToSpeech = new StringBuilder("Taper 1 pour revenir au menu principal. ");
+        StringBuilder textToSpeech = new StringBuilder();
         while(iteratorSummary.hasNext()) {
             answerEntry = iteratorSummary.next();
 
@@ -73,7 +77,7 @@ public class SummaryController extends Speech implements CommunicationController
             listViewSummary.getItems().add(answerLabel);
         }
 
-        initializeTextToSpeech(tableViewLeaderboard.getParent(), textToSpeech.toString());
+        speech.speech(textToSpeech.toString());
     }
 
     /**
@@ -82,7 +86,6 @@ public class SummaryController extends Speech implements CommunicationController
      * @throws UrlOfTheNextPageIsNull if the url is null
      */
     public void leaveSession() throws IOException, UrlOfTheNextPageIsNull {
-        interruptThreadRunning();
         communication.setMessageListener(null);
         communication.sendMessage(new CommunicationFormat(Flags.LEAVE_SESSION));
         SceneController sceneController = new SceneController();
@@ -136,26 +139,12 @@ public class SummaryController extends Speech implements CommunicationController
     }
 
     /**
-     * Initialize keys bind for blind people
-     */
-    public void initializeKeysBind() {
-        tableViewLeaderboard.getParent().setOnKeyPressed(e -> {
-            try {
-                if(e.getCode() == KeyCode.ENTER) { leaveSession(); }
-            } catch (IOException | UrlOfTheNextPageIsNull ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-    }
-
-    /**
      * Initialize the page
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     @FXML
     public void initialize() throws IOException {
-        initializeKeysBind();
-
         initializeInteractionServer();
+        speech.initializeTextToSpeech(labelUserPoints.getParent(), DEFAULT_SPEECH);
     }
 }

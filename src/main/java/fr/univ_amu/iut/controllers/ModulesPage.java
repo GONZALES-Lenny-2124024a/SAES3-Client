@@ -1,11 +1,16 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.communication.MessageListener;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.templates.ButtonModule;
+import fr.univ_amu.iut.templates.ButtonSpeech;
+import fr.univ_amu.iut.templates.ButtonSwitchToMenu;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,7 +22,8 @@ import java.util.*;
  * Controller of the modules page where the user choose a module to practice on
  * @author LennyGonzales
  */
-public class ModulesPage extends Speech implements CommunicationController {
+public class ModulesPage implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page module";
     private VBox vboxParent;
 
     private List<String> modules;
@@ -25,6 +31,7 @@ public class ModulesPage extends Speech implements CommunicationController {
     private final SceneController sceneController;
     private final String pageToSwitchTo;
     private final Flags flag;
+    private Speech speech;
 
     public ModulesPage(String pageToSwitchTo, Flags flag) {
         modules = new ArrayList<>();
@@ -33,6 +40,7 @@ public class ModulesPage extends Speech implements CommunicationController {
         this.pageToSwitchTo = pageToSwitchTo;
         this.flag = flag;
         vboxParent = new VBox();
+        speech = new Speech();
     }
 
     /**
@@ -44,7 +52,7 @@ public class ModulesPage extends Speech implements CommunicationController {
             Button button = new ButtonModule(iterator.next(), pageToSwitchTo, flag);
             button.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
-                    speech(button.getText());
+                    speech.speech(button.getText());
                 }
             });
             vboxParent.getChildren().add(button);
@@ -55,10 +63,17 @@ public class ModulesPage extends Speech implements CommunicationController {
      * Initialize the button which return to the menu page
      */
     public void initializeSwitchToMenuButton() {
-        ButtonSwitchToMenu buttonSwitchToMenu = new ButtonSwitchToMenu();
-        buttonSwitchToMenu.setText("QUITTER");
-        buttonSwitchToMenu.setId("quit");
-        vboxParent.getChildren().add(buttonSwitchToMenu);
+        ButtonSpeech button = new ButtonSpeech();
+        button.setText("QUITTER");
+        button.setId("quit");
+        button.setOnAction(event -> {
+            try {
+                sceneController.switchTo("fxml/menu.fxml");
+            } catch (UrlOfTheNextPageIsNull | IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        vboxParent.getChildren().add(button);
     }
 
     /**
@@ -84,7 +99,6 @@ public class ModulesPage extends Speech implements CommunicationController {
                         try {
                             modules = (List<String>) message.getContent();
                             initializeModuleButtons(pageToSwitchTo);
-                            initializeTextToSpeech(vboxParent, "Appuyer sur la touche Tab pour naviguer. Appuyer sur espace pour sélectionner le module");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -107,5 +121,8 @@ public class ModulesPage extends Speech implements CommunicationController {
         initializeVBoxParent();
         initializeSwitchToMenuButton();
         sceneController.initializeScene(vboxParent, Main.getWindowWidth(), Main.getWindowHeight());
+
+        speech.initializeTextToSpeech(vboxParent, DEFAULT_SPEECH);
+
     }
 }

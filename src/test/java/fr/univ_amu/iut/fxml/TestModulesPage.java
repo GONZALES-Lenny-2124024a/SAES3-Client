@@ -1,9 +1,9 @@
 package fr.univ_amu.iut.fxml;
 
-import fr.univ_amu.iut.CaptchaController;
+import fr.univ_amu.iut.controllers.CaptchaController;
 import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.SceneController;
-import fr.univ_amu.iut.Speech;
+import fr.univ_amu.iut.controllers.SceneController;
+import fr.univ_amu.iut.gui.Speech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -79,7 +79,8 @@ public class TestModulesPage {
 
     public void goToTheModulesPage(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
-        Thread.sleep(50);
+        Thread.sleep(200);
         robot.clickOn("#training");
+        Thread.sleep(200);
     }
 }

@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,22 +14,22 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Random;
 
 /**
  * Controller of the captcha's page
  * @author LennyGonzales
  */
-public class CaptchaController extends Speech {
+public class CaptchaController {
     private static final int MAX_TRY = 2;
     private static final int LENGTH_CAPTCHA = 8;
     private static final String CAPTCHA_CHAR_LIST = "abcdefghijklmnopqrstuvwxyz" +
                                                     "ABCDEFHIJKLMNOPQRSTUVWXYZ" +
                                                     "1234567890";
 
-    private static final int TIMER_BEFORE_REFRESH_IN_SECONDS = 20;
+    private static final int TIMER_BEFORE_REFRESH_IN_SECONDS = 40;
     private static final String ERROR_INCORRECT_ANSWER = "Mauvaise réponse";
+    private static final String DEFAULT_SPEECH = "Page Captcha, appuyez sur tab pour naviguer, appuyez sur espace pour valider";
 
     private int remainingTry;
     @FXML
@@ -35,10 +37,12 @@ public class CaptchaController extends Speech {
 
     @FXML
     private TextField userInput;
+    private Speech speech;
 
     private static Timeline timeBeforeRefresh;
     public CaptchaController() {
         remainingTry = MAX_TRY;
+        speech = new Speech();
     }
 
     /**
@@ -53,7 +57,7 @@ public class CaptchaController extends Speech {
      * Initialize the captcha font
      */
     public void initializeFont() {
-        Font font = Font.loadFont(getClass().getResourceAsStream("fonts/zxx.ttf"), 60);
+        Font font = Font.loadFont(Main.class.getResourceAsStream("fonts/zxx.ttf"), 60);
         labelCaptcha.setFont(font);
     }
 
@@ -117,7 +121,7 @@ public class CaptchaController extends Speech {
         if (remainingTry > 0) {
             Alert connexionError = new Alert(Alert.AlertType.ERROR, ERROR_INCORRECT_ANSWER);
             connexionError.show();
-            speech(ERROR_INCORRECT_ANSWER + " clique sur la touche entrer pour pouvoir recommencer");
+            speech.speech(ERROR_INCORRECT_ANSWER + " cliques sur la touche entrer pour pouvoir recommencer");
             userInput.clear();  // Clear the input
             initializeCaptcha();
             return true;
@@ -131,8 +135,8 @@ public class CaptchaController extends Speech {
      * Set isBlind variable
      */
     public void setIsBlind() {
-        interruptThreadRunning();
-        setIsBlind(!getIsBlind());
+        speech.interruptThreadRunning();
+        Speech.setIsBlind(!Speech.getIsBlind());
     }
 
     @FXML
@@ -140,6 +144,6 @@ public class CaptchaController extends Speech {
         initializeFont();
         initializeCaptcha();
 
-        initializeTextToSpeech(labelCaptcha.getParent(), labelCaptcha.getText());
+        speech.initializeTextToSpeech(labelCaptcha.getParent(), DEFAULT_SPEECH);
     }
 }

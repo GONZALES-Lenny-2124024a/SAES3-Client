@@ -1,8 +1,8 @@
 package fr.univ_amu.iut.fxml;
 
 import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.SceneController;
-import fr.univ_amu.iut.Speech;
+import fr.univ_amu.iut.controllers.SceneController;
+import fr.univ_amu.iut.gui.Speech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -63,7 +63,7 @@ public class TestCaptchaPage {
     @Test
     public void shouldContainsButtonSubmit() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
-        verifyThat("#submit", hasText("Valider"));
+        verifyThat("#submit", hasText("Confirmer"));
     }
 
     @Test

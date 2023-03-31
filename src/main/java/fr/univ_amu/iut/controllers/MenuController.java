@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.Communication;
@@ -16,17 +18,19 @@ import java.util.Arrays;
  * Controller of the menu's page
  * @author LennyGonzales
  */
-public class MenuController extends Speech {
-    private static final String DEFAULT_SPEECH = "Menu principal, il y a le mode Solo (tape 1), le mode Multijoueur (tape 2), le mode Entrainement (tape 3), et déconnection (tape 4)";
+public class MenuController {
+    private static final String DEFAULT_SPEECH = "Menu principal";
     private static final String DEFAULT_MODULE = "Tous les modules";
     private final Communication communication;
     @FXML
     private Slider nbQuestionsSlider;
     private static IntegerProperty nbQuestions;
+    private Speech speech;
 
     public MenuController() {
         communication = Main.getCommunication();
         nbQuestions = new SimpleIntegerProperty();
+        speech = new Speech();
     }
 
     /**
@@ -62,7 +66,6 @@ public class MenuController extends Speech {
      * @throws IOException if the communication with the server is closed or didn't go well
      */
     public void trainingMode() throws IOException, InterruptedException {
-        interruptThreadRunning();
         ModulesPage modulesController = new ModulesPage("fxml/question.fxml", Flags.STORY);
         modulesController.initialize();
     }
@@ -74,7 +77,6 @@ public class MenuController extends Speech {
      * @throws UrlOfTheNextPageIsNull if the url of the next page is null
      */
     public void switchTo(String nameNextPage) throws IOException, UrlOfTheNextPageIsNull {
-        interruptThreadRunning();
         SceneController sceneController = new SceneController();
         sceneController.switchTo(nameNextPage);
     }
@@ -87,30 +89,10 @@ public class MenuController extends Speech {
         return nbQuestions.get();
     }
 
-    /**
-     * Initialize keys bind for blind people
-     */
-    public void initializeKeysBind() {
-        nbQuestionsSlider.getParent().setOnKeyPressed(e -> {
-            try {
-                switch(e.getCode()) {
-                    case DIGIT0 -> soloMode();
-                    case DIGIT1 -> multiplayerMode();
-                    case DIGIT2 -> trainingMode();
-                    case DIGIT3 -> disconnection();
-                }
-            } catch (IOException | UrlOfTheNextPageIsNull | InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-    }
-
     @FXML
     public void initialize() {
-
         nbQuestions.bindBidirectional(nbQuestionsSlider.valueProperty());   // Bind the slider value with the nbQuestions variable value
 
-        initializeKeysBind();
-        initializeTextToSpeech(nbQuestionsSlider.getParent(), DEFAULT_SPEECH);
+        speech.initializeTextToSpeech(nbQuestionsSlider.getParent(), DEFAULT_SPEECH);
     }
 }

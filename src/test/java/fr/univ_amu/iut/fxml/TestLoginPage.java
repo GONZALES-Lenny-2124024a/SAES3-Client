@@ -1,9 +1,11 @@
 package fr.univ_amu.iut.fxml;
 
-import fr.univ_amu.iut.CaptchaController;
+import fr.univ_amu.iut.controllers.CaptchaController;
 import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.SceneController;
-import fr.univ_amu.iut.Speech;
+import fr.univ_amu.iut.controllers.SceneController;
+import fr.univ_amu.iut.gui.Speech;
+import fr.univ_amu.iut.templates.PasswordFieldSpeech;
+import fr.univ_amu.iut.templates.TextFieldSpeech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -73,13 +75,14 @@ public class TestLoginPage {
     @Test
     public void shouldContainsMailTextField() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#mailTextField") != null);
-        verifyThat("#mailTextField", hasText(""));
+        assertEquals("Entrez votre email", ((TextFieldSpeech) SceneController.getStage().getScene().getRoot().lookup("#mailTextField")).getPromptText());
     }
 
     @Test
-    public void shouldContainsPasswordlTextField() {
+    public void shouldContainsPasswordTextField() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#passwordTextField") != null);
-        verifyThat("#passwordTextField", hasText(""));
+        assertEquals("Entrez votre mot de passe", ((PasswordFieldSpeech) SceneController.getStage().getScene().getRoot().lookup("#passwordTextField")).getPromptText());
+
     }
 
     @Test

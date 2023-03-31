@@ -1,8 +1,11 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.gui;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
+import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.communication.Communication;
+import fr.univ_amu.iut.controllers.SceneController;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 
@@ -18,9 +21,10 @@ public class Speech {
 
     private static boolean isBlind = true;
 
-    private Thread threadSpeech;
+    private static Thread threadSpeech;
 
     public Speech() {
+        interruptThreadRunning();   // stop the running thread
         threadSpeech = new Thread();
     }
 
@@ -36,7 +40,7 @@ public class Speech {
      * Return if the user is blind or not
      * @return if the user is blind or not
      */
-    public boolean getIsBlind() {
+    public static boolean getIsBlind() {
         return isBlind;
     }
 
@@ -70,7 +74,7 @@ public class Speech {
      * Interrupt the thread if it's alive
      */
     public void interruptThreadRunning() {
-        if(threadSpeech.isAlive()) {
+        if((threadSpeech != null) && (threadSpeech.isAlive())) {
             threadSpeech.interrupt();
         }
     }
@@ -87,11 +91,12 @@ public class Speech {
         SceneController.getStage().setOnCloseRequest(event -> {  // If the user close the application
             try {
                 if(threadSpeech.isAlive()) {
-                    threadSpeech.interrupt();
+                    threadSpeech.interrupt();   // Interrupt the thread
                 }
+
                 Communication communication = Main.getCommunication();
                 if(communication != null) {
-                    communication.close();
+                    communication.close();  // Close the communication
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -103,6 +108,9 @@ public class Speech {
                 speech(textToRead);
             }
         });
+
+        parent.setFocusTraversable(true);   // Else, the parent gives the focus to its first child
+        Platform.runLater(() -> parent.requestFocus()); // Give the focus to the parent
 
         speech(textToRead);
     }

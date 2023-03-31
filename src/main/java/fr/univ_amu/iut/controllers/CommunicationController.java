@@ -1,4 +1,4 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
 import java.io.IOException;
 

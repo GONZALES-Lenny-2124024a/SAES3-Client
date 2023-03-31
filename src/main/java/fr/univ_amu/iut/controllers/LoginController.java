@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -10,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -22,20 +23,22 @@ import java.util.Arrays;
  * Controller of the login's page
  * @author LennyGonzales
  */
-public class LoginController extends Speech implements CommunicationController {
-    private static final String DEFAULT_SPEECH = "Page Login. Entre ton email, appuie sur tab, entre ton mot de passe, et clique sur la touche entrer";
+public class LoginController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page Login";
     @FXML
     private TextField mailTextField;
     @FXML
     private PasswordField passwordTextField;
     private final Communication communication;
     private final SceneController sceneController;
+    private Speech speech;
     public LoginController() throws IOException {
         if(Main.getCommunication() == null) {
             Main.setCommunication(new Communication()); // Start the communication with the server
         }
         this.communication = Main.getCommunication();
         sceneController = new SceneController();
+        speech = new Speech();
     }
 
     /**
@@ -83,7 +86,6 @@ public class LoginController extends Speech implements CommunicationController {
                 switch(message.getFlag()) {
                     case LOGIN_SUCCESSFULLY -> Platform.runLater(() -> {
                         try {
-                            interruptThreadRunning();
                             communication.setMessageListener(null);
                             sceneController.switchTo("fxml/menu.fxml"); // Now, the user can access to the menu page
                         } catch (Exception e) {
@@ -92,7 +94,7 @@ public class LoginController extends Speech implements CommunicationController {
                     });
                     case LOGIN_NOT_SUCCESSFULLY -> Platform.runLater(() ->  {
                         Alert connexionError = new Alert(Alert.AlertType.ERROR, "Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
-                        speech("Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
+                        speech.speech("Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
                         connexionError.show();
                     });
                     default -> throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY or LOGIN_NOT_SUCCESSFULLY");
@@ -108,16 +110,6 @@ public class LoginController extends Speech implements CommunicationController {
     @FXML
     public void initialize() throws InterruptedException {
         initializeInteractionServer();
-        initializeTextToSpeech(mailTextField.getParent(), DEFAULT_SPEECH);
-
-        mailTextField.getParent().setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {     // When the user pressed on enter, it sends the form
-                try {
-                    sendLogin();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
+        speech.initializeTextToSpeech(mailTextField.getParent(), DEFAULT_SPEECH);
     }
 }

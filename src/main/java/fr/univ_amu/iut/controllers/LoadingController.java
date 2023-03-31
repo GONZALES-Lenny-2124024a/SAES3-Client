@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -19,18 +21,20 @@ import java.util.List;
  * Controller of the loading's page
  * @author LennyGonzales
  */
-public class LoadingController extends Speech implements CommunicationController {
+public class LoadingController implements CommunicationController {
     private static final String DEFAULT_SPEECH = "Page de chargement. appuyer sur espace pour revenir au menu principal.";
 
     private final Communication communication;
     private final SceneController sceneController;
     @FXML
     private Button leave;
+    private Speech speech;
 
 
     public LoadingController() {
         communication = Main.getCommunication();
         sceneController = new SceneController();
+        speech = new Speech();
     }
 
     /**
@@ -82,6 +86,6 @@ public class LoadingController extends Speech implements CommunicationController
     @FXML
     public void initialize() throws NotAStringException, NotTheExpectedFlagException, IOException, UrlOfTheNextPageIsNull, ClassNotFoundException, InterruptedException {
         initializeInteractionServer();
-        initializeTextToSpeech(leave.getParent(), DEFAULT_SPEECH);
+        speech.initializeTextToSpeech(leave.getParent(), DEFAULT_SPEECH);
     }
 }
