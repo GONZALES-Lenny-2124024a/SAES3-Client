@@ -10,22 +10,18 @@
 
 Le principal objectif de son projet est de rendre davantage ludique l'enseignement « Réseaux » de première année de l'IUT Informatique d'Aix-Marseille à l'aide de scénarios.
 
-Après s'être connecté, l’utilisateur pourra choisir parmi différents modes de jeu :
+Pour sécuriser notre serveur, l'utilisateur devra premièrement passer un captcha pour se connecter au serveur.
+
+Puis, après s'être connecté, l’utilisateur pourra choisir parmi différents modes de jeu :
   - « Solo »
   - « Multijoueur »
   - « Entrainement »
 
+De surcroit, notre application est aussi adaptée aux personnes malvoyantes en utilisant un text-to-speech nous permettant de générer une voix à l'oral à partir d'un texte.
+
 ## Lancement de l'application :arrow_forward:
 
 Avant d'installer le client, il faut télécharger le serveur.
-
-  ### Installation du serveur
-
-Pour commencer, télécharger le serveur grâce à cette url :
-```
-  https://github.com/LennyGonzales/SAES3-Server
-```
-<b>Lire le README.md de ce repository.<b/>
 
   ### Installation du client
   
