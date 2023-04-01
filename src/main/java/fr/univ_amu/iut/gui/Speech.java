@@ -22,6 +22,7 @@ public class Speech {
 
 
     private static boolean isBlind = true;
+    private static boolean isThreadInterrupted = false; // we are forced to use an intermediate variable for the speechLetterByLetter since threadSpeech.interrupt() doesn't work with loop (for, foreach, while)
 
     private static Thread threadSpeech;
 
@@ -84,6 +85,7 @@ public class Speech {
 
         interruptThreadRunning();
 
+        isThreadInterrupted = false;  // we are forced to use an intermediate variable for the speechLetterByLetter since threadSpeech.interrupt() doesn't work with loop (for, foreach, while)
         threadSpeech = new Thread(()->{
             System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
             VoiceManager voiceManager = VoiceManager.getInstance();
@@ -91,6 +93,7 @@ public class Speech {
             voice.allocate();
             voice.setRate(DEFAULT_RATE);
             for (char letter : textToRead.toCharArray()) {
+                if(isThreadInterrupted) { break; }    // we are forced to use an intermediate variable for the speechLetterByLetter since threadSpeech.interrupt() doesn't work with loop (for, foreach, while)
                 voice.speak(String.valueOf(letter));
             }
             voice.deallocate();
@@ -105,6 +108,7 @@ public class Speech {
      */
     public void interruptThreadRunning() {
         if((threadSpeech != null) && (threadSpeech.isAlive())) {
+            isThreadInterrupted = true; // we are forced to use an intermediate variable for the speechLetterByLetter since threadSpeech.interrupt() doesn't work with loop (for, foreach, while)
             threadSpeech.interrupt();
         }
     }
