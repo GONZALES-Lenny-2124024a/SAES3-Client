@@ -33,7 +33,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        //initializeMusic("videos/music.mp3");
+        initializeMusic("videos/music.mp3");
 
         this.stage = stage;
         initializeWindow();
@@ -65,6 +65,7 @@ public class Main extends Application {
         Media sound = new Media(Objects.requireNonNull(getClass().getResource(fileName)).toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setVolume(0.5);
         mediaPlayer.play();
     }
 
