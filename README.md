@@ -21,10 +21,6 @@ De surcroit, notre application est aussi adaptée aux personnes malvoyantes en u
 
 ## Lancement de l'application :arrow_forward:
 
-Avant d'installer le client, il faut télécharger le serveur.
-
-  ### Installation du client
-  
 Pour commencer, télécharger l'application en exécutant la commande :
 ```bash
   git clone https://github.com/LennyGonzales/SAES3-Client.git
