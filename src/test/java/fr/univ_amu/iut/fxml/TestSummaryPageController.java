@@ -73,7 +73,7 @@ public class TestSummaryPageController {
     public void shouldContainsLeaveButton(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
-        verifyThat("#leave", hasText("Revenir au menu principal"));
+        verifyThat("#leave", hasText("QUITTER"));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class TestSummaryPageController {
     public void shouldContainsUserPointsLabel(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#labelUserPointsTitle") != null);
-        verifyThat("#labelUserPointsTitle", hasText("Votre nouveau nombre de points : "));
+        verifyThat("#labelUserPointsTitle", hasText("Votre nouveau nombre de points :"));
     }
 
     @Test
@@ -103,7 +103,7 @@ public class TestSummaryPageController {
 
     public void goToTheSummaryPage(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
-        Thread.sleep(100);
+        Thread.sleep(200);
         robot.clickOn("#solo");
         Thread.sleep(300);
         while((SceneController.getStage().getScene().getRoot().lookup("#answer1") != null) || (SceneController.getStage().getScene().getRoot().lookup("#writtenAnswer") != null)) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -8,19 +9,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Label?>
-<?import fr.univ_amu.iut.templates.ButtonSpeech?>
 <?import fr.univ_amu.iut.templates.SliderSpeech?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.controllers.MenuController">
+<?import fr.univ_amu.iut.templates.ButtonSpeech?>
+<?import fr.univ_amu.iut.templates.ButtonAudioDescription?>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.controllers.MenuController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="309.9620361328125" minHeight="10.0" prefHeight="230.84384155273438" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="757.6203308105469" minHeight="10.0" prefHeight="620.6708374023438" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="332.612548828125" minHeight="0.0" prefHeight="64.1307373046875" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="173.67730712890625" minHeight="64.30804443359375" prefHeight="164.3692626953125" />
     </rowConstraints>
     <children>
         <VBox alignment="CENTER" prefHeight="473.0" prefWidth="640.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -37,10 +39,14 @@
                 </ButtonSpeech>
                 <ButtonSpeech fx:id="training" mnemonicParsing="false" onAction="#trainingMode" prefHeight="69.0" prefWidth="382.0" styleClass="Btn" stylesheets="@../css/style.css" text="ENTRAINEMENT">
                     <VBox.margin>
-                        <Insets bottom="30.0" />
+                        <Insets bottom="70.0" />
                     </VBox.margin>
                 </ButtonSpeech>
-                <ButtonSpeech fx:id="disconnection" mnemonicParsing="false" onAction="#disconnection" prefHeight="69.0" prefWidth="382.0" styleClass="Btn" stylesheets="@../css/style.css" text="DECONNEXION"/>
+                <ButtonSpeech fx:id="disconnection" mnemonicParsing="false" onAction="#disconnection" prefHeight="69.0" prefWidth="382.0" styleClass="Btn" stylesheets="@../css/style.css" text="DECONNEXION">
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin></ButtonSpeech>
+            <ButtonAudioDescription mnemonicParsing="false" prefHeight="69.0" prefWidth="382.0" styleClass="Btn" stylesheets="@../css/style.css" text="AUDIO DESCRIPTION" />
             </children>
         </VBox>
 
@@ -50,10 +56,10 @@
             </image>
         </ImageView>
 
-        <VBox alignment="CENTER" GridPane.rowIndex="3" GridPane.columnIndex="1">
+        <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <children>
                 <Label>Nombre de Questions voulues : </Label>
-                <SliderSpeech fx:id="nbQuestionsSlider" value="10" min="1" max="20" showTickMarks="true" showTickLabels="true" majorTickUnit="1" minorTickCount="0" blockIncrement="1" snapToTicks="true"></SliderSpeech>
+                <SliderSpeech fx:id="nbQuestionsSlider" blockIncrement="1" majorTickUnit="1" max="20" min="1" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10" />
             </children>
         </VBox>
     </children>

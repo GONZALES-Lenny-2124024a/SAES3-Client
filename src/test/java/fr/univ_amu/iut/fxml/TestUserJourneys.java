@@ -75,7 +75,7 @@ public class TestUserJourneys {
     public void UserJourneyStudentTrainWithTrainingModeAndTestHimWithSoloMode(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
 
-        Thread.sleep(50);
+        Thread.sleep(200);
         robot.clickOn("#training");
         Thread.sleep(300);
         robot.clickOn("Tous les modules");
@@ -96,9 +96,9 @@ public class TestUserJourneys {
     public void UserJourneyStudentTestByCreatingMultiplayerSessionAndTestHimWithSoloMode(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
 
-        Thread.sleep(50);
+        Thread.sleep(200);
         robot.clickOn("#multiplayer");
-        Thread.sleep(50);
+        Thread.sleep(200);
         robot.clickOn("#create");
         Thread.sleep(300);
         robot.clickOn("Tous les modules");

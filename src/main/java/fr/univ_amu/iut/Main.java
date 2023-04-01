@@ -52,7 +52,7 @@ public class Main extends Application {
         // Initialize the scene
         SceneController.setStage(stage);    // Stores the current stage
         SceneController sceneController = new SceneController();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/captcha.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/captcha.fxml"));
         sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
         stage.show();

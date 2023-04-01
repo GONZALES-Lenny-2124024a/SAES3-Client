@@ -66,6 +66,7 @@ public class ModulesPage implements CommunicationController {
         ButtonSpeech button = new ButtonSpeech();
         button.setText("QUITTER");
         button.setId("quit");
+        button.getStyleClass().add("Btn");
         button.setOnAction(event -> {
             try {
                 sceneController.switchTo("fxml/menu.fxml");
