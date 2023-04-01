@@ -12,6 +12,7 @@
 <?import fr.univ_amu.iut.templates.TextFieldSpeech?>
 <?import fr.univ_amu.iut.templates.LabelSpeech?>
 <?import fr.univ_amu.iut.templates.ButtonAudioDescription?>
+<?import fr.univ_amu.iut.templates.LabelSpeechLetterByLetter?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="fr.univ_amu.iut.controllers.CaptchaController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="269.10015869140625" minWidth="10.0" prefWidth="215.0736541748047" />
@@ -24,7 +25,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-       <LabelSpeech fx:id="labelCaptcha" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+       <LabelSpeechLetterByLetter fx:id="labelCaptcha" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
        <TextFieldSpeech fx:id="userInput" promptText="Entrez le Captcha" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <ButtonSpeech fx:id="submit" onAction="#verifyUserTry" mnemonicParsing="false" prefHeight="52.0" prefWidth="208.0" styleClass="Btn" text="Confirmer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
          <font>

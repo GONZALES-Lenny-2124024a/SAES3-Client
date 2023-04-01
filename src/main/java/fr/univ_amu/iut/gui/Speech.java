@@ -2,6 +2,8 @@ package fr.univ_amu.iut.gui;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
+import com.sun.speech.freetts.lexicon.LetterToSound;
+import com.sun.speech.freetts.lexicon.LetterToSoundImpl;
 import fr.univ_amu.iut.Main;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.controllers.SceneController;
@@ -63,6 +65,34 @@ public class Speech {
             voice.allocate();
             voice.setRate(DEFAULT_RATE);
             voice.speak(textToRead);
+            voice.deallocate();
+        });
+
+        threadSpeech.start();
+        return true;
+    }
+
+    /**
+     * Text to speech letter by letter
+     * @param textToRead the text to read
+     * @return if the text-to-speech worked
+     */
+    public boolean speechLetterByLetter(String textToRead) {
+        if(!isBlind) {
+            return false;
+        }
+
+        interruptThreadRunning();
+
+        threadSpeech = new Thread(()->{
+            System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+            VoiceManager voiceManager = VoiceManager.getInstance();
+            Voice voice = voiceManager.getVoice("kevin16");
+            voice.allocate();
+            voice.setRate(DEFAULT_RATE);
+            for (char letter : textToRead.toCharArray()) {
+                voice.speak(String.valueOf(letter));
+            }
             voice.deallocate();
         });
 
