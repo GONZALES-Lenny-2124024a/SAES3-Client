@@ -28,6 +28,9 @@ public class CaptchaController {
                                                     "1234567890";
 
     private static final int TIMER_BEFORE_REFRESH_IN_SECONDS = 40;
+    private int timerCurrentValue;
+    @FXML
+    private Label timerLabel;
     private static final String ERROR_INCORRECT_ANSWER = "Mauvaise réponse";
     private static final String DEFAULT_SPEECH = "Page Captcha, appuyez sur tab pour naviguer, appuyez sur espace pour valider";
 
@@ -79,17 +82,21 @@ public class CaptchaController {
      * Initialize the timer
      */
     public void initializeTimerBeforeRefresh() {
+        timerCurrentValue = TIMER_BEFORE_REFRESH_IN_SECONDS;
         timeBeforeRefresh = new Timeline(
-            new KeyFrame(Duration.seconds(TIMER_BEFORE_REFRESH_IN_SECONDS), e -> {
-                timeBeforeRefresh.stop();   // stop the timer
-                try {
-                    verifyRemainingTry();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            })
+                new KeyFrame(Duration.seconds(1), e -> {
+                    --timerCurrentValue;
+                    timerLabel.setText(String.valueOf(timerCurrentValue));
+                    if(timerCurrentValue <= 0) {
+                        timeBeforeRefresh.stop();
+                        try {
+                            verifyRemainingTry();
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                })
         );
-
         timeBeforeRefresh.setCycleCount(Timeline.INDEFINITE);
         timeBeforeRefresh.play();
     }
