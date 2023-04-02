@@ -28,9 +28,6 @@ public class CaptchaController {
                                                     "1234567890";
 
     private static final int TIMER_BEFORE_REFRESH_IN_SECONDS = 40;
-    private int timerCurrentValue;
-    @FXML
-    private Label timerLabel;
     private static final String ERROR_INCORRECT_ANSWER = "Mauvaise réponse";
     private static final String DEFAULT_SPEECH = "Page Captcha, appuyez sur tab pour naviguer, appuyez sur espace pour valider";
 
