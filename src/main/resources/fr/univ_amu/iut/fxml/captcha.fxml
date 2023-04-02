@@ -25,6 +25,11 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
+       <Label fx:id="timerLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+           <font>
+               <Font name="Helvetica Neue" size="17.0" />
+           </font>
+       </Label>
        <LabelSpeechLetterByLetter fx:id="labelCaptcha" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
        <TextFieldSpeech fx:id="userInput" promptText="Entrez le Captcha" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <ButtonSpeech fx:id="submit" onAction="#verifyUserTry" mnemonicParsing="false" prefHeight="52.0" prefWidth="208.0" styleClass="Btn" text="Confirmer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">

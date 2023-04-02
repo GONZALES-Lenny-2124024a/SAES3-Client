@@ -59,7 +59,7 @@
         <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <children>
                 <Label>Nombre de Questions voulues : </Label>
-                <SliderSpeech fx:id="nbQuestionsSlider" blockIncrement="1" majorTickUnit="1" max="20" min="1" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10" />
+                <SliderSpeech fx:id="nbQuestionsSlider" blockIncrement="2" majorTickUnit="2" max="20" min="2" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10" />
             </children>
         </VBox>
     </children>

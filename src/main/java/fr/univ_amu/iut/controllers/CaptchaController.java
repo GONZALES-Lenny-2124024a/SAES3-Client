@@ -39,6 +39,10 @@ public class CaptchaController {
     private TextField userInput;
     private Speech speech;
 
+    private int timerCurrentValue;
+    @FXML
+    private Label timerLabel;
+
     private static Timeline timeBeforeRefresh;
     public CaptchaController() {
         remainingTry = MAX_TRY;
@@ -79,17 +83,21 @@ public class CaptchaController {
      * Initialize the timer
      */
     public void initializeTimerBeforeRefresh() {
+        timerCurrentValue = TIMER_BEFORE_REFRESH_IN_SECONDS;
         timeBeforeRefresh = new Timeline(
-            new KeyFrame(Duration.seconds(TIMER_BEFORE_REFRESH_IN_SECONDS), e -> {
-                timeBeforeRefresh.stop();   // stop the timer
-                try {
-                    verifyRemainingTry();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            })
+                new KeyFrame(Duration.seconds(1), e -> {
+                    --timerCurrentValue;
+                    timerLabel.setText(String.valueOf(timerCurrentValue));
+                    if(timerCurrentValue <= 0) {
+                        timeBeforeRefresh.stop();
+                        try {
+                            verifyRemainingTry();
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                })
         );
-
         timeBeforeRefresh.setCycleCount(Timeline.INDEFINITE);
         timeBeforeRefresh.play();
     }
