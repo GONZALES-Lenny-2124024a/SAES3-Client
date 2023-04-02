@@ -14,7 +14,7 @@ import java.net.ConnectException;
  * @author LennyGonzales
  */
 public class Communication {
-    private static final String HOSTNAME = "127.0.0.1";
+    private static final String HOSTNAME = "144.24.203.255";
     private static final int PORT = 10013;
     private SSLSocket socketClient;
     private Object object;

@@ -1,9 +1,9 @@
 package fr.univ_amu.iut.fxml;
 
-import fr.univ_amu.iut.CaptchaController;
-import fr.univ_amu.iut.LoginController;
-import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.*;
+import fr.univ_amu.iut.gui.Speech;
+import fr.univ_amu.iut.controllers.CaptchaController;
+import fr.univ_amu.iut.controllers.SceneController;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -37,6 +37,7 @@ public class TestMenuPage {
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
+                        Speech.setIsBlind(false);
                         new Main().start(TestMenuPage.this.stage);
                         CaptchaController.getTimeBeforeRefresh().stop();
                         SceneController sceneController = new SceneController();

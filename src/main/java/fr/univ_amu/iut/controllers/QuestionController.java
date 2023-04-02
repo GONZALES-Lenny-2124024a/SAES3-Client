@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -10,6 +12,7 @@ import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import fr.univ_amu.iut.templates.CheckBoxAnswer;
+import fr.univ_amu.iut.templates.TextFieldSpeech;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -28,6 +31,7 @@ import java.util.*;
  * @author LennyGonzales
  */
 public class QuestionController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page question";
     @FXML
     private VBox vboxParent;
     @FXML
@@ -53,9 +57,11 @@ public class QuestionController implements CommunicationController {
     private Question currentQuestion;
     private static List<Question> story = null;
     private Iterator<Question> iteratorStory;
+    private Speech speech;
 
     public QuestionController() {
         communication = Main.getCommunication();
+        speech = new Speech();
     }
 
     public static List<Question> getStory() {
@@ -130,7 +136,8 @@ public class QuestionController implements CommunicationController {
      * Create the TextField for a written response question
      */
     public void createWrittenResponse() {
-        TextField textField = new TextField();
+        TextFieldSpeech textField = new TextFieldSpeech();
+        textField.setPromptText("Entrez votre réponse écrite");
         textField.setPrefWidth(1000);
         textField.setId("writtenAnswer");
         vboxParent.getChildren().add(1, textField);
@@ -167,7 +174,7 @@ public class QuestionController implements CommunicationController {
     public void initializeCharacterImage() {
         String module = story.get(0).getModule();
         String imageName = module.replace(" ", "_");    //replace space by '_'
-        String urlCharacterImage = Objects.requireNonNull(getClass().getResource("img/characters/" + imageName + ".png")).toExternalForm();
+        String urlCharacterImage = Objects.requireNonNull(Main.class.getResource("img/characters/" + imageName + ".png")).toExternalForm();
         characterImage.setImage(new Image(urlCharacterImage));
     }
 
@@ -210,6 +217,7 @@ public class QuestionController implements CommunicationController {
             currentQuestion = iteratorStory.next();
             initializeVariables(currentQuestion);
             initializeTimer(NUMBER_OF_SECONDS_TIMER);
+            Platform.runLater(() -> descriptionQuestion.requestFocus()); // Give the focus to the description and the question after answer a question
         } else {    // Change page
             SceneController sceneController = new SceneController();
             sceneController.switchTo("fxml/summary.fxml");
@@ -230,6 +238,8 @@ public class QuestionController implements CommunicationController {
 
     @FXML
     public void initialize() throws IOException, UrlOfTheNextPageIsNull {
+        speech.initializeTextToSpeech(vboxParent.getParent(), DEFAULT_SPEECH);
+
         if(story != null) { // If it's a multiplayer session
             Collections.shuffle(story);     // Permutes randomly
             initializeCharacterImage();

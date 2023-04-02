@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -22,18 +24,21 @@ import java.util.Arrays;
  * @author LennyGonzales
  */
 public class LoginController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page Login";
     @FXML
     private TextField mailTextField;
     @FXML
     private PasswordField passwordTextField;
     private final Communication communication;
     private final SceneController sceneController;
+    private Speech speech;
     public LoginController() throws IOException {
         if(Main.getCommunication() == null) {
             Main.setCommunication(new Communication()); // Start the communication with the server
         }
         this.communication = Main.getCommunication();
         sceneController = new SceneController();
+        speech = new Speech();
     }
 
     /**
@@ -89,6 +94,7 @@ public class LoginController implements CommunicationController {
                     });
                     case LOGIN_NOT_SUCCESSFULLY -> Platform.runLater(() ->  {
                         Alert connexionError = new Alert(Alert.AlertType.ERROR, "Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
+                        speech.speech("Les identifiants fournis sont incorrects, veuillez réessayer ou créer votre compte sur notre site web : https://nwstories.alwaysdata.net");
                         connexionError.show();
                     });
                     default -> throw new NotTheExpectedFlagException("LOGIN_SUCCESSFULLY or LOGIN_NOT_SUCCESSFULLY");
@@ -102,7 +108,8 @@ public class LoginController implements CommunicationController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws InterruptedException {
         initializeInteractionServer();
+        speech.initializeTextToSpeech(mailTextField.getParent(), DEFAULT_SPEECH);
     }
 }

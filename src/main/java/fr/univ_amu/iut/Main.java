@@ -1,6 +1,7 @@
 package fr.univ_amu.iut;
 
 import fr.univ_amu.iut.communication.Communication;
+import fr.univ_amu.iut.controllers.SceneController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -51,7 +52,7 @@ public class Main extends Application {
         // Initialize the scene
         SceneController.setStage(stage);    // Stores the current stage
         SceneController sceneController = new SceneController();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/captcha.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/captcha.fxml"));
         sceneController.initializeScene(fxmlLoader.load(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
         stage.show();
@@ -64,6 +65,7 @@ public class Main extends Application {
         Media sound = new Media(Objects.requireNonNull(getClass().getResource(fileName)).toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setVolume(0.5);
         mediaPlayer.play();
     }
 

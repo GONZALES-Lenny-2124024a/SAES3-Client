@@ -1,13 +1,13 @@
 package fr.univ_amu.iut.fxml;
 
 import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.controllers.SceneController;
+import fr.univ_amu.iut.gui.Speech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -33,6 +33,7 @@ public class TestCaptchaPage {
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
+                        Speech.setIsBlind(false);
                         new Main().start(TestCaptchaPage.this.stage);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -62,7 +63,7 @@ public class TestCaptchaPage {
     @Test
     public void shouldContainsButtonSubmit() {
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#submit") != null);
-        verifyThat("#submit", hasText("Valider"));
+        verifyThat("#submit", hasText("Confirmer"));
     }
 
     @Test

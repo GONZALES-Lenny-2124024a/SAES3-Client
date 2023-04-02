@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -26,6 +28,7 @@ import java.util.*;
  * @author LennyGonzales , MathieuSauva
  */
 public class SummaryController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page sommaire";
 
     private final Communication communication;
     private final List<Question> story;
@@ -37,11 +40,13 @@ public class SummaryController implements CommunicationController {
 
     @FXML
     private TableView<LeaderboardEntry> tableViewLeaderboard;
+    private Speech speech;
 
     public SummaryController() {    // Get story
         this.story = QuestionController.getStory(); // Get the story with the user answers
         QuestionController.setStory(null);
         communication = Main.getCommunication();
+        speech = new Speech();
     }
 
     /**
@@ -52,14 +57,27 @@ public class SummaryController implements CommunicationController {
         Iterator<Map.Entry<Question, Boolean>> iteratorSummary = summaryToDisplay.entrySet().iterator();
         Map.Entry<Question, Boolean> answerEntry;
         Label answerLabel;
+        String question;
 
+        StringBuilder textToSpeech = new StringBuilder();
         while(iteratorSummary.hasNext()) {
             answerEntry = iteratorSummary.next();
 
-            answerLabel = new Label(answerEntry.getKey().getQuestion());
-            answerLabel.setTextFill((answerEntry.getValue()) ? Color.GREEN : Color.RED);
+            question = answerEntry.getKey().getQuestion();
+            answerLabel = new Label(question);
+            textToSpeech.append(question);
+
+            if(answerEntry.getValue()) {
+                answerLabel.setTextFill(Color.GREEN);
+                textToSpeech.append(". Bonne réponse");
+            } else {
+                answerLabel.setTextFill(Color.RED);
+                textToSpeech.append(". Mauvaise réponse");
+            }
             listViewSummary.getItems().add(answerLabel);
         }
+
+        speech.speech(textToSpeech.toString());
     }
 
     /**
@@ -127,5 +145,6 @@ public class SummaryController implements CommunicationController {
     @FXML
     public void initialize() throws IOException {
         initializeInteractionServer();
+        speech.initializeTextToSpeech(labelUserPoints.getParent(), DEFAULT_SPEECH);
     }
 }

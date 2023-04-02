@@ -1,8 +1,9 @@
 package fr.univ_amu.iut.fxml;
 
-import fr.univ_amu.iut.CaptchaController;
+import fr.univ_amu.iut.controllers.CaptchaController;
 import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.controllers.SceneController;
+import fr.univ_amu.iut.gui.Speech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -30,6 +31,7 @@ public class TestUserJourneys {
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
+                        Speech.setIsBlind(false);
                         new Main().start(TestUserJourneys.this.stage);
                         CaptchaController.getTimeBeforeRefresh().stop();
                         SceneController sceneController = new SceneController();
@@ -73,7 +75,7 @@ public class TestUserJourneys {
     public void UserJourneyStudentTrainWithTrainingModeAndTestHimWithSoloMode(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
 
-        Thread.sleep(50);
+        Thread.sleep(200);
         robot.clickOn("#training");
         Thread.sleep(300);
         robot.clickOn("Tous les modules");
@@ -94,9 +96,9 @@ public class TestUserJourneys {
     public void UserJourneyStudentTestByCreatingMultiplayerSessionAndTestHimWithSoloMode(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
 
-        Thread.sleep(50);
+        Thread.sleep(200);
         robot.clickOn("#multiplayer");
-        Thread.sleep(50);
+        Thread.sleep(200);
         robot.clickOn("#create");
         Thread.sleep(300);
         robot.clickOn("Tous les modules");

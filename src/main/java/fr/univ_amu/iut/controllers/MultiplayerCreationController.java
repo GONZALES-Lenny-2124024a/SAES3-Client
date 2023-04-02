@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -9,8 +11,8 @@ import fr.univ_amu.iut.exceptions.NotTheExpectedFlagException;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
@@ -19,17 +21,20 @@ import java.io.IOException;
  * @author LennyGonzales
  */
 public class MultiplayerCreationController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page de création de session multijoueur";
     @FXML
-    private TextField codeSession;
+    private Label codeSession;
     @FXML
     private ListView usersPresentListView;
     private final Communication communication;
     private final SceneController sceneController;
+    private Speech speech;
 
 
     public MultiplayerCreationController() {
         communication = Main.getCommunication();
         sceneController = new SceneController();
+        speech = new Speech();
     }
 
     /**
@@ -75,6 +80,22 @@ public class MultiplayerCreationController implements CommunicationController {
     }
 
     /**
+     * Initialize keys bind for blind people
+     */
+    public void initializeKeysBind() {
+        codeSession.getParent().setOnKeyPressed(e -> {
+            try {
+                switch(e.getCode()) {
+                    case DIGIT1 -> sessionBegin();
+                    case DIGIT3 -> cancelSession();
+                }
+            } catch (IOException | UrlOfTheNextPageIsNull ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+
+    /**
      * Initialize the page
      * @throws IOException if the communication with the server is closed or didn't go well
      * @throws NotTheExpectedFlagException Throw when the flag received isn't the expected flag | Print the expected flag
@@ -84,5 +105,8 @@ public class MultiplayerCreationController implements CommunicationController {
     @FXML
     public void initialize() throws IOException, NotTheExpectedFlagException, ClassNotFoundException, NotAStringException {
         initializeInteractionServer();
+
+        initializeKeysBind();
+        speech.initializeTextToSpeech(codeSession.getParent(), DEFAULT_SPEECH);
     }
 }

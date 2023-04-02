@@ -1,8 +1,8 @@
 package fr.univ_amu.iut.templates;
 
 import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.MenuController;
-import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.controllers.MenuController;
+import fr.univ_amu.iut.controllers.SceneController;
 import fr.univ_amu.iut.communication.Communication;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;

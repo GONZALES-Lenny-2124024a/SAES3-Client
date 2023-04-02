@@ -1,33 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import fr.univ_amu.iut.ButtonSwitchToMenu?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fr.univ_amu.iut.SummaryController"
-      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" >
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-        <Label fx:id="labelUserPointsTitle" style="-fx-text-fill: WHITE; -fx-font-size: 25" text="Votre nouveau nombre de points : "></Label>
-        <Label fx:id="labelUserPoints" style="-fx-text-fill: WHITE; -fx-font-size: 35"></Label>
+<?import fr.univ_amu.iut.templates.LabelSpeech?>
+<?import fr.univ_amu.iut.templates.ButtonSpeech?>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.controllers.SummaryController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="390.0703125" minWidth="10.0" prefWidth="295.293701171875" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1059.507167816162" minWidth="10.0" prefWidth="684.4144897460938" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="410.45404052734375" minWidth="10.0" prefWidth="297.08551025390625" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="210.1387176513672" minHeight="10.0" prefHeight="147.95620727539062" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="544.7747650146484" minHeight="0.0" prefHeight="22.543792724609375" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="610.88916015625" minHeight="10.0" prefHeight="291.3260498046875" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="544.7747650146484" minHeight="10.0" prefHeight="16.907806396484375" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="544.7747650146484" minHeight="10.0" prefHeight="136.09219360351562" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="229.63604736328125" minHeight="0.0" prefHeight="115.78961181640625" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <Label fx:id="labelUserPointsTitle" text="Votre nouveau nombre de points :" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Label>
+        <LabelSpeech fx:id="labelUserPoints" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </LabelSpeech>
 
 
-        <ListView fx:id="listViewSummary" prefHeight="200.0" maxWidth="600.0">
+        <ListView fx:id="listViewSummary" maxWidth="939.0" prefHeight="408.0" prefWidth="939.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         </ListView>
 
-        <TableView fx:id="tableViewLeaderboard" visible="false" maxWidth="0.0" maxHeight="0.0">
-                <columns>
-                        <TableColumn prefWidth="300.0" fx:id="columnMail" text="Utilisateurs">
-                                <cellValueFactory><PropertyValueFactory property="email"/></cellValueFactory>
-                        </TableColumn>
-                        <TableColumn prefWidth="100.0" fx:id="columnAnswers" text="Nombre de bonnes réponses">
-                                <cellValueFactory><PropertyValueFactory property="correctAnswers"/></cellValueFactory>
-                        </TableColumn>
-                </columns>
+        <TableView fx:id="tableViewLeaderboard" maxHeight="0.0" maxWidth="0.0" prefHeight="0.0" prefWidth="0.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <columns>
+                <TableColumn fx:id="columnMail" prefWidth="300.0" text="Utilisateurs">
+                    <cellValueFactory><PropertyValueFactory property="email" /></cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="columnAnswers" prefWidth="100.0" text="Nombre de bonnes réponses">
+                    <cellValueFactory><PropertyValueFactory property="correctAnswers" /></cellValueFactory>
+                </TableColumn>
+            </columns>
         </TableView>
 
-        <Button fx:id="leave" onAction="#leaveSession">Revenir au menu principal</Button>
-</VBox>
+        <ButtonSpeech fx:id="leave" mnemonicParsing="false" onAction="#leaveSession" prefHeight="51.0" prefWidth="154.0" styleClass="Btn" text="QUITTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+    </children>
+</GridPane>

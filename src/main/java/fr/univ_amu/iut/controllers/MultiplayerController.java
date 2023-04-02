@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.MessageListener;
@@ -18,14 +20,17 @@ import java.io.IOException;
  * @author LennyGonzales
  */
 public class MultiplayerController implements CommunicationController {
+    private static final String DEFAULT_SPEECH = "Page multijoueur";
     @FXML
     private TextField codeInput;
     private final Communication communication;
     private final SceneController sceneController;
+    private Speech speech;
 
     public MultiplayerController() {
         communication = Main.getCommunication();
         sceneController = new SceneController();
+        speech = new Speech();
     }
 
     /**
@@ -47,6 +52,15 @@ public class MultiplayerController implements CommunicationController {
     }
 
     /**
+     * Return to the menu page
+     * @throws UrlOfTheNextPageIsNull if the url of the next page is null
+     * @throws IOException
+     */
+    public void leave() throws UrlOfTheNextPageIsNull, IOException {
+        sceneController.switchTo("fxml/menu.fxml");
+    }
+
+    /**
      * Initialize the interaction with the server to receive server message(s)
      */
     public void initializeInteractionServer() {
@@ -64,6 +78,7 @@ public class MultiplayerController implements CommunicationController {
                     });
                     case SESSION_NOT_EXISTS -> Platform.runLater(() -> {
                         Alert joinSessionError = new Alert(Alert.AlertType.ERROR, "La session multijoueur n'existe pas");
+                        speech.speech(joinSessionError.getContentText());
                         joinSessionError.show();
                     });
                     default -> throw new NotTheExpectedFlagException("SESSION_EXISTS or SESSION_NOT_EXISTS");
@@ -76,5 +91,6 @@ public class MultiplayerController implements CommunicationController {
     @FXML
     public void initialize() throws IOException {
         initializeInteractionServer();
+        speech.initializeTextToSpeech(codeInput.getParent(), DEFAULT_SPEECH);
     }
 }

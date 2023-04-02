@@ -1,5 +1,7 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.controllers;
 
+import fr.univ_amu.iut.Main;
+import fr.univ_amu.iut.gui.Speech;
 import fr.univ_amu.iut.communication.CommunicationFormat;
 import fr.univ_amu.iut.communication.Flags;
 import fr.univ_amu.iut.communication.Communication;
@@ -17,15 +19,18 @@ import java.util.Arrays;
  * @author LennyGonzales
  */
 public class MenuController {
+    private static final String DEFAULT_SPEECH = "Menu principal";
     private static final String DEFAULT_MODULE = "Tous les modules";
     private final Communication communication;
     @FXML
     private Slider nbQuestionsSlider;
     private static IntegerProperty nbQuestions;
+    private Speech speech;
 
     public MenuController() {
         communication = Main.getCommunication();
         nbQuestions = new SimpleIntegerProperty();
+        speech = new Speech();
     }
 
     /**
@@ -87,5 +92,7 @@ public class MenuController {
     @FXML
     public void initialize() {
         nbQuestions.bindBidirectional(nbQuestionsSlider.valueProperty());   // Bind the slider value with the nbQuestions variable value
+
+        speech.initializeTextToSpeech(nbQuestionsSlider.getParent(), DEFAULT_SPEECH);
     }
 }

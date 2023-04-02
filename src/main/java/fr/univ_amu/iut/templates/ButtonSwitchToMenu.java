@@ -1,5 +1,6 @@
-package fr.univ_amu.iut;
+package fr.univ_amu.iut.templates;
 
+import fr.univ_amu.iut.controllers.SceneController;
 import fr.univ_amu.iut.exceptions.UrlOfTheNextPageIsNull;
 import javafx.scene.control.Button;
 

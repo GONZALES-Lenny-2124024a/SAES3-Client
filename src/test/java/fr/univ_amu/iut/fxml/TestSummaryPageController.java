@@ -1,8 +1,9 @@
 package fr.univ_amu.iut.fxml;
 
-import fr.univ_amu.iut.CaptchaController;
+import fr.univ_amu.iut.controllers.CaptchaController;
 import fr.univ_amu.iut.Main;
-import fr.univ_amu.iut.SceneController;
+import fr.univ_amu.iut.controllers.SceneController;
+import fr.univ_amu.iut.gui.Speech;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -36,6 +37,7 @@ public class TestSummaryPageController {
             try {
                 FxToolkit.setupStage((sta) -> {
                     try {
+                        Speech.setIsBlind(false);
                         new Main().start(TestSummaryPageController.this.stage);
                         CaptchaController.getTimeBeforeRefresh().stop();
                         SceneController sceneController = new SceneController();
@@ -71,7 +73,7 @@ public class TestSummaryPageController {
     public void shouldContainsLeaveButton(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#leave") != null);
-        verifyThat("#leave", hasText("Revenir au menu principal"));
+        verifyThat("#leave", hasText("QUITTER"));
     }
 
     @Test
@@ -84,7 +86,7 @@ public class TestSummaryPageController {
     public void shouldContainsUserPointsLabel(FxRobot robot) throws InterruptedException {
         goToTheSummaryPage(robot);
         assertTrue(SceneController.getStage().getScene().getRoot().lookup("#labelUserPointsTitle") != null);
-        verifyThat("#labelUserPointsTitle", hasText("Votre nouveau nombre de points : "));
+        verifyThat("#labelUserPointsTitle", hasText("Votre nouveau nombre de points :"));
     }
 
     @Test
@@ -101,7 +103,7 @@ public class TestSummaryPageController {
 
     public void goToTheSummaryPage(FxRobot robot) throws InterruptedException {
         TestLoginPage.connectionLoginPage(robot);
-        Thread.sleep(100);
+        Thread.sleep(200);
         robot.clickOn("#solo");
         Thread.sleep(300);
         while((SceneController.getStage().getScene().getRoot().lookup("#answer1") != null) || (SceneController.getStage().getScene().getRoot().lookup("#writtenAnswer") != null)) {
