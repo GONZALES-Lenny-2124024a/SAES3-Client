@@ -25,9 +25,9 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-       <Label fx:id="timerLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+       <Label fx:id="timerLabel" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
            <font>
-               <Font name="Helvetica Neue" size="17.0" />
+               <Font name="Arial Bold" size="30.0" />
            </font>
        </Label>
        <LabelSpeechLetterByLetter fx:id="labelCaptcha" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />

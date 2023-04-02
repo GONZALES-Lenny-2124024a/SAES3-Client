@@ -11,10 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import fr.univ_amu.iut.templates.ButtonSwitchToMenu?>
 <?import fr.univ_amu.iut.templates.ButtonSpeech?>
 <?import fr.univ_amu.iut.templates.LabelSpeech?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.controllers.QuestionController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ_amu.iut.controllers.QuestionController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="950.7994995117188" minWidth="10.0" prefWidth="186.07369995117188" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1025.3733215332031" minWidth="10.0" prefWidth="613.4263000488281" />
@@ -27,12 +26,13 @@
         <RowConstraints maxHeight="1023.0" minHeight="10.0" prefHeight="43.60304641723633" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="1023.0" minHeight="10.0" prefHeight="668.61474609375" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="674.5061645507812" minHeight="0.0" prefHeight="19.88525390625" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="100" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="100.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+      <RowConstraints />
     </rowConstraints>
     <children>
-        <Label fx:id="timerLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Label fx:id="timerLabel" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
             <font>
-                <Font name="Helvetica Neue" size="17.0" />
+                <Font name="Arial Bold" size="30.0" />
             </font>
         </Label>
         <LabelSpeech fx:id="descriptionQuestion" prefHeight="410.0" prefWidth="436.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
@@ -40,7 +40,7 @@
                 <Font name="Helvetica Neue" size="17.0" />
             </font>
         </LabelSpeech>
-        <VBox fx:id="vboxParent" prefHeight="761.0" prefWidth="283.0" GridPane.columnIndex="3" GridPane.rowIndex="2" spacing="30.0">
+        <VBox fx:id="vboxParent" prefHeight="761.0" prefWidth="283.0" spacing="30.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
             <children>
                 <ImageView fx:id="characterImage" fitHeight="325.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -58,12 +58,12 @@
             </image>
         </ImageView>
         <ImageView fitHeight="718.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-        <ButtonSpeech fx:id="submit" onAction="#submitAnswer" mnemonicParsing="false" prefHeight="62.0" prefWidth="213.0" styleClass="Btn" text="VALIDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+        <ButtonSpeech fx:id="submit" mnemonicParsing="false" onAction="#submitAnswer" prefHeight="62.0" prefWidth="213.0" styleClass="Btn" text="VALIDER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
             <font>
                 <Font size="21.0" />
             </font>
         </ButtonSpeech>
-        <ButtonSpeech fx:id="leave" onAction="#leave" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" styleClass="Btn" text="QUITTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+        <ButtonSpeech fx:id="leave" mnemonicParsing="false" onAction="#leave" prefHeight="30.0" prefWidth="150.0" styleClass="Btn" text="QUITTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
             <font>
                 <Font size="21.0" />
             </font>

@@ -57,7 +57,6 @@ public class QuestionController implements CommunicationController {
     private Question currentQuestion;
     private static List<Question> story = null;
     private Iterator<Question> iteratorStory;
-    private StringBuilder textToSpeech;
     private Speech speech;
 
     public QuestionController() {

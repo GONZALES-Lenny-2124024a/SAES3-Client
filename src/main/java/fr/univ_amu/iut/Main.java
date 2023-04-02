@@ -36,7 +36,7 @@ public class Main extends Application {
         initializeMusic("videos/music.mp3");
 
         this.stage = stage;
-        initializeWindow();
+        initializeWindow()
     }
 
     /**
