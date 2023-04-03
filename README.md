@@ -30,6 +30,23 @@ Puis à partir d'un IDE, exécuter simplement cette ligne du fichier Main.java
 ```java
       public static void main(String[] args) { launch(); }
 ```
+## Lancement à partir du Jar
+
+Si vous souhaitez lancer l'application à partir du fichier Jar il vous faut d'abord le télécharger sur notre site web et choisir le bon sytème d'exploitation (MacOS ou Windows) :
+
+https://networkstories.no-ip.org/home
+
+Une fois télécharger, il vous suffit de lancer le launcher présent dans l'archive en double cliquant dessus:
+
+Windows
+```
+  launcher.bat
+```
+
+MacOS
+```
+  launcher.command
+```
 
 ## Membres
 
